@@ -1,0 +1,52 @@
+COMPARING SIMULATED and EXACT PROBABILITIES
+Simulated Probabilities (Iterations = 1000000)
+W(p = 0.500000, d =  1) = 0.749995999999999995999644397671
+W(p = 0.500000, d =  2) = 0.233820000000000000062172489379
+W(p = 0.500000, d =  3) = 0.135677999999999993052668401106
+W(p = 0.500000, d =  4) = 0.013695999999999999841016062874
+W(p = 0.500000, d =  5) = 0.004578999999999999737099187769
+W(p = 0.500000, d =  6) = 0.000050999999999999999597977834
+W(p = 0.500000, d =  7) = 0.000003999999999999999818992447
+
+Recurrence Probabilities
+W(p = 0.500000, de =  1) = 0.750000000000000
+W(p = 0.500000, de =  2) = 0.234375000000000
+W(p = 0.500000, de =  3) = 0.135681152343750
+W(p = 0.500000, de =  4) = 0.013685761950910
+W(p = 0.500000, de =  5) = 0.004597048383275
+W(p = 0.500000, de =  6) = 0.000046824471899
+W(p = 0.500000, de =  7) = 0.000005283206481
+
+Explicit Probabilities Via Expanded Equations
+depth = 1: 0.7500000000
+depth = 2: 0.2343750000
+depth = 3: 0.1356811523
+depth = 4: 0.0136857620
+
+
+BRUTE FORCE PROBABILITIES:
+depth = 1
+winning/total  : 3/4
+percentage     : 0.750000
+
+depth = 2
+winning/total  : 15/64
+percentage     : 0.234375
+
+depth = 3
+winning/total  : 2223/16384
+percentage     : 0.135681
+
+
+STEADY STATE CHECK
+p = 0.94494078742115472647
+probability of winnig collapsed to zero at depth 335170120
+
+
+ANOTHER SIMULATION (DRAWING TREES TO FILE)
+Simulated W(p = 0.900000) = 0.76000000
+Depth      = 7
+Iterations = 50
+Number of winning trees = 38
+Average number of nodes in winning casacde = 85.55263
+Winning trees were written to tree-drawing.txt
