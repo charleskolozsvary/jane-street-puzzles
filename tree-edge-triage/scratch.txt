@@ -1,0 +1,175 @@
+                           --.--
+                          /     \
+                       -A-       -B-
+                      /   \     /   \
+                     A     B   A     A
+
+
+                      .
+                     / \
+                   A-   -B
+                  / \   / \
+                 A   B A   C
+
+
+
+
+
+
+                            ----.----
+                           /         \
+                          A           B
+                         / \         / \
+                       A-   -B     B-   -A
+                      / \   / \   / \   / \
+                     A   A B   B A   B A   A
+
+                               .
+                              / \
+                             /   \
+			    /     \
+                           /       \
+                          A         B
+                         / \       / \
+                        A   B     B   A
+                       / \ / \   / \ / \
+                      A  A B  B A  B A  A
+
+                  
+
+
+
+
+--------------------------
+0    .
+1   / \
+2  A   A   
+--------------------------
+0        .
+1       / \
+2      /   \
+3     /     \
+4    A       A
+5   / \     / \
+6  A   A   A   A
+--------------------------
+0                .
+1               / \
+2              /   \
+3             /     \
+4            /       \
+5           /         \
+6          /           \
+7         /             \
+8        A               A
+9       / \             / \
+10     /   \           /   \
+11    /     \         /     \
+12   A       A       A       A
+13  / \     / \     / \     / \    
+14 A   A   A   A   A   A   A   A   
+-----------------------------------------------------
+0                                .
+1                               / \
+2                              /   \
+3                             /     \
+4                            /       \
+5                           /         \
+6                          /           \   
+7                         /             \
+8                        /               \
+9                       /                 \
+10                     /                   \
+11                    /                     \
+12                   /                       \
+13                  /                         \
+14                 /                           \
+15                /                             \
+16               .                               .
+17              / \                             / \
+18             /   \                           /   \
+19            /     \                         /     \
+20           /       \                       /       \
+21          /         \                     /         \
+22         /           \                   /           \
+23        /             \                 /             \
+24       A               A               .               .
+25      / \             / \             / \             / \        
+26     /   \           /   \           /   \           /   \         
+27    /     \         /     \         /     \         /     \
+28   .       .       .       .       .       .       .       .
+29  / \     / \     / \     / \     / \     / \     / \     / \
+30 .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
+
+
+
+
+
+depth = N
+
+2^(N+1) = T
+# of total '\n'
+
+at first  branch, need two     paths that extend for T/2  '\n'
+at second branch, need four    paths that extend for T/4  '\n'
+at third  branch, need eight   paths that extend for T/8  '\n'
+at fourth branch, need sixteen paths that extend for T/16 '\n'
+
+
+Width wise: 
+Total width = W = 4 * 2^N = 2^(N+2)
+first  width need W/2
+second width need W/4
+
+
+the start of the ith row will be index 2^i-1
+
+
+
+
+Depth = n
+total nodes = 2^(n+1) - 1
+
+
+suppose we know that index k is empty in [2^(n+1)-1], which other indices will then be also empty?
+
+i = (given from func), j = k - 2^i + 1
+
+k = 2^i + j - 1
+ 
+(i, j) <-> k = 2^i + j - 1
+
+k given by (i, j = k - 2^i + 1) where is the position of the left child?
+
+left  child: (i + 1, 2*j    )
+right child: (i + 1, 2*j + 1)
+
+left child: 2^(i+1) + 2*j - 1
+right child: 2^(i+1) + 2*j
+
+
+
+
+
+
+
+
+
+                                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                       
+
+
+
