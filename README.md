@@ -1,2 +1,6 @@
-# jane-street-puzzles
-This repo contains solutions to the Jane Street puzzles I've worked on.
+# Jane Street Puzzles
+The solutions to all the Jane Street Puzzles I've worked on.
+
+- [Die Agony](./die-agony)
+- [Lesses More](./lesses-more)
+- [Altered States 2](./altered-states2)
