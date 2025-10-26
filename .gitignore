@@ -6,3 +6,7 @@ __pycache__/
 .DS_STORE/
 
 .DS_STORE
+
+*.aux
+*.log
+*.out

@@ -3,7 +3,7 @@ import polyominoes
 from clues import CLUES
 
 #=========================================================
-# Write tikz commands using code from preamble-tikzify.txt
+# Write tikz commands using code from preamble-tikzify.tex
 #=========================================================
 
 def corners2paths(corners: list[str]) -> list[str]:
@@ -48,7 +48,7 @@ def compileTeX(body: str, noExtensionFileName: str) -> None:
     texFile = '{}.tex'.format(noExtensionFileName)
     
     with open(texFile, 'w') as f:
-        f.write(getTeXpreamble('../../preamble-tikzify.txt'))
+        f.write(getTeXpreamble('../../preamble-tikzify.tex'))
         f.write(body)
         f.write('\n\\end{document}')
         
@@ -56,7 +56,7 @@ def compileTeX(body: str, noExtensionFileName: str) -> None:
 
     pdfFile = '{}.pdf'.format(noExtensionFileName)
     os.system('mv {} ..'.format(pdfFile))
-    os.system('open ../{}'.format(pdfFile))
+    # os.system('open ../{}'.format(pdfFile))
     
     os.chdir('../..')
 
