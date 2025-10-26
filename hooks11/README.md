@@ -8,19 +8,19 @@ The first problem can be handled by filtering all $4^8$ possible hook partitions
 
 To filter the hook partitions, you can use (a) simply the position of the width 1 hook coordinate and (b) (somewhat more involved) find which hooks can be assigned to each digit, and rule out assignments where
 
-    - a digit must belong to a hook that's too small for it (i.e., digit $d$ in hook with width $h$ and $d > 2h-1$)
-    
+- A digit must belong to a hook that's too small for it (i.e., digit $d$ in hook with width $h$ and $d > 2h-1$)
+
     <img src="./pngs/toosmall.png">
     
-    - more than one digit must belong to the same hook
-    
+- More than one digit must belong to the same hook
+
     <img src="./pngs/fighting.png">
     
-    - a digit cannot be assigned to any hook
+- A digit cannot be assigned to any hook
     
     <img src="./pngs/nohookfordig.png">
 
-    - there are more digits left to assign than unoccupied hooks
+- There are more digits left to assign than unoccupied hooks
     
     <img src="./pngs/hooks_unavailable.png">
 
