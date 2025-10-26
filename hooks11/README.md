@@ -22,10 +22,12 @@ Pentomino decompositions are found by solving a [generalized exact cover](https:
 
 [Algorithm X](https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X)[^2] is used to find the covers, pruning ones which violate pentomino clues or fill a 2x2 region. The generated covers which aren't one connected component are also removed.
 
-## Solution
-The solution is found by iterating through all pairs of covers and hook partitions and finding the one that can be filled with digits[^3] and whose pentomino decomposition digit sums are all a multiple of 5.
+## Answer
+All pairs of hook partitions and covers create a potential completed grid.[^3] The grid is valid if digits only belong to their assigned hook and the digit sums for each pentomino are a multiple of 5. The final answer is the product of the areas of the connected groups of unfilled squares.
+
+<img height="600" src="./pngs/solution.png">
 
 
 [^1]: This step alone cuts the number of hook partitions from 65536 to 4900.
 [^2]: It isn't implemented it with dancing links because ... I didn't want to translate between python and c, but also because the pruning of partial solutions is enough that the extra efficiency isn't really needed.
-[^3]: It is easy to fill the grid with digits when you have their placements from the pentomino decomposition and their identities from the hook--digit assignments. It also easy then to verify whether any digit is outside of its assigned hook.
+[^3]: It is easy to fill the grid with digits when you have their placements from the pentomino decomposition and their identities from the hook--digit assignments.
