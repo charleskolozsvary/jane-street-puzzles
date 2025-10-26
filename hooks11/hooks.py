@@ -21,9 +21,9 @@ def digitToHookMembership(gridW, hookpartition):
     digtohookMem = {d : '$\\sqcup$' for d in range(1, gridW+1)}
     for coordinate, digit in alreadyplacedDigits.items():
         (x, y) = coordinate
-        if digtohookMem[digit] != '$\\sqcup$' and grid[y][x] != digtohookMem[digit]: #digit is in more than one hook or the digit is in a hook that is too small
-            return tostr(digtohookMem)+'\ndigit {} is in more than one hook'.format(digit)
-        if digit > grid[y][x]*2-1:
+        if digtohookMem[digit] != '$\\sqcup$' and grid[y][x] != digtohookMem[digit]: #assigned digit is in more than one hook (only applies to 5x5 grid) 
+            return tostr(digtohookMem)+'\ndigit {} is in more than one hook'.format(digit) 
+        if digit > grid[y][x]*2-1: # the digit is in a hook that is too small
             return tostr(digtohookMem)+'\nhook {} is too small for digit {}'.format(grid[y][x], digit)
         digtohookMem[digit] = grid[y][x]
 
@@ -175,11 +175,19 @@ def hook1Filter(hookPartitions, hook1Coordinate):
         return hookPartition['hooks']['grid'][y][x] == 1
     return list(filter(hook1Matches, hookPartitions))
 
-def writeVHPS(gridW):
+def writeVHPS(gridW, debug = False):
     clues = CLUES[gridW]
     allhp = generateHookPartitions(gridW)
+    print('len(allhp):', len(allhp))
     filteredHPs  = hook1Filter(allhp, clues['hook1coordinate'])
+    print('len(filteredHPs):', len(filteredHPs))
     dhmems = [digitToHookMembership(gridW, fhp) for fhp in filteredHPs]
+
+    if debug:
+        labels = [tostr(dhmem) if type(dhmem) != str else dhmem for dhmem in dhmems]
+        allhps = [{'dhpartners': dhmems[i], 'hooks': filteredHPs[i]['hooks'], 'corners': filteredHPs[i]['corners']} for i in range(len(filteredHPs))]
+        tikzify.drawHookPartitions(allhps, 1, labels, 'debug-digit-assignments{w}x{w}'.format(w=gridW), maxDraw=750)
+    
     validIdxs = list(filter(lambda i: type(dhmems[i]) is not str, range(len(dhmems))))
     vhps = [{'dhpartners': dhmems[i], 'hooks': filteredHPs[i]['hooks'], 'corners': filteredHPs[i]['corners']} for i in validIdxs]
     print('number of valid hook partitions: ', len(vhps))
