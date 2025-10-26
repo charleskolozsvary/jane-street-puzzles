@@ -1,0 +1,54 @@
+Finished Julia(compiled_modules=False)
+Loaded Base and Optim
+Loaded calculate_q from baseball.py
+
+Maximizing calculate_q from robotbaseball.py
+<PyCall.jlwrap  * Status: success
+
+ * Candidate solution
+    Final objective value:     -2.959680e-01
+
+ * Found with
+    Algorithm:     BFGS
+
+ * Convergence measures
+    |x - x'|               = 4.10e-44 ≰ 0.0e+00
+    |x - x'|/|x'|          = 1.80e-43 ≰ 0.0e+00
+    |f(x) - f(x')|         = 4.50e-87 ≰ 0.0e+00
+    |f(x) - f(x')|/|f(x')| = 1.52e-86 ≰ 0.0e+00
+    |g(x)|                 = 0.00e+00 ≤ 1.0e-300
+
+ * Work counters
+    Seconds run:   0  (vs limit Inf)
+    Iterations:    7
+    f(x) calls:    16
+    ∇f(x) calls:   16
+>
+p that maximizes q: 0.2269732325
+         maximum q: 0.2959679934
+
+Maximizing Q_FORMULA from q_polynomial.py
+<PyCall.jlwrap  * Status: success
+
+ * Candidate solution
+    Final objective value:     -2.959680e-01
+
+ * Found with
+    Algorithm:     BFGS
+
+ * Convergence measures
+    |x - x'|               = 4.42e-104 ≰ 0.0e+00
+    |x - x'|/|x'|          = 1.95e-103 ≰ 0.0e+00
+    |f(x) - f(x')|         = 0.00e+00 ≤ 0.0e+00
+    |f(x) - f(x')|/|f(x')| = 0.00e+00 ≤ 0.0e+00
+    |g(x)|                 = 0.00e+00 ≤ 1.0e-300
+
+ * Work counters
+    Seconds run:   1  (vs limit Inf)
+    Iterations:    8
+    f(x) calls:    19
+    ∇f(x) calls:   19
+>
+p that maximizes q: 0.2269732325
+         maximum q: 0.2959679934
+
