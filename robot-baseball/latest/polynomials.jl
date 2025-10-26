@@ -3,7 +3,7 @@ using Base
 @variables p
 
 #----------------------------------------------------------------------------------------
-# I don't know if Base.GMP.BigInt propegates to the other constants, so I'm just going to
+# I don't know if Base.GMP.BigInt propagates to the other constants, so I'm just going to
 # add it to everything, even if it's unecessary
 #----------------------------------------------------------------------------------------
 
