@@ -12,3 +12,5 @@ I've also been trying to write in-depth solutions to a number of brain teasers I
 - [Altered States 2](./altered-states2)
 - [Tree-edge Triage](./tree-edge-triage)
 - [Knight Moves 6](./knight-moves6)
+- [Hooks 11](./hooks11)
+- [Robot Baseball](./robot-baseball)
