@@ -1,6 +1,3 @@
-# Lesses More (January 2023)
-Puzzle: https://www.janestreet.com/puzzles/lesses-more-index/
+# [Lesses More](https://www.janestreet.com/puzzles/lesses-more-index/) (January 2023)
 
-Not especially proud of how I found the solution for this one...
-
-`./c` runs the original binary
+Not especially proud of how I found the solution for this one, but hey, I managed to find the answer.
