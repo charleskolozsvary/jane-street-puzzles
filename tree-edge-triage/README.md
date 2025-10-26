@@ -8,4 +8,4 @@ Here's one such winning tree:
 <img width="520" height="510" alt="An ASCII art drawing of a winning tree (for Aaron)" src="./tree-drawing.png">
 
 An in-depth explanation of the solution
-can be found at TBD.
+can be found at https://github.com/charleskolozsvary/brain-teaser-explanations.
