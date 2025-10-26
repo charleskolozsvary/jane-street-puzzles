@@ -1,0 +1,2326 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.6)  15 OCT 2025 19:52
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**vhps-9x9.tex
+(./vhps-9x9.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-02-22>
+(/usr/local/texlive/2023/texmf-dist/tex/latex/amscls/amsart.cls
+Document Class: amsart 2020/05/29 v2.20.6
+\linespacing=\dimen140
+\normalparindent=\dimen141
+\normaltopskip=\skip48
+(/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2022/04/08 v2.17n AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks16
+\ex@=\dimen142
+))
+(/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen143
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count185
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count186
+\leftroot@=\count187
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count188
+\DOTSCASE@=\count189
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box51
+\strutbox@=\box52
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen144
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count190
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count191
+\dotsspace@=\muskip16
+\c@parentequation=\count192
+\dspbrk@lvl=\count193
+\tag@help=\toks17
+\row@=\count194
+\column@=\count195
+\maxfields@=\count196
+\andhelp@=\toks18
+\eqnshift@=\dimen145
+\alignsep@=\dimen146
+\tagshift@=\dimen147
+\tagwidth@=\dimen148
+\totwidth@=\dimen149
+\lineht@=\dimen150
+\@envbody=\toks19
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks20
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 397
+.
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)
+\copyins=\insert199
+\abstractbox=\box53
+\listisep=\skip52
+\c@part=\count197
+\c@section=\count198
+\c@subsection=\count266
+\c@subsubsection=\count267
+\c@paragraph=\count268
+\c@subparagraph=\count269
+\c@figure=\count270
+\c@table=\count271
+\abovecaptionskip=\skip53
+\belowcaptionskip=\skip54
+\captionindent=\dimen151
+\thm@style=\toks21
+\thm@bodyfont=\toks22
+\thm@headfont=\toks23
+\thm@notefont=\toks24
+\thm@headpunct=\toks25
+\thm@preskip=\skip55
+\thm@postskip=\skip56
+\thm@headsep=\skip57
+\dth@everypar=\toks26
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks27
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen152
+\Gin@req@width=\dimen153
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
+Package xcolor Info: Model `RGB' extended on input line 1369.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+x
+\pgfutil@everybye=\toks28
+\pgfutil@tempdima=\dimen154
+\pgfutil@tempdimb=\dimen155
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box54
+) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks29
+\pgfkeys@temptoks=\toks30
+
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfil
+tered.code.tex
+\pgfkeys@tmptoks=\toks31
+))
+\pgf@x=\dimen156
+\pgf@y=\dimen157
+\pgf@xa=\dimen158
+\pgf@ya=\dimen159
+\pgf@xb=\dimen160
+\pgf@yb=\dimen161
+\pgf@xc=\dimen162
+\pgf@yc=\dimen163
+\pgf@xd=\dimen164
+\pgf@yd=\dimen165
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count272
+\c@pgf@countb=\count273
+\c@pgf@countc=\count274
+\c@pgf@countd=\count275
+\t@pgf@toka=\toks32
+\t@pgf@tokb=\toks33
+\t@pgf@tokc=\toks34
+\pgf@sys@id@count=\count276
+
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-pdftex.def
+
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.d
+ef
+File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
+df.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count277
+\pgfsyssoftpath@bigbuffer@items=\count278
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen166
+\pgfmath@count=\count279
+\pgfmath@box=\box55
+\pgfmath@toks=\toks35
+\pgfmath@stack@operand=\toks36
+\pgfmath@stack@operation=\toks37
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count280
+)) (/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex
+File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@picminx=\dimen167
+\pgf@picmaxx=\dimen168
+\pgf@picminy=\dimen169
+\pgf@picmaxy=\dimen170
+\pgf@pathminx=\dimen171
+\pgf@pathmaxx=\dimen172
+\pgf@pathminy=\dimen173
+\pgf@pathmaxy=\dimen174
+\pgf@xx=\dimen175
+\pgf@xy=\dimen176
+\pgf@yx=\dimen177
+\pgf@yy=\dimen178
+\pgf@zx=\dimen179
+\pgf@zy=\dimen180
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex
+File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@path@lastx=\dimen181
+\pgf@path@lasty=\dimen182
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+.code.tex
+File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@shorten@end@additional=\dimen183
+\pgf@shorten@start@additional=\dimen184
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex
+File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfpic=\box56
+\pgf@hbox=\box57
+\pgf@layerbox@main=\box58
+\pgf@picture@serial@count=\count281
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex
+File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgflinewidth=\dimen185
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex
+File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@pt@x=\dimen186
+\pgf@pt@y=\dimen187
+\pgf@pt@temp=\dimen188
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex
+File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+ode.tex
+File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex
+File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex
+File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowsep=\dimen189
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex
+File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@max=\dimen190
+\pgf@sys@shading@range@num=\count282
+\pgf@shadingcount=\count283
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex
+File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex
+File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfexternal@startupbox=\box59
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+de.tex
+File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex
+File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex
+File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.
+tex
+File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodeparttextbox=\box60
+)
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
+\pgf@nodesepstart=\dimen191
+\pgf@nodesepend=\dimen192
+)
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty
+Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
+))
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
+\pgffor@iter=\dimen193
+\pgffor@skip=\dimen194
+\pgffor@stack=\toks38
+\pgffor@toks=\toks39
+))
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+Package: tikz 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex
+File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@plot@mark@count=\count284
+\pgfplotmarksize=\dimen195
+)
+\tikz@lastx=\dimen196
+\tikz@lasty=\dimen197
+\tikz@lastxsaved=\dimen198
+\tikz@lastysaved=\dimen256
+\tikz@lastmovetox=\dimen257
+\tikz@lastmovetoy=\dimen258
+\tikzleveldistance=\dimen259
+\tikzsiblingdistance=\dimen260
+\tikz@figbox=\box61
+\tikz@figbox@bg=\box62
+\tikz@tempbox=\box63
+\tikz@tempbox@bg=\box64
+\tikztreelevel=\count285
+\tikznumberofchildren=\count286
+\tikznumberofcurrentchild=\count287
+\tikz@fig@count=\count288
+
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex
+File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfmatrixcurrentrow=\count289
+\pgfmatrixcurrentcolumn=\count290
+\pgf@matrix@numberofcolumns=\count291
+)
+\tikz@expandcount=\count292
+
+(/usr/local/texlive/2023/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/usr/local/texlive/2023/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count293
+\l__pdf_internal_box=\box65
+)
+(./vhps-9x9.aux)
+\openout1 = `vhps-9x9.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 54.
+
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 54.
+
+ (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+(/usr/local/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count294
+\scratchdimen=\dimen261
+\scratchbox=\box66
+\nofMPsegments=\count295
+\nofMParguments=\count296
+\everyMPshowfont=\toks40
+\MPscratchCnt=\count297
+\MPscratchDim=\dimen262
+\MPnumerator=\count298
+\makeMPintoPDFobject=\count299
+\everyMPtoPDFconversion=\toks41
+) (/usr/local/texlive/2023/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/local/texlive/2023/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Overfull \hbox (7.691pt too wide) in paragraph at lines 56--67
+[][] 
+ []
+
+[1
+
+{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 67--78
+[][] 
+ []
+
+[2
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 78--89
+[][] 
+ []
+
+[3
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 89--100
+[][] 
+ []
+
+[4
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 100--111
+[][] 
+ []
+
+[5
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 111--122
+[][] 
+ []
+
+[6
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 122--133
+[][] 
+ []
+
+[7
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 133--144
+[][] 
+ []
+
+[8
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 144--155
+[][] 
+ []
+
+[9
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 155--166
+[][] 
+ []
+
+[10
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 166--177
+[][] 
+ []
+
+[11
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 177--188
+[][] 
+ []
+
+[12
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 188--199
+[][] 
+ []
+
+[13
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 199--210
+[][] 
+ []
+
+[14
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 210--221
+[][] 
+ []
+
+[15
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 221--232
+[][] 
+ []
+
+[16
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 232--243
+[][] 
+ []
+
+[17
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 243--254
+[][] 
+ []
+
+[18
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 254--265
+[][] 
+ []
+
+[19
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 265--276
+[][] 
+ []
+
+[20
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 276--287
+[][] 
+ []
+
+[21
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 287--298
+[][] 
+ []
+
+[22
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 298--309
+[][] 
+ []
+
+[23
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 309--320
+[][] 
+ []
+
+[24
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 320--331
+[][] 
+ []
+
+[25
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 331--342
+[][] 
+ []
+
+[26
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 342--353
+[][] 
+ []
+
+[27
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 353--364
+[][] 
+ []
+
+[28
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 364--375
+[][] 
+ []
+
+[29
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 375--386
+[][] 
+ []
+
+[30
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 386--397
+[][] 
+ []
+
+[31
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 397--408
+[][] 
+ []
+
+[32
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 408--419
+[][] 
+ []
+
+[33
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 419--430
+[][] 
+ []
+
+[34
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 430--441
+[][] 
+ []
+
+[35
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 441--452
+[][] 
+ []
+
+[36
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 452--463
+[][] 
+ []
+
+[37
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 463--474
+[][] 
+ []
+
+[38
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 474--485
+[][] 
+ []
+
+[39
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 485--496
+[][] 
+ []
+
+[40
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 496--507
+[][] 
+ []
+
+[41
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 507--518
+[][] 
+ []
+
+[42
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 518--529
+[][] 
+ []
+
+[43
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 529--540
+[][] 
+ []
+
+[44
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 540--551
+[][] 
+ []
+
+[45
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 551--562
+[][] 
+ []
+
+[46
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 562--573
+[][] 
+ []
+
+[47
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 573--584
+[][] 
+ []
+
+[48
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 584--595
+[][] 
+ []
+
+[49
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 595--606
+[][] 
+ []
+
+[50
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 606--617
+[][] 
+ []
+
+[51
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 617--628
+[][] 
+ []
+
+[52
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 628--639
+[][] 
+ []
+
+[53
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 639--650
+[][] 
+ []
+
+[54
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 650--661
+[][] 
+ []
+
+[55
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 661--672
+[][] 
+ []
+
+[56
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 672--683
+[][] 
+ []
+
+[57
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 683--694
+[][] 
+ []
+
+[58
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 694--705
+[][] 
+ []
+
+[59
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 705--716
+[][] 
+ []
+
+[60
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 716--727
+[][] 
+ []
+
+[61
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 727--738
+[][] 
+ []
+
+[62
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 738--749
+[][] 
+ []
+
+[63
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 749--760
+[][] 
+ []
+
+[64
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 760--771
+[][] 
+ []
+
+[65
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 771--782
+[][] 
+ []
+
+[66
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 782--793
+[][] 
+ []
+
+[67
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 793--804
+[][] 
+ []
+
+[68
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 804--815
+[][] 
+ []
+
+[69
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 815--826
+[][] 
+ []
+
+[70
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 826--837
+[][] 
+ []
+
+[71
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 837--848
+[][] 
+ []
+
+[72
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 848--859
+[][] 
+ []
+
+[73
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 859--870
+[][] 
+ []
+
+[74
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 870--881
+[][] 
+ []
+
+[75
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 881--892
+[][] 
+ []
+
+[76
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 892--903
+[][] 
+ []
+
+[77
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 903--914
+[][] 
+ []
+
+[78
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 914--925
+[][] 
+ []
+
+[79
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 925--936
+[][] 
+ []
+
+[80
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 936--947
+[][] 
+ []
+
+[81
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 947--958
+[][] 
+ []
+
+[82
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 958--969
+[][] 
+ []
+
+[83
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 969--980
+[][] 
+ []
+
+[84
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 980--991
+[][] 
+ []
+
+[85
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 991--1002
+[][] 
+ []
+
+[86
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1002--1013
+[][] 
+ []
+
+[87
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1013--1024
+[][] 
+ []
+
+[88
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1024--1035
+[][] 
+ []
+
+[89
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1035--1046
+[][] 
+ []
+
+[90
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1046--1057
+[][] 
+ []
+
+[91
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1057--1068
+[][] 
+ []
+
+[92
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1068--1079
+[][] 
+ []
+
+[93
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1079--1090
+[][] 
+ []
+
+[94
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1090--1101
+[][] 
+ []
+
+[95
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1101--1112
+[][] 
+ []
+
+[96
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1112--1123
+[][] 
+ []
+
+[97
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1123--1134
+[][] 
+ []
+
+[98
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1134--1145
+[][] 
+ []
+
+[99
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1145--1156
+[][] 
+ []
+
+[100
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1156--1167
+[][] 
+ []
+
+[101
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1167--1178
+[][] 
+ []
+
+[102
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1178--1189
+[][] 
+ []
+
+[103
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1189--1200
+[][] 
+ []
+
+[104
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1200--1211
+[][] 
+ []
+
+[105
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1211--1222
+[][] 
+ []
+
+[106
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1222--1233
+[][] 
+ []
+
+[107
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1233--1244
+[][] 
+ []
+
+[108
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1244--1255
+[][] 
+ []
+
+[109
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1255--1266
+[][] 
+ []
+
+[110
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1266--1277
+[][] 
+ []
+
+[111
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1277--1288
+[][] 
+ []
+
+[112
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1288--1299
+[][] 
+ []
+
+[113
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1299--1310
+[][] 
+ []
+
+[114
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1310--1321
+[][] 
+ []
+
+[115
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1321--1332
+[][] 
+ []
+
+[116
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1332--1343
+[][] 
+ []
+
+[117
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1343--1354
+[][] 
+ []
+
+[118
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1354--1365
+[][] 
+ []
+
+[119
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1365--1376
+[][] 
+ []
+
+[120
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1376--1387
+[][] 
+ []
+
+[121
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1387--1398
+[][] 
+ []
+
+[122
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1398--1409
+[][] 
+ []
+
+[123
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1409--1420
+[][] 
+ []
+
+[124
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1420--1431
+[][] 
+ []
+
+[125
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1431--1442
+[][] 
+ []
+
+[126
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1442--1453
+[][] 
+ []
+
+[127
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1453--1464
+[][] 
+ []
+
+[128
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1464--1475
+[][] 
+ []
+
+[129
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1475--1486
+[][] 
+ []
+
+[130
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1486--1497
+[][] 
+ []
+
+[131
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1497--1508
+[][] 
+ []
+
+[132
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1508--1519
+[][] 
+ []
+
+[133
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1519--1530
+[][] 
+ []
+
+[134
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1530--1541
+[][] 
+ []
+
+[135
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1541--1552
+[][] 
+ []
+
+[136
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1552--1563
+[][] 
+ []
+
+[137
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1563--1574
+[][] 
+ []
+
+[138
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1574--1585
+[][] 
+ []
+
+[139
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1585--1596
+[][] 
+ []
+
+[140
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1596--1607
+[][] 
+ []
+
+[141
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1607--1618
+[][] 
+ []
+
+[142
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1618--1629
+[][] 
+ []
+
+[143
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1629--1640
+[][] 
+ []
+
+[144
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1640--1651
+[][] 
+ []
+
+[145
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1651--1662
+[][] 
+ []
+
+[146
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1662--1673
+[][] 
+ []
+
+[147
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1673--1684
+[][] 
+ []
+
+[148
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1684--1695
+[][] 
+ []
+
+[149
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1695--1706
+[][] 
+ []
+
+[150
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1706--1717
+[][] 
+ []
+
+[151
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1717--1728
+[][] 
+ []
+
+[152
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1728--1739
+[][] 
+ []
+
+[153
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1739--1750
+[][] 
+ []
+
+[154
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1750--1761
+[][] 
+ []
+
+[155
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1761--1772
+[][] 
+ []
+
+[156
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1772--1783
+[][] 
+ []
+
+[157
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1783--1794
+[][] 
+ []
+
+[158
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1794--1805
+[][] 
+ []
+
+[159
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1805--1816
+[][] 
+ []
+
+[160
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1816--1827
+[][] 
+ []
+
+[161
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1827--1838
+[][] 
+ []
+
+[162
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1838--1849
+[][] 
+ []
+
+[163
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1849--1860
+[][] 
+ []
+
+[164
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1860--1871
+[][] 
+ []
+
+[165
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1871--1882
+[][] 
+ []
+
+[166
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1882--1893
+[][] 
+ []
+
+[167
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1893--1904
+[][] 
+ []
+
+[168
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1904--1915
+[][] 
+ []
+
+[169
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1915--1926
+[][] 
+ []
+
+[170
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1926--1937
+[][] 
+ []
+
+[171
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1937--1948
+[][] 
+ []
+
+[172
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1948--1959
+[][] 
+ []
+
+[173
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1959--1970
+[][] 
+ []
+
+[174
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1970--1981
+[][] 
+ []
+
+[175
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1981--1992
+[][] 
+ []
+
+[176
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 1992--2003
+[][] 
+ []
+
+[177
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2003--2014
+[][] 
+ []
+
+[178
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2014--2025
+[][] 
+ []
+
+[179
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2025--2036
+[][] 
+ []
+
+[180
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2036--2047
+[][] 
+ []
+
+[181
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2047--2058
+[][] 
+ []
+
+[182
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2058--2069
+[][] 
+ []
+
+[183
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2069--2080
+[][] 
+ []
+
+[184
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2080--2091
+[][] 
+ []
+
+[185
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2091--2102
+[][] 
+ []
+
+[186
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2102--2113
+[][] 
+ []
+
+[187
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2113--2124
+[][] 
+ []
+
+[188
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2124--2135
+[][] 
+ []
+
+[189
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2135--2146
+[][] 
+ []
+
+[190
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2146--2157
+[][] 
+ []
+
+[191
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2157--2168
+[][] 
+ []
+
+[192
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2168--2179
+[][] 
+ []
+
+[193
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2179--2190
+[][] 
+ []
+
+[194
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2190--2201
+[][] 
+ []
+
+[195
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2201--2212
+[][] 
+ []
+
+[196
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2212--2223
+[][] 
+ []
+
+[197
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2223--2234
+[][] 
+ []
+
+[198
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2234--2245
+[][] 
+ []
+
+[199
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2245--2256
+[][] 
+ []
+
+[200
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2256--2267
+[][] 
+ []
+
+[201
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2267--2278
+[][] 
+ []
+
+[202
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2278--2289
+[][] 
+ []
+
+[203
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2289--2300
+[][] 
+ []
+
+[204
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2300--2311
+[][] 
+ []
+
+[205
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2311--2322
+[][] 
+ []
+
+[206
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2322--2333
+[][] 
+ []
+
+[207
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2333--2344
+[][] 
+ []
+
+[208
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2344--2355
+[][] 
+ []
+
+[209
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2355--2366
+[][] 
+ []
+
+[210
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2366--2377
+[][] 
+ []
+
+[211
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2377--2388
+[][] 
+ []
+
+[212
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2388--2399
+[][] 
+ []
+
+[213
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2399--2410
+[][] 
+ []
+
+[214
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2410--2421
+[][] 
+ []
+
+[215
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2421--2432
+[][] 
+ []
+
+[216
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2432--2443
+[][] 
+ []
+
+[217
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2443--2454
+[][] 
+ []
+
+[218
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2454--2465
+[][] 
+ []
+
+[219
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2465--2476
+[][] 
+ []
+
+[220
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2476--2487
+[][] 
+ []
+
+[221
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2487--2498
+[][] 
+ []
+
+[222
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2498--2509
+[][] 
+ []
+
+[223
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2509--2520
+[][] 
+ []
+
+[224
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2520--2531
+[][] 
+ []
+
+[225
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2531--2542
+[][] 
+ []
+
+[226
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2542--2553
+[][] 
+ []
+
+[227
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2553--2564
+[][] 
+ []
+
+[228
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2564--2575
+[][] 
+ []
+
+[229
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2575--2586
+[][] 
+ []
+
+[230
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2586--2597
+[][] 
+ []
+
+[231
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2597--2608
+[][] 
+ []
+
+[232
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2608--2619
+[][] 
+ []
+
+[233
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2619--2630
+[][] 
+ []
+
+[234
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2630--2641
+[][] 
+ []
+
+[235
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2641--2652
+[][] 
+ []
+
+[236
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2652--2663
+[][] 
+ []
+
+[237
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2663--2674
+[][] 
+ []
+
+[238
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2674--2685
+[][] 
+ []
+
+[239
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2685--2696
+[][] 
+ []
+
+[240
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2696--2707
+[][] 
+ []
+
+[241
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2707--2718
+[][] 
+ []
+
+[242
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2718--2729
+[][] 
+ []
+
+[243
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2729--2740
+[][] 
+ []
+
+[244
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2740--2751
+[][] 
+ []
+
+[245
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2751--2762
+[][] 
+ []
+
+[246
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2762--2773
+[][] 
+ []
+
+[247
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2773--2784
+[][] 
+ []
+
+[248
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2784--2795
+[][] 
+ []
+
+[249
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2795--2806
+[][] 
+ []
+
+[250
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2806--2817
+[][] 
+ []
+
+[251
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2817--2828
+[][] 
+ []
+
+[252
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2828--2839
+[][] 
+ []
+
+[253
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2839--2850
+[][] 
+ []
+
+[254
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2850--2861
+[][] 
+ []
+
+[255
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2861--2872
+[][] 
+ []
+
+[256
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2872--2883
+[][] 
+ []
+
+[257
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2883--2894
+[][] 
+ []
+
+[258
+
+]
+Overfull \hbox (7.691pt too wide) in paragraph at lines 2894--2905
+[][] 
+ []
+
+[259
+
+] (./vhps-9x9.aux) ) 
+Here is how much of TeX's memory you used:
+ 13166 strings out of 476025
+ 266067 string characters out of 5790018
+ 1858388 words of memory out of 5000000
+ 33248 multiletter control sequences out of 15000+600000
+ 520142 words of font info for 63 fonts, out of 8000000 for 9000
+ 1302 hyphenation exceptions out of 8191
+ 84i,8n,81p,525b,548s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmcsc10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmss12.pfb>
+Output written on vhps-9x9.pdf (259 pages, 404081 bytes).
+PDF statistics:
+ 864 PDF objects out of 1000 (max. 8388607)
+ 589 compressed objects within 6 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 13 words of extra memory for PDF output out of 10000 (max. 10000000)
+
