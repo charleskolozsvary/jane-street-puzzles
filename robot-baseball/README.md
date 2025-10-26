@@ -1,0 +1,3 @@
+# [Robot Baseball](https://www.janestreet.com/puzzles/current-puzzle/) (October 2025)
+
+This was a fun one, but pretty lame that Chat GPT could solve it....
