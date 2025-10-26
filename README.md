@@ -1,5 +1,5 @@
 # Background
-[Jane Street](https://www.janestreet.com) is a quantitative trading firm which posts a "puzzle" every month. But they aren't typical puzzles (like a jig-saw or crossword), they are usually, rather, a math-heavy brain teaser. Every now and then I tackle one, and this repository contains my work on them. 
+[Jane Street](https://www.janestreet.com) is a quantitative trading firm which posts a "puzzle" every month. But they aren't typical puzzles (like jig-saws or crosswords), they are usually, rather, math-heavy brain teasers. Every now and then I tackle one, and this repository contains my work on them. 
 
 If you haven't already, I suggest you try to solve the [current puzzle](https://www.janestreet.com/puzzles/current-puzzle/) (or, if it doesn't suit your fancy, any of the others in the [archive](https://www.janestreet.com/puzzles/archive/)---I find, clearly, that they're a lot of fun.
 
