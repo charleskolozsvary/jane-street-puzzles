@@ -21,7 +21,7 @@ class Cell:
             elif attr == 'squared':
                 self.squared = True
             else:
-                assert False, "Cell attribute {} is unrecognized.".format(attr)
+                assert False, "Cell attribute '{}' is unrecognized.".format(attr)
                 
         if self.circled or self.squared:
             assert self.number, "If the cell is in a gray circle or square, it must have a digit, too."
@@ -50,7 +50,6 @@ class Net:
             picture += '\\draw {} circle (0.1);\n'.format(p)
         picture += '\\end{tikzpicture}\\]\n\\end{document}\n'
         return picture
-        
 
     def __repr__(self):
         return str({'cells': self.cells,
@@ -60,7 +59,7 @@ class Net:
 
 if __name__ == '__main__':
     ex = Net(EXAMPLE_GRID)
-    print(ex.points)
+    # print(ex.points)
     # print(ex)
-    # print(ex.tikzpicture())
+    print(ex.tikzpicture())
             

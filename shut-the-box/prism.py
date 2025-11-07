@@ -70,7 +70,7 @@ class Prism:
                 f = [pt, pt + jhat, pt + jhat + khat, pt + khat]
                 face = reversed(f) if x == 0 else f
             else:
-                assert False, "plane {} unrecognized".format(str(plane))
+                assert False, "Plane '{}' unrecognized.".format(str(plane))
 
             np_face = np.array(list(face))
             tuple_face = npFace2Tuple(np_face)
@@ -94,9 +94,12 @@ class Prism:
         self.orig_faces = np.array(orig_faces)
         self.curr_faces = deepcopy(self.orig_faces)
         self.orig_face_tuples = [npFace2Tuple(f) for f in self.orig_faces]
+        self.perimiter = self.genPerimiter()
 
     def __repr__(self):
-        return str({'points': len(self.points),
+        return str({'dimensions': self.dimensions,
+                    'perimiter': self.perimiter,
+                    'len(points)': len(self.points),
                     'obj_faces': self.obj_faces,
                     'orig_faces': self.orig_faces,
                     'orig_face_tuples': self.orig_face_tuples,
@@ -148,11 +151,11 @@ class Prism:
 
     # Return points along perimiter of the original prism's
     # bottom face. Points are numpy nx3 arrays
-    def perimiter(self):
+    def genPerimiter(self):
         l, w, h = self.dimensions
         perim = []
-        for x in range(1, l+1):
-            for y in range(1, w+1):
+        for x in range(l+1):
+            for y in range(w+1):
                 if x == 0 or x == l or y == 0 or y == w:
                     perim.append([x, y, 0])
                     
@@ -206,7 +209,7 @@ if __name__ == '__main__':
     
     total = 0
     for key, value in s.items():
-        print('prism dimension:', key)
+        print('prism dimensions:', key)
         print('     len(value):', len(value))
         print()
         total += len(value)
