@@ -18,7 +18,8 @@ def netFoldsToPrism(net, prism):
             face_mapping = {frozenset(f): None for f in start_prism.orig_face_tuples}
 
             # print('len(face_mapping):', len(face_mapping))
-            print('trying straing point = {}'.format(starting_point))
+            print("\n"*10)
+            print('TRYING STARTING POINT = {}'.format(starting_point))
             # print()
             rollPrism(start_prism, face_mapping, net)
             if None not in face_mapping.values():
@@ -47,11 +48,11 @@ def rollPrism(prism, mapping, net):
             continue
         elif mapping[key_face] is None:
             print('added:', net.cells[down_face].position, net.cells[down_face].number)
-            print('orig_face:', key_face)
-            print()
+            # print('orig_face:', key_face)
             mapping[key_face] = net.cells[down_face]
         else:
             return # net cell already part of mapping; return unsuccessfully
+    print()
         
     if None not in mapping.values():
         print('Solution already found')
@@ -60,7 +61,7 @@ def rollPrism(prism, mapping, net):
     # Roll
     for direction in DIRECTIONS:
         next_prism = deepcopy(prism)
-        print('tipping {}...'.format(direction.upper()))
+        print('{:8s} {:6s}....'.format('tipping', direction.upper()))
         next_prism.tip(direction)
         rollPrism(next_prism, mapping, net)
 

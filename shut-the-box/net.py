@@ -45,10 +45,18 @@ class Net:
         for cell in self.cells.values():
             x, y = cell.position
             p = (x, y, 0)
-            picture += '\\draw {}--cycle;\n'.format('--++'.join([str(p), '(1, 0, 0)', '(0, 1, 0)', '(-1, 0, 0)']))
+            center_p = (x+.5, y+.5, 0)
+            square_p = (x+.15, y+.15)
+            picture += '\\draw[thick] {}--cycle;\n'.format('--++'.join([str(p), '(1, 0, 0)', '(0, 1, 0)', '(-1, 0, 0)']))
+            if cell.number:
+                picture += '\\draw node at {} {{{}}};\n'.format(center_p, '\\Large $\\mathsf{{{}}}$'.format(cell.number))
+            if cell.circled:
+                picture += '\\fill[color = gray, opacity = 0.5] {} circle ({});\n'.format(center_p, 0.35)
+            if cell.squared:
+                picture += '\\fill[color = gray, opacity = 0.5] {} rectangle ++({w}, {w});\n'.format(square_p, w = 0.7)
         picture += '\\end{tikzpicture}\\]\n\n\\vspace{5ex}\n\n\\[\\begin{tikzpicture}'
         for p in self.points_set:
-            picture += '\\draw {} circle (0.1);\n'.format(p)
+            picture += '\\filldraw {} circle ({});\n'.format(p, 0.05)
         picture += '\\end{tikzpicture}\\]\n\\end{document}\n'
         return picture
 
@@ -57,11 +65,12 @@ class Net:
                     'points_set': self.points_set,
                     'points_np': self.points_np})
     
-EXAMPLE_NET = Net(EXAMPLE_GRID)    
+EXAMPLE_NET = Net(EXAMPLE_GRID)
+
+def drawTikz():
+    with open('picture-net.tex', 'w') as f:
+        f.write(EXAMPLE_NET.tikzpicture())
 
 if __name__ == '__main__':
-    ex = EXAMPLE_NET
-    # print(ex.points)
-    # print(ex)
-    print(ex.tikzpicture())
+    drawTikz()
             
