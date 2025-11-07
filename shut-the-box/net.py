@@ -45,7 +45,7 @@ class Net:
         for cell in self.cells.values():
             x, y = cell.position
             p = (x, y, 0)
-            picture += '\\filldraw {}--cycle;\n'.format('--++'.join([str(p), '(1, 0, 0)', '(0, 1, 0)', '(-1, 0, 0)']))
+            picture += '\\draw {}--cycle;\n'.format('--++'.join([str(p), '(1, 0, 0)', '(0, 1, 0)', '(-1, 0, 0)']))
         picture += '\\end{tikzpicture}\\]\n\n\\vspace{5ex}\n\n\\[\\begin{tikzpicture}'
         for p in self.points_set:
             picture += '\\draw {} circle (0.1);\n'.format(p)
