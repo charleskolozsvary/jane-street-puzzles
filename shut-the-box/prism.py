@@ -10,6 +10,8 @@ ROTATIONS = {'east': np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]]),
              'west': np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]]),
              'south': np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]])}
 
+OPPOSITE_DIRECTION = {'east':'west', 'west':'east', 'north':'south', 'south':'north'}
+
 # Convert 1xn numpy array into tuple of n scalar integers.
 def npArr2Tuple(arr):
     return tuple([int(a) for a in arr])
@@ -54,21 +56,39 @@ class Prism:
         jhat = np.array([0, 1, 0])
         khat = np.array([0, 0, 1])
 
+        self.sides = {i: [] for i in range(1, 7)}
+
         # Update obj_faces and orig_faces
         def addFace(pt, plane):
             x, y, z = pt
             face = []
+            side = None
             # The order of the points in the face are important;
             # they must give the correct normal for 3D rendering
             if plane == 'xy':
                 f = [pt, pt - jhat, pt - jhat + ihat, pt + ihat]
-                face = reversed(f) if z == 0 else f
+                if z == 0:
+                    face = reversed(f)
+                    side = 1
+                else:
+                    face = f
+                    side = 2
             elif plane == 'xz':
                 f = [pt, pt - ihat, pt - ihat + khat, pt + khat]
-                face = reversed(f) if y == 0 else f
+                if y == 0:
+                    face = reversed(f)
+                    side = 3
+                else:
+                    face = f
+                    side = 4
             elif plane == 'yz':
                 f = [pt, pt + jhat, pt + jhat + khat, pt + khat]
-                face = reversed(f) if x == 0 else f
+                if x == 0:
+                    face = reversed(f)
+                    side = 5
+                else:
+                    face = f
+                    side = 6
             else:
                 assert False, "Plane '{}' unrecognized.".format(str(plane))
 
@@ -77,7 +97,8 @@ class Prism:
             
             if all(map(lambda p: p in obj_vertices, tuple_face)):
                 obj_faces.append([obj_vertices[p] for p in tuple_face])
-                orig_faces.append(np_face)                
+                orig_faces.append(np_face)
+                self.sides[side].append(frozenset(tuple_face))
         
         for plane in ['xz', 'yz', 'xy']:
             for p in points:
@@ -140,13 +161,16 @@ class Prism:
             self.curr_faces[i] = np.dot(rotation_matrix, face.transpose()).transpose()
         self.curr_faces += translation_point
 
+    def tipBack(self, direction):
+        self.tip(OPPOSITE_DIRECTION[direction])
+
     # Return a dictionary of current z == 0 faces to original faces
     # keys and values are tuples like those returned by 'npFace2Tuple'
     def heightZeroToOrigFaces(self):
         h_zero_to_orig = {}
         for i, face in enumerate(self.curr_faces):
             if all(map(zIsZero, face)):
-                h_zero_to_orig[npFace2Tuple(face)] = self.orig_face_tuples[i]
+                h_zero_to_orig[frozenset(npFace2Tuple(face))] = frozenset(self.orig_face_tuples[i])
         return h_zero_to_orig
 
     # Return points along perimiter of the original prism's
@@ -160,6 +184,10 @@ class Prism:
                     perim.append([x, y, 0])
                     
         return np.array([p for p in perim])
+
+    def translate(self, translation_point):
+        self.points += translation_point
+        self.curr_faces += translation_point
 
 # Return dictionary of dimensions to list of Prisms 
 def startingPrisms(surface_area):

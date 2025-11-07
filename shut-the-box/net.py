@@ -37,7 +37,8 @@ class Net:
     def __init__(self, grid):
         list_of_cells = [Cell(pos, attrs) for pos, attrs in grid.items()]
         self.cells = {frozenset(cell.corners) : cell for cell in list_of_cells}
-        self.points = set(p for cell in list_of_cells for p in cell.corners)
+        self.points_set = set(p for cell in list_of_cells for p in cell.corners)
+        self.points_np = np.array([p for p in self.points_set])
 
     def tikzpicture(self):
         picture = '''\\documentclass{article}\n\\usepackage{tikz}\n\\begin{document}\n\\[\\begin{tikzpicture}'''    
@@ -46,19 +47,20 @@ class Net:
             p = (x, y, 0)
             picture += '\\filldraw {}--cycle;\n'.format('--++'.join([str(p), '(1, 0, 0)', '(0, 1, 0)', '(-1, 0, 0)']))
         picture += '\\end{tikzpicture}\\]\n\n\\vspace{5ex}\n\n\\[\\begin{tikzpicture}'
-        for p in self.points:
+        for p in self.points_set:
             picture += '\\draw {} circle (0.1);\n'.format(p)
         picture += '\\end{tikzpicture}\\]\n\\end{document}\n'
         return picture
 
     def __repr__(self):
         return str({'cells': self.cells,
-                    'points': self.points,
-                    'perimiter': self.perimiter})
-        
+                    'points_set': self.points_set,
+                    'points_np': self.points_np})
+    
+EXAMPLE_NET = Net(EXAMPLE_GRID)    
 
 if __name__ == '__main__':
-    ex = Net(EXAMPLE_GRID)
+    ex = EXAMPLE_NET
     # print(ex.points)
     # print(ex)
     print(ex.tikzpicture())
