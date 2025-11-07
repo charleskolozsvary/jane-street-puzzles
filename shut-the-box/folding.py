@@ -20,7 +20,7 @@ def netFoldsToPrism(net, prism):
             # print('len(face_mapping):', len(face_mapping))
             print('trying straing point = {}'.format(starting_point))
             # print()
-            stampDFS(start_prism, face_mapping, net)
+            rollPrism(start_prism, face_mapping, net)
             if None not in face_mapping.values():
                 print('SOLUTION FOUND')
                 print('starting_point = {}'.format(starting_point))
@@ -36,8 +36,8 @@ DIRECTIONS = ['north', 'east', 'west', 'south']
 # by stamping or tipping into different directions and the end
 # state of mapping will tell us if the net actually folds into
 # the prism.
-def stampDFS(prism, mapping, net):
-    # stamp
+def rollPrism(prism, mapping, net):
+    # Stamp
     downFaces = prism.heightZeroToOrigFaces()
     if not any(map(lambda dface: dface in net.cells, downFaces)):
         return # none of the faces down are part of the net; return unsuccessfully
@@ -51,17 +51,18 @@ def stampDFS(prism, mapping, net):
             print()
             mapping[key_face] = net.cells[down_face]
         else:
-            return # net square already part of mapping, return unsuccessfully
+            return # net cell already part of mapping; return unsuccessfully
         
     if None not in mapping.values():
         print('Solution already found')
         return # return successfully
 
+    # Roll
     for direction in DIRECTIONS:
         next_prism = deepcopy(prism)
         print('tipping {}...'.format(direction.upper()))
         next_prism.tip(direction)
-        stampDFS(next_prism, mapping, net)
+        rollPrism(next_prism, mapping, net)
 
 def numbersOnSides(prism, mapping):
     sides = {i : [] for i in prism.sides}
