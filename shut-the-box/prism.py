@@ -10,8 +10,6 @@ ROTATIONS = {'east': np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]]),
              'west': np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]]),
              'south': np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]])}
 
-OPPOSITE_DIRECTION = {'east':'west', 'west':'east', 'north':'south', 'south':'north'}
-
 # Convert 1xn numpy array into tuple of n scalar integers.
 def npArr2Tuple(arr):
     return tuple([int(a) for a in arr])
@@ -160,9 +158,6 @@ class Prism:
         for i, face in enumerate(self.curr_faces):
             self.curr_faces[i] = np.dot(rotation_matrix, face.transpose()).transpose()
         self.curr_faces += translation_point
-
-    def tipBack(self, direction):
-        self.tip(OPPOSITE_DIRECTION[direction])
 
     # Return a dictionary of current z == 0 faces to original faces
     # keys and values are tuples like those returned by 'npFace2Tuple'
