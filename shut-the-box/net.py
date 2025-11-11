@@ -1,6 +1,6 @@
 import re
 import numpy as np
-import grids
+import utils.grids as grids
 import itertools
 from copy import deepcopy
 
@@ -170,8 +170,8 @@ def drawTikzs(nets, fname, no_points = False):
         f.write(tex_file)
 
 if __name__ == '__main__':
-    drawTikzs([FULL_NET], 'full-net')
-    drawTikzs([FULL_NET], 'example-net')
+    drawTikzs([FULL_NET], 'pictures/full-net')
+    drawTikzs([EXAMPLE_NET], 'pictures/example-net')
     
     # possible_nets = possibleNets(FULL_NET)
 
