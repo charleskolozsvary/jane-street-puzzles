@@ -5,10 +5,21 @@ import itertools
 from collections import Counter
 from copy import deepcopy
 
-ROTATIONS = {'east': np.array([[0, 0, 1], [0, 1, 0], [-1, 0, 0]]),
-             'north': np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]]),
-             'west': np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]]),
-             'south': np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]])}
+ROTATIONS = {'east': np.array([[0, 0, 1],
+                               [0, 1, 0],
+                               [-1, 0, 0]]),
+             
+             'north': np.array([[1, 0, 0],
+                                [0, 0, 1],
+                                [0, -1, 0]]),
+             
+             'west': np.array([[0, 0, -1],
+                               [0, 1, 0],
+                               [1, 0, 0]]),
+             
+             'south': np.array([[1, 0, 0],
+                                [0, 0, -1],
+                                [0, 1, 0]])}
 
 # Convert 1xn numpy array into tuple of n scalar integers.
 def npArr2Tuple(arr):
@@ -58,11 +69,14 @@ class Prism:
             return edges
         
 
+        names = ['left', 'right', 'front', 'back', 'bottom', 'top']
+        j = 0
         self.face_to_edges = {}
         for i, dim in enumerate(dimensions):
             for close_far in [0, dim]:
                 plane = tuple((0, dimensions[idx]) if idx != i else close_far for idx in range(len(dimensions)))
-                self.face_to_edges[plane] = getEdges(plane)
+                self.face_to_edges[(plane, names[j])] = getEdges(plane)
+                j += 1
         
         points = np.array([[x, y, z] for x in range(l+1) for y in range(w+1) for z in range(h+1)])
         
@@ -231,10 +245,11 @@ class Prism:
             return tuple(p_or_e[i] + translation_point[i] if type(p_or_e[i]) != tuple else shiftTuple(p_or_e[i], translation_point[i]) for i in range(len(translation_point)))
         
         new_face_to_edges = {}
-        for plane, edges in self.face_to_edges.items():
+        for planepair, edges in self.face_to_edges.items():
+            plane, name = planepair
             new_plane = addToPlaneOrEdge(plane)
             new_edges = [addToPlaneOrEdge(e) for e in edges]
-            new_face_to_edges[new_plane] = new_edges
+            new_face_to_edges[(new_plane, name)] = new_edges
 
         self.face_to_edges = new_face_to_edges
 

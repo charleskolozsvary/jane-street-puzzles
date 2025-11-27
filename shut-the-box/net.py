@@ -4,13 +4,14 @@ import utils.grids as grids
 import utils.misc as misc
 import itertools
 from copy import deepcopy
+from prism import Prism
 
 # filled cells
 class Cell:
     def __init__(self, coordinate, attributes_string):
         x, y = coordinate
-        self.bottom_left = (x, y, 0)
         self.corners = ((x, y, 0), (x+1, y, 0), (x+1, y+1, 0), (x, y+1, 0))
+        self.bottom_left = self.corners[0]
         self.number = None
         self.circled = None
         self.squared = None
@@ -59,59 +60,36 @@ class Net:
     def __init__(self, grid):
         list_of_cells = [Cell(pos, attrs) for pos, attrs in grid.items()]
 
-        # self.corners = {cell.corners : cell for cell in list_of_cells}
-
         self.cell_corners = [cell.corners for cell in list_of_cells]
         self.cells = {frozenset(cell.corners) : cell for cell in list_of_cells}
         
         self.points_set = None
         self.points_np = None
-        self.update_points()
+        self.update_points()        
 
-    def update_points(self):
-        self.points_set = set(p for cell in self.cells.values() for p in cell.corners)
-        self.points_np = np.array([p for p in self.points_set])
-
-    def tikzpicture(self, no_points = False, certain_cells = None):
-        picture = '\\pagenumbering{gobble}\\['
-        picture += '''\\resizebox{!}{30pc}\n{\\begin{tikzpicture}'''
-        thickness = '1pt'
-        
-        cells = certain_cells if certain_cells != None else self.cells.values()
-        
-        for cell in cells:
-            x, y, z = cell.bottom_left
-            p = (x, y, z)
-            center_p = (x+.5, y+.5, z)
-            square_p = (x+.2, y+.2, z)
-            if cell.symbol:
-                picture += '\\draw node at {} {{{}}};\n'.format(center_p, '\\Large $\\mathsf{{{}}}$'.format(cell.symbol))
-                picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--++'.join([str(p), '(1, 0, 0)', '(0, 1, 0)', '(-1, 0, 0)']))
-            else:
-                picture += '\\fill[gray, opacity = 0.5] {}--cycle;\n'.format('--++'.join([str(p), '(1, 0, 0)', '(0, 1, 0)', '(-1, 0, 0)']))
-                picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--++'.join([str(p), '(1, 0, 0)', '(0, 1, 0)', '(-1, 0, 0)']))
+    def fold(self, face_key, edge):
+        face, face_name = face_key
+        folding_cells = self.foldingCells(face, edge)
+        if type(folding_cells) == str:
+            return None
+        translate_point = np.array([0 if type(e) == tuple else e for e in edge])
+        folding_corners = np.array([cell.corners for cell in folding_cells])
+        folding_corners -= translate_point
                 
-            if cell.circled:
-                picture += '\\fill[color = gray, opacity = 0.5] {} circle ({});\n'.format(center_p, 0.28)
-            elif cell.squared:
-                picture += '\\fill[color = gray, opacity = 0.5] {} rectangle ++({w}, {w});\n'.format(square_p, w = 0.6)
-            
-        picture += '\\end{tikzpicture}}\\]\n'
-
-        if no_points:
-            return picture
-        
-        picture += '\n\\vspace{5ex}\n\n\\[\\resizebox{!}{30pc}{\\begin{tikzpicture}'
-        for p in self.points_set:
-            picture += '\\filldraw {} circle ({});\n'.format(p, 0.05)
-        picture += '\\end{tikzpicture}}\\]\n'
-        return picture
-
-    def __repr__(self):
-        return str({'cells': self.cells,
-                    'points_set': self.points_set,
-                    'points_np': self.points_np})
-
+        # if face_name == 'left':
+        #     0
+        # elif face_name == 'right':
+        #     0
+        # elif face_name == 'front':
+        #     0
+        # elif face_name == 'back':
+        #     0
+        # elif face_name == 'bottom':
+        #     0
+        # elif face_name == 'top':
+        #     0
+        # else:
+        #     assert False, "Unrecognized face name '{}'".format(face_name)
 
     def foldingCells(self, face, edge):
         '''
@@ -200,7 +178,7 @@ class Net:
         def adjacentInPlane(corners: tuple[int]):
             nonlocal face_fixed_idx
             nonlocal edge_fixed_idx
-            nonlocal edge_range_idx            
+            nonlocal edge_range_idx
             non_face_fixed = [edge_fixed_idx, edge_range_idx]
             shift_points = [tuple([pm if idx == nf else 0 for idx in [0, 1, 2]]) for nf in non_face_fixed for pm in [1, -1]]
 
@@ -234,6 +212,62 @@ class Net:
             """
 
         return [self.cells[frozenset(v)] for v in visited] # return the cells
+
+    def update_points(self):
+        self.points_set = set(p for cell in self.cells.values() for p in cell.corners)
+        self.points_np = np.array([p for p in self.points_set])
+
+    def tikzpicture(self, no_points = False, certain_cells = None):
+        picture = '\\pagenumbering{gobble}\\['
+        picture += '''\\resizebox{30pc}{!}\n{\\begin{tikzpicture}[
+        canvas is xy plane at z = 0,transform shape,3d view = {20}{40},
+        every node/.style = {canvas is xy plane at z = 0,transform shape,3d view = {20}{40}}]'''
+        thickness = '1pt'
+        
+        cells = certain_cells if certain_cells != None else self.cells.values()
+        
+        for cell in cells:
+            x, y, z = cell.corners[0]
+            a = np.array(cell.corners[0])
+            b = np.array(cell.corners[1])
+            c = np.array(cell.corners[2])
+            d = np.array(cell.corners[3])
+            
+            center_p = misc.np2Tuple(a + (c-a)/2)
+            
+            inside_a = misc.np2Tuple(a + (c-a)/5)
+            inside_c = misc.np2Tuple(a + 4*(c-a)/5)
+            inside_b = misc.np2Tuple(b + (d-b)/5)
+            inside_d = misc.np2Tuple(b + 4*(d-b)/5)
+            inside_path = [inside_a, inside_b, inside_c, inside_d]
+            
+            if cell.symbol:
+                picture += '\\draw node at {} {{{}}};\n'.format(center_p, '\\Large $\\mathsf{{{}}}$'.format(cell.symbol))
+                picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))
+            else:
+                picture += '\\fill[gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in cell.corners]))
+                picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))
+                
+            if cell.circled:
+                picture += '\\fill[color = gray, opacity = 0.5] {} circle ({});\n'.format(center_p, 0.28)
+            elif cell.squared:
+                picture += '\\fill[color = gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in inside_path]))
+            
+        picture += '\\end{tikzpicture}}\\]\n'
+
+        if no_points:
+            return picture
+        
+        picture += '\n\\vspace{5ex}\n\n\\[\\resizebox{!}{30pc}{\\begin{tikzpicture}'
+        for p in self.points_set:
+            picture += '\\filldraw {} circle ({});\n'.format(p, 0.05)
+        picture += '\\end{tikzpicture}}\\]\n'
+        return picture
+
+    def __repr__(self):
+        return str({'cells': self.cells,
+                    'points_set': self.points_set,
+                    'points_np': self.points_np})    
 
 def isOneConnectedComponent(positions):
     visited = set()
@@ -286,7 +320,8 @@ def possibleNets(net):
     return possible_nets
 
 def drawTikzs(nets, fname, no_points = False, certain_cells = None):
-    tex_file = '\\documentclass{article}\n\\usepackage{tikz}\n\\usepackage{graphicx}\\usepackage{stix2}\n\\begin{document}\n'
+    tex_file = '\\documentclass{article}\n\\usepackage{tikz}\\usepackage{tikz-3dplot}\n'
+    tex_file += '\\usetikzlibrary{perspective}\n\\usepackage{graphicx}\\usepackage{stix2}\n\\begin{document}\n'
     for i, net in enumerate(nets):
         if certain_cells != None:
             tex_file += net.tikzpicture(no_points, certain_cells[i])
@@ -309,13 +344,22 @@ if __name__ == '__main__':
 
     net = FULL_NET
 
-    # drawTikzs([TEST_NET], 'pictures/test-fold-net')
+    drawTikzs([TEST_NET], 'pictures/test-fold-net')
 
-    dimensions = (7, 6, 2)
+    dimensions = (7, 6, 2)    
 
-    face = ((6, 13), (13, 19), 0)
+    prism = Prism(dimensions)
+    prism.translate((6,13,0))
 
-    edges = [(6, (13, 19), 0), (13, (13, 19), 0), ((6, 13), 13, 0), ((6, 13), 19, 0)]
+    face_key = (((6, 13), (13, 19), 0), 'bottom')    
+    
+    edges = prism.face_to_edges[face_key]
+
+    face, face_name = face_key
+
+    # print(edges)
+    
+    # edges = [(6, (13, 19), 0), (13, (13, 19), 0), ((6, 13), 13, 0), ((6, 13), 19, 0)]
 
     edge_left = edges[0]
 
@@ -327,33 +371,35 @@ if __name__ == '__main__':
 
     a = net.foldingCells(face, edge_right)
 
-    drawTikzs([FULL_NET], 'pictures/right-fold', no_points = True, certain_cells = [a])
-
     b = net.foldingCells(face, edge_bottom)
 
     c = net.foldingCells(face, edge_left)
 
     d = net.foldingCells(face, edge_top)
 
-    drawTikzs([FULL_NET], 'pictures/bottom-fold', no_points = True, certain_cells = [b])
+    net.fold(face_key, edge_right)
 
-    drawTikzs([FULL_NET], 'pictures/left-fold', no_points = True, certain_cells = [c])
+    # drawTikzs([FULL_NET], 'pictures/right-fold', no_points = True, certain_cells = [a])    
 
-    drawTikzs([FULL_NET], 'pictures/top-fold', no_points = True, certain_cells = [d])        
+    # drawTikzs([FULL_NET], 'pictures/bottom-fold', no_points = True, certain_cells = [b])
 
-    if type(a) != str:
-        for c in a:
-            print(c)
-    else:
-        print(a)
+    # drawTikzs([FULL_NET], 'pictures/left-fold', no_points = True, certain_cells = [c])
+
+    # drawTikzs([FULL_NET], 'pictures/top-fold', no_points = True, certain_cells = [d])        
+
+    # if type(a) != str:
+    #     for c in a:
+    #         print(c)
+    # else:
+    #     print(a)
             
 
-    print()
+    # print()
 
-    if type(b) != str:
-        for c in b:
-            print(c)
-    else:
-        print(b)
+    # if type(b) != str:
+    #     for c in b:
+    #         print(c)
+    # else:
+    #     print(b)
             
             
