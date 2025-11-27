@@ -41,7 +41,29 @@ def writeObjs(prisms, fnames):
 class Prism:
     def __init__(self, dimensions):
         self.dimensions = dimensions
-        l, w, h = dimensions
+
+        l, w, h = dimensions        
+
+        def getEdges(face):
+            edges = []
+            mutable = list(face)
+            for i, p in enumerate(face):
+                if type(p) == tuple:
+                    edge1 = mutable.copy()
+                    edge2 = mutable.copy()
+                    edge1[i] = p[0]
+                    edge2[i] = p[1]
+                    edges.append(tuple(edge1))
+                    edges.append(tuple(edge2))
+            return edges
+        
+
+        self.face_to_edges = {}
+        for i, dim in enumerate(dimensions):
+            for close_far in [0, dim]:
+                plane = tuple((0, dimensions[idx]) if idx != i else close_far for idx in range(len(dimensions)))
+                self.face_to_edges[plane] = getEdges(plane)
+        
         points = np.array([[x, y, z] for x in range(l+1) for y in range(w+1) for z in range(h+1)])
         
         obj_vertices = {npArr2Tuple(p):i for i,p in enumerate(points)} # for writing to .obj file
@@ -113,7 +135,7 @@ class Prism:
         self.orig_faces = np.array(orig_faces)
         self.curr_faces = deepcopy(self.orig_faces)
         self.orig_face_tuples = [npFace2Tuple(f) for f in self.orig_faces]
-        self.perimiter = self.genPerimiter()
+        self.perimiter = self.genBottomPerimiter()
 
     def __repr__(self):
         return str({'dimensions': self.dimensions,
@@ -168,9 +190,27 @@ class Prism:
                 h_zero_to_orig[frozenset(npFace2Tuple(face))] = frozenset(self.orig_face_tuples[i])
         return h_zero_to_orig
 
+    def getSideFaces(self, plane):
+        # an example plane would be (None, None, 0) which is the xy plane with z == 0
+        # (None, 4, None) would be all points where y == 4
+        def inPlane(point_3d):
+            for i, value in enumerate(plane):
+                if value is not None and point_3d[i] != value:
+                    return False
+            return True
+        
+        faces = set()
+        length = 0
+        for i, face in enumerate(self.curr_faces):
+            if all(map(inPlane, face)):
+                faces.add(frozenset(npFace2Tuple(face)))
+                length += 1
+        assert len(faces) == length
+        return faces
+
     # Return points along perimiter of the original prism's
     # bottom face. Points are numpy nx3 arrays
-    def genPerimiter(self):
+    def genBottomPerimiter(self):
         l, w, h = self.dimensions
         perim = []
         for x in range(l+1):
@@ -183,6 +223,20 @@ class Prism:
     def translate(self, translation_point):
         self.points += translation_point
         self.curr_faces += translation_point
+
+        def shiftTuple(tup, scalar):
+            return tuple(map(lambda x: x + scalar, tup))
+
+        def addToPlaneOrEdge(p_or_e):
+            return tuple(p_or_e[i] + translation_point[i] if type(p_or_e[i]) != tuple else shiftTuple(p_or_e[i], translation_point[i]) for i in range(len(translation_point)))
+        
+        new_face_to_edges = {}
+        for plane, edges in self.face_to_edges.items():
+            new_plane = addToPlaneOrEdge(plane)
+            new_edges = [addToPlaneOrEdge(e) for e in edges]
+            new_face_to_edges[new_plane] = new_edges
+
+        self.face_to_edges = new_face_to_edges
 
 # Return dictionary of dimensions to list of Prisms 
 def startingPrisms(surface_area):
@@ -226,7 +280,7 @@ def testTipping():
     
     writeObjs([prism, east, north, west, south, north_north, north_north_east], 'prism east north west south north_north north_north_east'.split(' '))
 
-if __name__ == '__main__':
+def oldMain():
     # testTipping()
     s = startingPrisms(256)
     
@@ -242,5 +296,16 @@ if __name__ == '__main__':
 
     testPrism = list(s.values())[0][0]
     print(testPrism)
+
+if __name__ == '__main__':
+    prism = Prism((7, 6, 2))
+    for plane, edges in prism.face_to_edges.items():
+        print(plane, edges)
+    print()
+    prism.translate((6,13,0))
+    for plane, edges in prism.face_to_edges.items():
+        print(plane, edges)
+    print()
+    
             
             
