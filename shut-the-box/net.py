@@ -51,11 +51,22 @@ class Cell:
             assert self.number, "If the cell is in a gray circle or square, it must have a digit, too."
             
     def __repr__(self):
-        return str({'bottom_left': self.bottom_left,
+        return str({'corners': self.corners,
                     'circled': self.circled,
                     'squared': self.squared,
                     'number': self.number})
-            
+
+def faceEdgeIdxs(face, edge):
+    idxs = {}
+    for idx in range(len(face)):
+        if type(face[idx]) != tuple:
+            idxs['face fixed'] = idx
+        elif type(edge[idx]) != tuple:
+            idxs['edge fixed'] = idx
+        else:
+            idxs['edge ranged'] = idx
+    return idxs    
+                        
 class Net:
     def __init__(self, grid):
         list_of_cells = [Cell(pos, attrs) for pos, attrs in grid.items()]
@@ -70,26 +81,38 @@ class Net:
     def fold(self, face_key, edge):
         face, face_name = face_key
         folding_cells = self.foldingCells(face, edge)
+        
+        cell_keys = [frozenset(cell.corners) for cell in folding_cells]
         if type(folding_cells) == str:
             return None
-        translate_point = np.array([0 if type(e) == tuple else e for e in edge])
+
+        face_edge_idxs = faceEdgeIdxs(face, edge)
+        rotate_about_coor = ['x', 'y', 'z'][face_edge_idxs['edge ranged']]
+        translation_point = np.array([0 if type(e) == tuple else e for e in edge])
+        
         folding_corners = np.array([cell.corners for cell in folding_cells])
-        folding_corners -= translate_point
-                
-        # if face_name == 'left':
-        #     0
-        # elif face_name == 'right':
-        #     0
-        # elif face_name == 'front':
-        #     0
-        # elif face_name == 'back':
-        #     0
-        # elif face_name == 'bottom':
-        #     0
-        # elif face_name == 'top':
-        #     0
-        # else:
-        #     assert False, "Unrecognized face name '{}'".format(face_name)
+        folding_corners -= translation_point
+
+        efi = face_edge_idxs['edge fixed']
+        do_inverse = edge[efi] == face[efi][0]
+
+        rotation_key = 'inv({})'.format(rotate_about_coor) if do_inverse else rotate_about_coor
+
+        rotation = misc.ROTATIONS[rotation_key]
+
+        np_rotated_corners = []
+        for corners in folding_corners:
+            np_rotated_corners.append(np.transpose(np.dot(rotation, np.transpose(corners))))
+
+        folding_corners = np.array(np_rotated_corners)
+        folding_corners += translation_point
+
+        folded_corners = [misc.npCorners2Tuple(corners) for corners in folding_corners]
+
+        # update
+        for i, c_key in enumerate(cell_keys):
+            self.cells[c_key].corners = folded_corners[i]
+        
 
     def foldingCells(self, face, edge):
         '''
@@ -97,25 +120,9 @@ class Net:
 
         A square is a tuple of four corner points of a cell
         '''
-
-        def getFaceFixedIdx():
-            for i, value in enumerate(face):
-                if type(value) != tuple:
-                    return i
-
-        def edgeFixedAndRangeIdx(pln_f_idx):
-            fix = None
-            ran = None
-            for i, value in enumerate(edge):
-                if type(value) != tuple and i != pln_f_idx:
-                    fix = i
-                elif type(value) == tuple:
-                    ran = i
-            return fix, ran
-                
-        face_fixed_idx = getFaceFixedIdx()
-
-        edge_fixed_idx, edge_range_idx = edgeFixedAndRangeIdx(face_fixed_idx)
+        
+        face_edge_idxs = faceEdgeIdxs(face, edge)
+        face_fixed_idx, edge_fixed_idx, edge_range_idx = face_edge_idxs['face fixed'], face_edge_idxs['edge fixed'], face_edge_idxs['edge ranged']
 
         # print(face_fixed_idx, edge_fixed_idx, edge_range_idx)
 
@@ -219,9 +226,9 @@ class Net:
 
     def tikzpicture(self, no_points = False, certain_cells = None):
         picture = '\\pagenumbering{gobble}\\['
-        picture += '''\\resizebox{30pc}{!}\n{\\begin{tikzpicture}[
-        canvas is xy plane at z = 0,transform shape,3d view = {20}{40},
-        every node/.style = {canvas is xy plane at z = 0,transform shape,3d view = {20}{40}}]'''
+        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {-100}{35}'
+        picture += '\\resizebox{30pc}{!}\n{\\begin{tikzpicture}'
+        picture += '[' + orientation + ', every node/.style = {' + orientation + '}]'
         thickness = '1pt'
         
         cells = certain_cells if certain_cells != None else self.cells.values()
@@ -369,15 +376,19 @@ if __name__ == '__main__':
 
     edge_top = edges[3]
 
-    a = net.foldingCells(face, edge_right)
+    # a = net.foldingCells(face, edge_right)
 
-    b = net.foldingCells(face, edge_bottom)
+    # b = net.foldingCells(face, edge_bottom)
 
-    c = net.foldingCells(face, edge_left)
+    # c = net.foldingCells(face, edge_left)
 
-    d = net.foldingCells(face, edge_top)
+    # d = net.foldingCells(face, edge_top)
 
     net.fold(face_key, edge_right)
+
+    net.fold(face_key, edge_bottom)
+
+    drawTikzs([FULL_NET], 'pictures/folded-full-net')    
 
     # drawTikzs([FULL_NET], 'pictures/right-fold', no_points = True, certain_cells = [a])    
 
