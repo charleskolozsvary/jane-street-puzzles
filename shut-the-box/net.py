@@ -257,9 +257,12 @@ class Net:
 
     def tikzpicture(self, no_points = False, certain_cells = None):
         picture = ''
-        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {#1}{25}'
-        picture += '\\newcommand{\\parampicture}[1]{\\begin{tikzpicture}'
-        picture += '[{}]'.format(orientation)
+        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {0}{25}'
+        picture += '\\newcommand{\\parampicture}[1]{{\\begin{tikzpicture}'
+        picture += '[{},scale=0.75]\n'.format(orientation)
+        picture += '\\useasboundingbox (-{w},-{w},-{w}) -- ({w},{w},{w});'.format(w=(self.grid_w+1)//2)
+        picture += '''\\rotateRPY{{0}}{{0}}{{#1}}
+        \\begin{{scope}}[RPY, shift = {{(-{w2},-{w2},0)}}]'''.format(w2=(self.grid_w+1)/2)
         thickness = '1pt'
         
         cells = certain_cells if certain_cells != None else self.cells.values()
@@ -295,12 +298,13 @@ class Net:
                 picture += '\\fill[color = gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in inside_path]))
             
         # picture += '\\useasboundingbox (0,0,-5) ({w}, {w},5);\n'.format(w=self.grid_w+1)
-        picture += '\\end{tikzpicture}}\n'
+        picture += '\\end{scope}\n'
+        picture += '\\end{tikzpicture}}}\n'
 
         if no_points:
             return picture
         
-        picture += '\n\\vspace{5ex}\n\n\\[\\resizebox{!}{30pc}{\\begin{tikzpicture}'
+        picture += '\n\\vspace{5ex}\n\n\\[\\resizebox{30pc}{30pc}{\\begin{tikzpicture}'
         for p in self.points_set:
             picture += '\\filldraw {} circle ({});\n'.format(p, 0.05)
         picture += '\\end{tikzpicture}}\\]\n'
@@ -362,9 +366,10 @@ def possibleNets(net):
     return possible_nets
 
 def drawTikzs(nets, fname, no_points = True, certain_cells = None, animate = True):
-    tex_file = '\\documentclass{standalone}\n\\usepackage{tikz}\\usepackage{tikz-3dplot}\n'
-    tex_file += '\\usetikzlibrary{perspective}\n\\usepackage[export]{animate}\n'
-    tex_file += '\\usepackage{graphicx}\\usepackage{stix2}\n'
+    with open('pictures/preamble.tex', 'r') as f:
+        preamble = f.readlines()
+    
+    tex_file = ''.join(preamble)
     for i, net in enumerate(nets):
         if certain_cells != None:
             tex_file += net.tikzpicture(no_points, certain_cells[i])
@@ -375,16 +380,17 @@ def drawTikzs(nets, fname, no_points = True, certain_cells = None, animate = Tru
         \\begin{document}
         \\begin{animateinline}{1}
         \\multiframe{360}{i=0+1}{
-        \\parampicture{\\i}
+        \\resizebox{30pc}{!}{\\parampicture{\\i}}
         }
         \\end{animateinline}
         '''
     else:
         tex_file += '''
         \\begin{document}
-        \\parampicture{20}
+        \\resizebox{30pc}{!}{\\parampicture{20}}
         '''
     tex_file += '\\end{document}\n'
+    
     with open('{}.tex'.format(fname), 'w') as f:
         f.write(tex_file)
         
