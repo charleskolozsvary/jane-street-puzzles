@@ -41,3 +41,36 @@ ROTATIONS = {'x': np.array([[1, 0, 0],
              'inv(z)': np.array([[ 0, 1, 0],
                                  [-1, 0, 0],
                                  [ 0, 0, 1]])}
+
+FE_TOROT = {('left', 0):'z',
+            ('left', 1):'inv(z)',
+            ('left', 2):'y',
+            ('left', 3):'inv(y)',
+
+            ('right', 0):'inv(z)',
+            ('right', 1):'z',
+            ('right', 2):'inv(y)',
+            ('right', 3):'y',
+
+            ('front', 0):'inv(z)',
+            ('front', 1):'z',
+            ('front', 2):'x',
+            ('front', 3):'inv(x)',
+
+            ('back', 0):'z',
+            ('back', 1):'inv(z)',
+            ('back', 2):'inv(x)',
+            ('back', 3):'x',
+
+            ('bottom', 0):'inv(y)',
+            ('bottom', 1):'y',
+            ('bottom', 2):'inv(x)',
+            ('bottom', 3):'x',
+
+            ('top', 0):'y',
+            ('top', 1):'inv(y)',
+            ('top', 2):'x',
+            ('top', 3):'inv(x)'}
+
+def faceEdgeToRotation(face, edge):
+    return ROTATIONS[FE_TOROT[(face, edge)]]

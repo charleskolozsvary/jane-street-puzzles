@@ -15,6 +15,7 @@ class Cell:
         self.number = None
         self.circled = None
         self.squared = None
+        self.canvas_spec = 'canvas is xy plane at z = 0, transform shape'
 
         # there can only be one alpha and one beta cell and either the alpha or the beta cell (but not both) is part of the net
         self.alpha = None
@@ -71,15 +72,16 @@ class Net:
     def __init__(self, grid):
         list_of_cells = [Cell(pos, attrs) for pos, attrs in grid.items()]
 
-        self.cell_corners = [cell.corners for cell in list_of_cells]
         self.cells = {frozenset(cell.corners) : cell for cell in list_of_cells}
+        self.cell_corners = [cell.corners for cell in self.cells.values()]
         
         self.points_set = None
         self.points_np = None
         self.update_points()        
 
-    def fold(self, face_key, edge):
+    def fold(self, face_key, edge_key, destination_face):
         face, face_name = face_key
+        edge, edge_idx = edge_key
         folding_cells = self.foldingCells(face, edge)
         
         cell_keys = [frozenset(cell.corners) for cell in folding_cells]
@@ -87,18 +89,27 @@ class Net:
             return None
 
         face_edge_idxs = faceEdgeIdxs(face, edge)
-        rotate_about_coor = ['x', 'y', 'z'][face_edge_idxs['edge ranged']]
+        xyz = ['x', 'y', 'z']
+        rotate_about_coor = xyz[face_edge_idxs['edge ranged']]
+
+        plane = ''
+        offset = ''
+        for i, c in enumerate(destination_face):
+            if type(c) == tuple:
+                plane += xyz[i]
+            else:
+                assert offset == ''
+                offset = '{} = 0'.format(xyz[i])
+        spec = '{} plane at {}'.format(plane, offset)
+        
         translation_point = np.array([0 if type(e) == tuple else e for e in edge])
         
         folding_corners = np.array([cell.corners for cell in folding_cells])
+        
         folding_corners -= translation_point
 
-        efi = face_edge_idxs['edge fixed']
-        do_inverse = edge[efi] == face[efi][0]
-
-        rotation_key = 'inv({})'.format(rotate_about_coor) if do_inverse else rotate_about_coor
-
-        rotation = misc.ROTATIONS[rotation_key]
+        # select correct rotation
+        rotation = misc.faceEdgeToRotation(face_name, edge_idx)
 
         np_rotated_corners = []
         for corners in folding_corners:
@@ -110,8 +121,21 @@ class Net:
         folded_corners = [misc.npCorners2Tuple(corners) for corners in folding_corners]
 
         # update
+        new_cells = {}
         for i, c_key in enumerate(cell_keys):
-            self.cells[c_key].corners = folded_corners[i]
+            new_key = frozenset(folded_corners[i])
+            new_cells[new_key] = deepcopy(self.cells[c_key])
+            new_cells[new_key].corners = folded_corners[i]
+            new_cells[new_key].canvas_spec = 'canvas is {}'.format(spec)
+            del self.cells[c_key]
+            self.cells[new_key] = deepcopy(new_cells[new_key])
+
+        self.cell_corners = [cell.corners for cell in self.cells.values()]
+            
+            
+            # self.cells[c_key].corners = folded_corners[i]
+            # self.cells[c_key].canvas_spec = 'canvas is {}'.format(spec)
+            # self.cell_corners = [cell.corners for cell in self.cells.values()]            
         
 
     def foldingCells(self, face, edge):
@@ -226,9 +250,10 @@ class Net:
 
     def tikzpicture(self, no_points = False, certain_cells = None):
         picture = '\\pagenumbering{gobble}\\['
-        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {-100}{35}'
+        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {60}{20}'
         picture += '\\resizebox{30pc}{!}\n{\\begin{tikzpicture}'
-        picture += '[' + orientation + ', every node/.style = {' + orientation + '}]'
+        picture += '[' + orientation + ']'
+        # picture += ', every node/.style = {' + orientation + '}]'
         thickness = '1pt'
         
         cells = certain_cells if certain_cells != None else self.cells.values()
@@ -249,14 +274,19 @@ class Net:
             inside_path = [inside_a, inside_b, inside_c, inside_d]
             
             if cell.symbol:
-                picture += '\\draw node at {} {{{}}};\n'.format(center_p, '\\Large $\\mathsf{{{}}}$'.format(cell.symbol))
+                if cell.circled:
+                    picture += '\\node[circle,fill=gray,opacity=0.5,{}] at {} {{{}}};\n'.format(cell.canvas_spec, center_p, '\\LARGE $\\hphantom{{\\mathsf{{{}}}}}$'.format(cell.symbol))
+                picture += '\\node[{}] at {} {{{}}};\n'.format(cell.canvas_spec, center_p, '\\Large $\\mathsf{{{}}}$'.format(cell.symbol))
                 picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))
             else:
                 picture += '\\fill[gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in cell.corners]))
                 picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))
                 
             if cell.circled:
-                picture += '\\fill[color = gray, opacity = 0.5] {} circle ({});\n'.format(center_p, 0.28)
+                picture += ''
+                # picture += '\\begin{{scope}}[{}]\n'.format(cell.canvas_spec)
+                # picture += '\\fill[color = gray, opacity = 0.5] {} circle ({});\n'.format(center_p, 0.28)
+                # picture += '\\end{scope}\n'
             elif cell.squared:
                 picture += '\\fill[color = gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in inside_path]))
             
@@ -380,13 +410,28 @@ if __name__ == '__main__':
 
     # b = net.foldingCells(face, edge_bottom)
 
-    # c = net.foldingCells(face, edge_left)
+    c = net.foldingCells(face, edge_left)
+
+    assert c == [], "c not empty?"
 
     # d = net.foldingCells(face, edge_top)
 
-    net.fold(face_key, edge_right)
+    # net.fold(face_key, edge_right, prism.destinationFace(face_key, edge_right))
 
-    net.fold(face_key, edge_bottom)
+    nfk = ((13, (13, 19), (0, 2)), 'right')
+    ne = [(13, 13, (0, 2)), (13, 19, (0, 2)), (13, (13, 19), 0), (13, (13, 19), 2)]    
+
+    # net.fold(nfk, ne[3], prism.destinationFace(nfk, ne[3]))
+
+    net.fold(face_key, (edge_bottom, 2), prism.destinationFace(face_key, edge_bottom))
+
+    # print(net.cells)
+
+    # (((6, 13), 13, (0, 2)), 'front') [(6, 13, (0, 2)), (13, 13, (0, 2)), ((6, 13), 13, 0), ((6, 13), 13, 2)]
+    nfk2 = (((6, 13), 13, (0, 2)), 'front')
+    nne = [(6, 13, (0, 2)), (13, 13, (0, 2)), ((6, 13), 13, 0), ((6, 13), 13, 2)]
+    
+    net.fold(nfk2, (nne[3], 3), prism.destinationFace(nfk2, nne[3]))
 
     drawTikzs([FULL_NET], 'pictures/folded-full-net')    
 
