@@ -131,12 +131,6 @@ class Net:
             self.cells[new_key] = deepcopy(new_cells[new_key])
 
         self.cell_corners = [cell.corners for cell in self.cells.values()]
-            
-            
-            # self.cells[c_key].corners = folded_corners[i]
-            # self.cells[c_key].canvas_spec = 'canvas is {}'.format(spec)
-            # self.cell_corners = [cell.corners for cell in self.cells.values()]            
-        
 
     def foldingCells(self, face, edge):
         '''
@@ -147,8 +141,6 @@ class Net:
         
         face_edge_idxs = faceEdgeIdxs(face, edge)
         face_fixed_idx, edge_fixed_idx, edge_range_idx = face_edge_idxs['face fixed'], face_edge_idxs['edge fixed'], face_edge_idxs['edge ranged']
-
-        # print(face_fixed_idx, edge_fixed_idx, edge_range_idx)
 
         def pointOnEdge(pos3d):
             nonlocal face_fixed_idx
@@ -237,9 +229,9 @@ class Net:
 
         if any(map(lambda square: square in cells_inside_edge, visited)):
             return """
-            The net cannot fold along this edge (or into a prism).
-            At least one of the squares which will fold along the edge is adjacent to
-            a square which rests inside the edge.
+            The net cannot fold along this edge (or into this prism).
+            The connected component of orthogonally adjacent squares which will fold along
+            the edge includes a square which is inside the edge. See `pictures/test-fold-net.pdf`.
             """
 
         return [self.cells[frozenset(v)] for v in visited] # return the cells
@@ -250,10 +242,9 @@ class Net:
 
     def tikzpicture(self, no_points = False, certain_cells = None):
         picture = '\\pagenumbering{gobble}\\['
-        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {60}{20}'
+        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {95}{25}'
         picture += '\\resizebox{30pc}{!}\n{\\begin{tikzpicture}'
-        picture += '[' + orientation + ']'
-        # picture += ', every node/.style = {' + orientation + '}]'
+        picture += '[{}]'.format(orientation)
         thickness = '1pt'
         
         cells = certain_cells if certain_cells != None else self.cells.values()
@@ -275,19 +266,17 @@ class Net:
             
             if cell.symbol:
                 if cell.circled:
-                    picture += '\\node[circle,fill=gray,opacity=0.5,{}] at {} {{{}}};\n'.format(cell.canvas_spec, center_p, '\\LARGE $\\hphantom{{\\mathsf{{{}}}}}$'.format(cell.symbol))
+                    picture += '\\node[circle,fill=gray,opacity=0.5,{}] at {} {{{}}};\n'.format(cell.canvas_spec,
+                                                                                                center_p,
+                                                                                                '\\LARGE $\\hphantom{\\mathsf{'+cell.symbol+'}}$')
+                    
                 picture += '\\node[{}] at {} {{{}}};\n'.format(cell.canvas_spec, center_p, '\\Large $\\mathsf{{{}}}$'.format(cell.symbol))
                 picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))
             else:
                 picture += '\\fill[gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in cell.corners]))
-                picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))
-                
-            if cell.circled:
-                picture += ''
-                # picture += '\\begin{{scope}}[{}]\n'.format(cell.canvas_spec)
-                # picture += '\\fill[color = gray, opacity = 0.5] {} circle ({});\n'.format(center_p, 0.28)
-                # picture += '\\end{scope}\n'
-            elif cell.squared:
+                picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))    
+
+            if cell.squared:
                 picture += '\\fill[color = gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in inside_path]))
             
         picture += '\\end{tikzpicture}}\\]\n'
