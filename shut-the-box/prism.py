@@ -151,12 +151,16 @@ class Prism:
         self.orig_face_tuples = [npFace2Tuple(f) for f in self.orig_faces]
         self.perimiter = self.genBottomPerimiter()
 
-    def destinationFace(self, in_face_key, edge):
+    def surfaceArea(self):
+        l, w, h = self.dimensions
+        return 2*(l*w + l*h + w*h)
+
+    def destinationFaceKey(self, in_face_key, edge):
         '''Each edge belongs to only two faces, so given a face and an edge to fold along,
         we know what the destination face of the fold will be'''
         for face_key, edges in self.face_to_edges.items():
             if edge in edges and face_key != in_face_key: 
-                return face_key[0] # return actual face, not the name
+                return face_key 
         assert False, "No destination face found. This is bad."
         
 

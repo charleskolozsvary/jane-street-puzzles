@@ -74,19 +74,30 @@ class Net:
 
         self.cells = {frozenset(cell.corners) : cell for cell in list_of_cells}
         self.cell_corners = [cell.corners for cell in self.cells.values()]
+
+        self.grid_w = max([coor for coor in grid.keys()])[0]
+
+        # print(self.grid_w)
         
         self.points_set = None
         self.points_np = None
-        self.update_points()        
+        self.update_points()
 
-    def fold(self, face_key, edge_key, destination_face):
+    def fold(self, face_key, edge_key, destination_face, pool_cells):
         face, face_name = face_key
         edge, edge_idx = edge_key
-        folding_cells = self.foldingCells(face, edge)
+        
+        folding_cells = self.foldingCells(face, edge, pool_cells)
+
+        if type(folding_cells) == str:
+            return -1, folding_cells        
+
+        elif len(folding_cells) == 0:
+            return 0, 'No cells to fold along face {} and edge {}'.format(str(face), str(edge))
+
+        # continue: there's at least one cell to fold
         
         cell_keys = [frozenset(cell.corners) for cell in folding_cells]
-        if type(folding_cells) == str:
-            return None
 
         face_edge_idxs = faceEdgeIdxs(face, edge)
         xyz = ['x', 'y', 'z']
@@ -131,8 +142,10 @@ class Net:
             self.cells[new_key] = deepcopy(new_cells[new_key])
 
         self.cell_corners = [cell.corners for cell in self.cells.values()]
+        
+        return new_cells
 
-    def foldingCells(self, face, edge):
+    def foldingCells(self, face, edge, pool_cells):
         '''
         return the cells which will be folded along a face and an edge
 
@@ -185,7 +198,9 @@ class Net:
                     return False
             return True
 
-        cells_on_edge = list(filter(cellOnEdge, self.cell_corners))
+        squares = [cell.corners for cell in pool_cells.values()]
+
+        cells_on_edge = list(filter(cellOnEdge, squares))
 
         cells_inside_edge = list(filter(cellInsideEdge, cells_on_edge))
 
@@ -193,10 +208,10 @@ class Net:
         for cine in cells_inside_edge:
             starting_cells.remove(cine)
 
-        cell_corners_set = set(self.cell_corners)
+        squares_set = set(squares)
 
-        def partOfNet(corners):
-            return corners in cell_corners_set
+        def partOfNet(square):
+            return square in squares_set
 
         def adjacentInPlane(corners: tuple[int]):
             nonlocal face_fixed_idx
@@ -228,7 +243,7 @@ class Net:
             DFS(f)
 
         if any(map(lambda square: square in cells_inside_edge, visited)):
-            return """
+            return -1, """
             The net cannot fold along this edge (or into this prism).
             The connected component of orthogonally adjacent squares which will fold along
             the edge includes a square which is inside the edge. See `pictures/test-fold-net.pdf`.
@@ -241,9 +256,9 @@ class Net:
         self.points_np = np.array([p for p in self.points_set])
 
     def tikzpicture(self, no_points = False, certain_cells = None):
-        picture = '\\pagenumbering{gobble}\\['
-        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {95}{25}'
-        picture += '\\resizebox{30pc}{!}\n{\\begin{tikzpicture}'
+        picture = ''
+        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {#1}{25}'
+        picture += '\\newcommand{\\parampicture}[1]{\\begin{tikzpicture}'
         picture += '[{}]'.format(orientation)
         thickness = '1pt'
         
@@ -279,7 +294,8 @@ class Net:
             if cell.squared:
                 picture += '\\fill[color = gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in inside_path]))
             
-        picture += '\\end{tikzpicture}}\\]\n'
+        # picture += '\\useasboundingbox (0,0,-5) ({w}, {w},5);\n'.format(w=self.grid_w+1)
+        picture += '\\end{tikzpicture}}\n'
 
         if no_points:
             return picture
@@ -345,14 +361,29 @@ def possibleNets(net):
         
     return possible_nets
 
-def drawTikzs(nets, fname, no_points = False, certain_cells = None):
-    tex_file = '\\documentclass{article}\n\\usepackage{tikz}\\usepackage{tikz-3dplot}\n'
-    tex_file += '\\usetikzlibrary{perspective}\n\\usepackage{graphicx}\\usepackage{stix2}\n\\begin{document}\n'
+def drawTikzs(nets, fname, no_points = True, certain_cells = None, animate = True):
+    tex_file = '\\documentclass{standalone}\n\\usepackage{tikz}\\usepackage{tikz-3dplot}\n'
+    tex_file += '\\usetikzlibrary{perspective}\n\\usepackage[export]{animate}\n'
+    tex_file += '\\usepackage{graphicx}\\usepackage{stix2}\n'
     for i, net in enumerate(nets):
         if certain_cells != None:
             tex_file += net.tikzpicture(no_points, certain_cells[i])
         else:
             tex_file += net.tikzpicture(no_points)
+    if animate:
+        tex_file += '''
+        \\begin{document}
+        \\begin{animateinline}{1}
+        \\multiframe{360}{i=0+1}{
+        \\parampicture{\\i}
+        }
+        \\end{animateinline}
+        '''
+    else:
+        tex_file += '''
+        \\begin{document}
+        \\parampicture{20}
+        '''
     tex_file += '\\end{document}\n'
     with open('{}.tex'.format(fname), 'w') as f:
         f.write(tex_file)
@@ -405,14 +436,14 @@ if __name__ == '__main__':
 
     # d = net.foldingCells(face, edge_top)
 
-    # net.fold(face_key, edge_right, prism.destinationFace(face_key, edge_right))
+    # net.fold(face_key, edge_right, prism.destinationFaceKey(face_key, edge_right)[0])
 
     nfk = ((13, (13, 19), (0, 2)), 'right')
     ne = [(13, 13, (0, 2)), (13, 19, (0, 2)), (13, (13, 19), 0), (13, (13, 19), 2)]    
 
-    # net.fold(nfk, ne[3], prism.destinationFace(nfk, ne[3]))
+    # net.fold(nfk, ne[3], prism.destinationFaceKey(nfk, ne[3])[0])
 
-    net.fold(face_key, (edge_bottom, 2), prism.destinationFace(face_key, edge_bottom))
+    # net.fold(face_key, (edge_bottom, 2), prism.destinationFaceKey(face_key, edge_bottom)[0])
 
     # print(net.cells)
 
@@ -420,7 +451,7 @@ if __name__ == '__main__':
     nfk2 = (((6, 13), 13, (0, 2)), 'front')
     nne = [(6, 13, (0, 2)), (13, 13, (0, 2)), ((6, 13), 13, 0), ((6, 13), 13, 2)]
     
-    net.fold(nfk2, (nne[3], 3), prism.destinationFace(nfk2, nne[3]))
+    # net.fold(nfk2, (nne[3], 3), prism.destinationFaceKey(nfk2, nne[3])[0])
 
     drawTikzs([FULL_NET], 'pictures/folded-full-net')    
 
