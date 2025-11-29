@@ -260,7 +260,7 @@ class Net:
         orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {0}{25}'
         picture += '\\newcommand{\\parampicture}[1]{{\\begin{tikzpicture}'
         picture += '[{},scale=0.75]\n'.format(orientation)
-        picture += '\\useasboundingbox (-{w},-{w},-{w}) -- ({w},{w},{w});'.format(w=(self.grid_w+1)//2)
+        picture += '\\useasboundingbox (-{w},-{w},-{w}) -- ({w},{w},{w});'.format(w=(self.grid_w+3)//2)
         picture += '''\\rotateRPY{{0}}{{0}}{{#1}}
         \\begin{{scope}}[RPY, shift = {{(-{w2},-{w2},0)}}]'''.format(w2=(self.grid_w+1)/2)
         thickness = '1pt'

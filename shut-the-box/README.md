@@ -15,3 +15,7 @@ The answer to the puzzle is the product of the six sums of numbers on each face 
 
 ## Approach
 Fill in the grid by hand and cut out the printed grid. There are few cells whose identities are not 100% certain, but shutting the box isn't actually that hard, if a little finicky.
+
+## Answer
+An animation of the box assembling!
+<img src="30s45deg-crop.gif", width="300">

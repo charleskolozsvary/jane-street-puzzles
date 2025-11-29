@@ -119,7 +119,7 @@ def shutTheBox(net, prism):
     else:
         return net, False
 
-COUNT = 0
+COUNT = 1
 
 def shutRec(mapping, face_key, prism, net, no_fold_edge, pool_cells, depth):
     global COUNT
@@ -191,6 +191,8 @@ if __name__ == '__main__':
 
     prism = rect_prism.Prism((7,6,2))
     prism.translate((6,13,-2))
+
+    prism_net.drawTikzs([complete_net], 'pictures/0debug')    
     
     res = shutTheBox(complete_net, prism)
     prism_net.drawTikzs([res[0]], 'pictures/ohwell')
