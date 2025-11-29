@@ -14,8 +14,9 @@ Cells marked with a gray square must be adjacent to (and on the same face as) an
 The answer to the puzzle is the product of the six sums of numbers on each face of the box.
 
 ## Approach
-Fill in the grid by hand and cut out the printed grid. There are few cells whose identities are not 100% certain, but shutting the box isn't actually that hard, if a little finicky.
+Fill in the grid by hand and assembled the cut out the printed grid.
 
 ## Answer
-An animation of the box assembling!
-<img src="30s45deg-crop.gif", width="300">
+Here's an animation of the box assembling!
+
+![animation](./30s45deg-crop.gif)
