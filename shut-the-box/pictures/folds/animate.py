@@ -2,16 +2,18 @@ import os
 from PIL import Image
 
 num_steps = 17
-chunk_size = 90    # frames per chunk
+num_frames = 360
+frames_per_update = 45
+chunk_size = frames_per_update
 frame_dir = "lowres"    # folder where stepX_###.png are located
 
 output_frames = []
 
-for step in range(0, num_steps):
+for step in range(0, num_steps+1):
     print(step)
-    chunk = (step - 1) % 4               # 0,1,2,3 repeating every 4 steps
-    start_page = chunk * chunk_size      # 0, 90, 180, 270
-    end_page = start_page + chunk_size   # up to 89, 179, 269, 359
+    chunk = step % (num_frames // frames_per_update)
+    start_page = chunk * chunk_size      
+    end_page = start_page + chunk_size   
 
     for page in range(start_page, end_page):
         
@@ -26,9 +28,9 @@ for step in range(0, num_steps):
 
 
 output_frames[0].save(
-    "folding.gif",
+    "30s45deg.gif",
     save_all=True,
     append_images=output_frames[1:],
-    duration=20,  # 30 fps
+    duration=30,  # 30 fps
     loop=0
 )

@@ -1,7 +1,8 @@
 import pymupdf
 
+num_steps = 17
 
-for i in range(1):
+for i in range(num_steps+1):
     file_name = '{}debug.pdf'.format(i)
     doc = pymupdf.open(file_name)
     for pageno, page in enumerate(doc):
