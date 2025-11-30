@@ -43,20 +43,12 @@ def cellsPictureCommand(cells):
     return picture
 
 def cellsPictureTeX(cells, fname, animate = False):
-    tex_file = '''\\documentclass{standalone}
-    \\usepackage{tikz}
-    \\usepackage{tikz-3dplot}
-    \\usetikzlibrary{perspective}
-    \\usepackage[export]{animate}
-    \\usepackage{graphicx}
-    \\usepackage{stix2}
-    '''
+    with open('pictures/preamble.tex', 'r') as f:
+        preamble = f.readlines()
+    
+    tex_file = ''.join(preamble)
     tex_file += cellsPictureCommand(cells)
-    # for i, net in enumerate(nets):
-    #     if certain_cells != None:
-    #         tex_file += net.tikzpicture(no_points, certain_cells[i])
-    #     else:
-    #         tex_file += net.tikzpicture(no_points)
+    
     if animate:
         tex_file += '''
         \\begin{document}
@@ -69,7 +61,7 @@ def cellsPictureTeX(cells, fname, animate = False):
     else:
         tex_file += '''
         \\begin{document}
-        \\parampicture{20}
+        \\resizebox{30pc}{!}{\\parampicture{20}}
         '''
     tex_file += '\\end{document}\n'
     with open('{}.tex'.format(fname), 'w') as f:

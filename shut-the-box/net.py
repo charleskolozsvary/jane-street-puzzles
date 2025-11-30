@@ -8,6 +8,7 @@ from prism import Prism
 
 # filled cells
 class Cell:
+    ''' Don't know how much I standardized this, but a square should be a collection of four 3d points which are the corners of a cell.'''
     def __init__(self, coordinate, attributes_string):
         x, y = coordinate
         self.corners = ((x, y, 0), (x+1, y, 0), (x+1, y+1, 0), (x, y+1, 0))
@@ -16,6 +17,8 @@ class Cell:
         self.circled = None
         self.squared = None
         self.canvas_spec = 'canvas is xy plane at z = 0, transform shape'
+
+        '''Most of this alpha beta maybe shennanigans isn't used much'''
 
         # there can only be one alpha and one beta cell and either the alpha or the beta cell (but not both) is part of the net
         self.alpha = None
@@ -76,8 +79,6 @@ class Net:
         self.cell_corners = [cell.corners for cell in self.cells.values()]
 
         self.grid_w = max([coor for coor in grid.keys()])[0]
-
-        # print(self.grid_w)
         
         self.points_set = None
         self.points_np = None
@@ -255,15 +256,22 @@ class Net:
         self.points_set = set(p for cell in self.cells.values() for p in cell.corners)
         self.points_np = np.array([p for p in self.points_set])
 
-    def tikzpicture(self, no_points = False, certain_cells = None):
-        picture = ''
-        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {0}{25}'
-        picture += '\\newcommand{\\parampicture}[1]{{\\begin{tikzpicture}'
-        picture += '[{},scale=0.75]\n'.format(orientation)
-        picture += '\\useasboundingbox (-{w},-{w},-{w}) -- ({w},{w},{w});'.format(w=(self.grid_w+3)//2)
-        picture += '''\\rotateRPY{{0}}{{0}}{{#1}}
-        \\begin{{scope}}[RPY, shift = {{(-{w2},-{w2},0)}}]'''.format(w2=(self.grid_w+1)/2)
-        thickness = '1pt'
+    def tikzpicture(self, no_points = False, certain_cells = None, multiframe_arg_to_3dview = False):
+        scale = .85
+
+        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {{{}}}{{30}}'.format('#1' if multiframe_arg_to_3dview else 0)
+        picture = '\\newcommand{\\parampicture}[1]{{\\begin{tikzpicture}'
+        picture += '[{ori}, scale = {sc}, every node/.style = {{scale = {sc}}}]\n'.format(ori=orientation, sc=scale)
+        
+        if not multiframe_arg_to_3dview:
+            picture += '\\useasboundingbox (-{w},-{w},-{w}) -- ({w},{w},{w});'.format(w=(self.grid_w+5)//2)
+
+        if not multiframe_arg_to_3dview:
+            picture += '''\\rotateRPY{{0}}{{0}}{{{arg}}}
+        \\begin{{scope}}[RPY, shift = {{(-{w2},-{w2},0)}}]'''.format(arg=0 if multiframe_arg_to_3dview else '#1',
+                                                                     w2=(self.grid_w+1)/2)
+        
+        thickness = '.9pt'
         
         cells = certain_cells if certain_cells != None else self.cells.values()
         
@@ -281,30 +289,43 @@ class Net:
             inside_b = misc.np2Tuple(b + (d-b)/5)
             inside_d = misc.np2Tuple(b + 4*(d-b)/5)
             inside_path = [inside_a, inside_b, inside_c, inside_d]
+
+            opacity = 0.3
+
+            text_color = '\\textcolor{black}'
+
+            circled_color = 'RoyalPurple'
+            squared_color = 'Goldenrod'
+            squared_opacity = .4
             
             if cell.symbol:
+                if cell.squared:
+                    picture += '\\fill[color = {}, opacity = {}] {}--cycle;\n'.format(squared_color,
+                                                                                      squared_opacity,
+                                                                                      '--'.join([str(c) for c in inside_path]))
                 if cell.circled:
-                    picture += '\\node[circle,fill=gray,opacity=0.5,{}] at {} {{{}}};\n'.format(cell.canvas_spec,
+                    picture += '\\node[circle, fill={}, opacity={}, {}] at {} {{{}}};\n'.format(circled_color,
+                                                                                                opacity,
+                                                                                               cell.canvas_spec,
                                                                                                 center_p,
                                                                                                 '\\LARGE $\\hphantom{\\mathsf{'+cell.symbol+'}}$')
                     
-                picture += '\\node[{}] at {} {{{}}};\n'.format(cell.canvas_spec, center_p, '\\Large $\\mathsf{{{}}}$'.format(cell.symbol))
+                picture += '\\node[{}] at {} {{{}}};\n'.format(cell.canvas_spec, center_p, '\\Large '+ text_color + '{{$\\mathsf{{{}}}$}}'.format(cell.symbol))
                 picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))
             else:
-                picture += '\\fill[gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in cell.corners]))
+                picture += '\\fill[gray, opacity = {}] {}--cycle;\n'.format(opacity, '--'.join([str(c) for c in cell.corners]))
                 picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))    
 
-            if cell.squared:
-                picture += '\\fill[color = gray, opacity = 0.5] {}--cycle;\n'.format('--'.join([str(c) for c in inside_path]))
-            
-        # picture += '\\useasboundingbox (0,0,-5) ({w}, {w},5);\n'.format(w=self.grid_w+1)
-        picture += '\\end{scope}\n'
+        if not multiframe_arg_to_3dview:
+            picture += '\\end{scope}\n'
         picture += '\\end{tikzpicture}}}\n'
 
         if no_points:
             return picture
+
+        # likely no longer compatible
         
-        picture += '\n\\vspace{5ex}\n\n\\[\\resizebox{30pc}{30pc}{\\begin{tikzpicture}'
+        picture += '\n\\vspace{5ex}\n\n\\[\\resizebox{20pc}{!}{\\begin{tikzpicture}'
         for p in self.points_set:
             picture += '\\filldraw {} circle ({});\n'.format(p, 0.05)
         picture += '\\end{tikzpicture}}\\]\n'
@@ -317,18 +338,13 @@ class Net:
 
 def isOneConnectedComponent(positions):
     visited = set()
-
     def DFS(pos):
-        x, y = pos
-        
+        x, y = pos        
         if pos in visited or pos not in positions:
             return
-
         visited.add(pos)
-            
         for next_pos in [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]:
             DFS(next_pos)
-
     start = positions[0]
     DFS(start)
         
@@ -365,123 +381,39 @@ def possibleNets(net):
         
     return possible_nets
 
-def drawTikzs(nets, fname, no_points = True, certain_cells = None, animate = True):
+def drawTikzs(nets, fname, no_points = True, certain_cells = None, animate = True, _3dview_shift = False):
     with open('pictures/preamble.tex', 'r') as f:
         preamble = f.readlines()
     
     tex_file = ''.join(preamble)
     for i, net in enumerate(nets):
         if certain_cells != None:
-            tex_file += net.tikzpicture(no_points, certain_cells[i])
+            tex_file += net.tikzpicture(no_points, certain_cells[i], _3dview_shift)
         else:
-            tex_file += net.tikzpicture(no_points)
+            tex_file += net.tikzpicture(no_points, certain_cells = None, multiframe_arg_to_3dview = _3dview_shift)
+            
     if animate:
         tex_file += '''
         \\begin{document}
         \\begin{animateinline}{1}
-        \\multiframe{360}{i=0+1}{
-        \\resizebox{30pc}{!}{\\parampicture{\\i}}
-        }
+        \\multiframe{360}{i=0+1}{\\parampicture{\\i}}
         \\end{animateinline}
         '''
     else:
         tex_file += '''
         \\begin{document}
-        \\resizebox{30pc}{!}{\\parampicture{20}}
+        \\parampicture{60}
         '''
     tex_file += '\\end{document}\n'
     
     with open('{}.tex'.format(fname), 'w') as f:
         f.write(tex_file)
-        
-# EXAMPLE_NET = Net(grids.EXAMPLE_GRID)
-
-FULL_NET = Net(grids.FULL_GRID)
-
-TEST_NET = Net(grids.TEST_FOLD)
 
 
 if __name__ == '__main__':
-    drawTikzs([FULL_NET], 'pictures/full-net')
-    # drawTikzs([EXAMPLE_NET], 'pictures/example-net')
-
-    net = FULL_NET
-
-    drawTikzs([TEST_NET], 'pictures/test-fold-net')
-
-    dimensions = (7, 6, 2)    
-
-    prism = Prism(dimensions)
-    prism.translate((6,13,0))
-
-    face_key = (((6, 13), (13, 19), 0), 'bottom')    
+    full_net = Net(grids.FULL_GRID)
+    test_net = Net(grids.TEST_FOLD)
+    example_net = Net(grids.EXAMPLE_GRID)
     
-    edges = prism.face_to_edges[face_key]
-
-    face, face_name = face_key
-
-    # print(edges)
-    
-    # edges = [(6, (13, 19), 0), (13, (13, 19), 0), ((6, 13), 13, 0), ((6, 13), 19, 0)]
-
-    edge_left = edges[0]
-
-    edge_right = edges[1]
-
-    edge_bottom = edges[2]
-
-    edge_top = edges[3]
-
-    # a = net.foldingCells(face, edge_right)
-
-    # b = net.foldingCells(face, edge_bottom)
-
-    c = net.foldingCells(face, edge_left)
-
-    assert c == [], "c not empty?"
-
-    # d = net.foldingCells(face, edge_top)
-
-    # net.fold(face_key, edge_right, prism.destinationFaceKey(face_key, edge_right)[0])
-
-    nfk = ((13, (13, 19), (0, 2)), 'right')
-    ne = [(13, 13, (0, 2)), (13, 19, (0, 2)), (13, (13, 19), 0), (13, (13, 19), 2)]    
-
-    # net.fold(nfk, ne[3], prism.destinationFaceKey(nfk, ne[3])[0])
-
-    # net.fold(face_key, (edge_bottom, 2), prism.destinationFaceKey(face_key, edge_bottom)[0])
-
-    # print(net.cells)
-
-    # (((6, 13), 13, (0, 2)), 'front') [(6, 13, (0, 2)), (13, 13, (0, 2)), ((6, 13), 13, 0), ((6, 13), 13, 2)]
-    nfk2 = (((6, 13), 13, (0, 2)), 'front')
-    nne = [(6, 13, (0, 2)), (13, 13, (0, 2)), ((6, 13), 13, 0), ((6, 13), 13, 2)]
-    
-    # net.fold(nfk2, (nne[3], 3), prism.destinationFaceKey(nfk2, nne[3])[0])
-
-    drawTikzs([FULL_NET], 'pictures/folded-full-net')    
-
-    # drawTikzs([FULL_NET], 'pictures/right-fold', no_points = True, certain_cells = [a])    
-
-    # drawTikzs([FULL_NET], 'pictures/bottom-fold', no_points = True, certain_cells = [b])
-
-    # drawTikzs([FULL_NET], 'pictures/left-fold', no_points = True, certain_cells = [c])
-
-    # drawTikzs([FULL_NET], 'pictures/top-fold', no_points = True, certain_cells = [d])        
-
-    # if type(a) != str:
-    #     for c in a:
-    #         print(c)
-    # else:
-    #     print(a)
-            
-
-    # print()
-
-    # if type(b) != str:
-    #     for c in b:
-    #         print(c)
-    # else:
-    #     print(b)
             
             
