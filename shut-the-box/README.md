@@ -28,6 +28,6 @@ Some gifs of the nets folding into boxes.
 ### Example net
 <img src="./pictures/folds/animations/static-example-crop.gif">
 
-<img src="./pictures/folds/animations/ex-every30-crop.gif>
+<img src="./pictures/folds/animations/ex-every30-crop.gif">
 
 
