@@ -17,21 +17,17 @@ The answer to the puzzle is the product of the six sums of numbers on each face 
 Fill in the grid by hand and assembled the cut out the printed grid.
 
 ## Animations
-Some gifs and mp4s of the nets folding into boxes.
+Some gifs of the nets folding into boxes.
 
 ### Full net
 
-<img src="./pictures/folds/animations/static-full.gif" alt="A gif of the full net folding in to the (2, 6, 7) rectangular prism from a fixed perspective">
+<img src="./pictures/folds/animations/static-full-crop.gif" alt="A gif of the full net folding in to the (2, 6, 7) rectangular prism from a fixed perspective">
 
-<video src="./pictures/folds/animations/full-every30.mp4" alt="A video of the full net folding into the (2, 6, 7) rectangular prism from a rotating 360 degree perspective, a fold happening every 30 degrees">
-
-<img src="./pictures/folds/animations/static-full-veryfast.gif">
+<img src="./pictures/folds/animations/full-every30-crop.gif" alt="A gif of the full net folding into the (2, 6, 7) rectangular prism from a rotating 360 degree perspective, a fold happening every 30 degrees">
 
 ### Example net
-<img src="./pictures/folds/animations/static-example.gif">
+<img src="./pictures/folds/animations/static-example-crop.gif">
 
-<video src="./pictures/folds/animations/ex-every30.mp4>
-
-<img src="./pictures/folds/animations/static-example-fast.gif">
+<img src="./pictures/folds/animations/ex-every30-crop.gif>
 
 

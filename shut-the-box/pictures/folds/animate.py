@@ -32,9 +32,10 @@ def animateShortPNGs(file_name_stem, frame_file_names, _duration):
         img.close()
 
 def animatePNGs(file_name_stem, frame_file_names, _fps):
-    # if file_name_stem == 'ex-every30' or file_name_stem == 'full-every30':
-    #     animateShortPNGs(file_name_stem, frame_file_names, 1000/_fps)
-    # return
+    if file_name_stem == 'full-every30': #or file_name_stem == 'ex-every30':
+        animateShortPNGs(file_name_stem, frame_file_names, 1000/_fps)
+        print('fps', _fps)
+    return
         
     mp4_file_name = os.path.join('animations', f'{file_name_stem}.mp4')
 
@@ -56,8 +57,8 @@ if __name__ == '__main__':
         for i, angle in enumerate(per_angles):
             animateFolds(stem, prefix, 'png', angle, fold_range, fpses[i]) # 60 fps
 
-    ugh('ex', 'example-net-', [0, 12], [90, 60, 45, 30], [60, 30, 30, 30])
-    ugh('full', 'full-net-', [0, 17], [90, 60, 45, 30, 15], [60, 60, 30, 30, 30])
+    ugh('ex', 'example-net-', [0, 12], [90, 60, 45, 30], [30, 30, 30, 23])
+    ugh('full', 'full-net-', [0, 17], [90, 60, 45, 30, 15], [30, 30, 30, 23, 20])
 
     animateShortPNGs('static-example', [f'frames/static-example-net-fold{i}_000.png' for i in range(13)], 500)
     animateShortPNGs('static-full', [f'frames/static-full-net-fold{i}_000.png' for i in range(18)], 500)
