@@ -188,7 +188,9 @@ def shutRec(mapping, face_key, prism, net, no_fold_edge, pool_cells, depth, _ani
         logging.debug('\n')
         logging.debug(f'{FOLD_COUNT}: {face_key}')
 
-        prism_net.makeTeX(net, 'folds/TeX/{}fold{}'.format(fold_file_prefix,FOLD_COUNT), animate = _animate) 
+        prism_net.makeTeX(net, 'folds/TeX/{}{}fold{}'.format('static-' if not _animate else '',
+                                                             fold_file_prefix,
+                                                             FOLD_COUNT), animate = _animate) 
         FOLD_COUNT += 1
         
         shutRec(mapping, destination_face_key, prism, net, edge, deepcopy(new_cells), depth+1, _animate, fold_file_prefix)
@@ -196,12 +198,14 @@ def shutRec(mapping, face_key, prism, net, no_fold_edge, pool_cells, depth, _ani
 def foldNetAroundPrism(net, prism_dimensions, prism_translate, fold_file_prefix, args):
     prism = rect_prism.Prism(prism_dimensions)
     prism.translate(prism_translate)
-    prism_net.makeTeX(net, f'folds/TeX/{fold_file_prefix}fold0', animate = args.animate)
+    prism_net.makeTeX(net,
+                      'folds/TeX/{}{}fold0'.format('static-' if not args.animate else '', fold_file_prefix),
+                      animate = args.animate)
     global FOLD_COUNT
     FOLD_COUNT = 1
     net_out, folded_succ = shutTheBox(net, prism, args.animate, fold_file_prefix)
     if folded_succ:
-        # prism_net.makeTeX(net_out, f'{fold_file_prefix}shut-box', animate = args.animate, _3dview_shift = True)
+        prism_net.makeTeX(net_out, f'{fold_file_prefix}shut-box', animate = args.animate, _3dview_shift = True)
         print(f'The net successfully folded into the prism with dimensions {prism_dimensions}. See pictures/{fold_file_prefix}shut-box.tex')
     else:
         print(f'The net did NOT fold into the prism with dimensions {prism_dimensions}.')

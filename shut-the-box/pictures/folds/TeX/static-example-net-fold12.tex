@@ -50,8 +50,9 @@
 }
 
 \tikzset{RPY/.style={x={(\nxx,\nxy)},y={(\nyx,\nyy)},z={(\nzx,\nzy)}}}
-\newcommand{\parampicture}[1]{{\begin{tikzpicture}[canvas is xy plane at z = 0, transform shape, 3d view = {#1}{30}, scale = 0.85, every node/.style = {scale = 0.85}]
-\fill[gray, opacity = 0.4] (2, 1, 0)--(3, 1, 0)--(3, 2, 0)--(2, 2, 0)--cycle;
+\newcommand{\parampicture}[1]{{\begin{tikzpicture}[canvas is xy plane at z = 0, transform shape, 3d view = {0}{30}, scale = 0.85, every node/.style = {scale = 0.85}]
+\useasboundingbox (-6,-6,-6) -- (6,6,6);\rotateRPY{0}{0}{#1}
+        \begin{scope}[RPY, shift = {(-4.0,-4.0,0)}]\fill[gray, opacity = 0.4] (2, 1, 0)--(3, 1, 0)--(3, 2, 0)--(2, 2, 0)--cycle;
 \draw[line width = .8pt] (2, 1, 0)--(3, 1, 0)--(3, 2, 0)--(2, 2, 0)--cycle;
 \node[canvas is xy plane at z = 0, transform shape] at (3.5, 1.5, 0.0) {\Large {$\mathsf{6}$}};
 \draw[line width = .8pt] (3, 1, 0)--(4, 1, 0)--(4, 2, 0)--(3, 2, 0)--cycle;
@@ -113,5 +114,6 @@
 \draw[line width = .8pt] (3.0, 2.0, -4.0)--(4.0, 2.0, -4.0)--(4.0, 1.0, -4.0)--(3.0, 1.0, -4.0)--cycle;
 \fill[gray, opacity = 0.4] (2.0, 2.0, -4.0)--(3.0, 2.0, -4.0)--(3.0, 1.0, -4.0)--(2.0, 1.0, -4.0)--cycle;
 \draw[line width = .8pt] (2.0, 2.0, -4.0)--(3.0, 2.0, -4.0)--(3.0, 1.0, -4.0)--(2.0, 1.0, -4.0)--cycle;
+\end{scope}
 \end{tikzpicture}}}
 \begin{document}\parampicture{45}\end{document}

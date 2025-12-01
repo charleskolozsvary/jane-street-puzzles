@@ -35,8 +35,11 @@ def doFolds(num_pdfs, pngs_dir_name, prefix_file_name, dpi, jpg_quality):
     PDFs2pngs(pdf_file_names, pngs_dir_name, dpi, jpg_quality)
 
 if __name__ == '__main__':
-    doFolds(12, 'frames', 'example-net-', 275, 60)
-    doFolds(17, 'frames', 'full-net-', 275, 55)    
+    # doFolds(12, 'frames', 'example-net-', 275, 60)
+    # doFolds(17, 'frames', 'full-net-', 275, 55)
+
+    doFolds(12, 'frames', 'static-example-net-', 350, 95)
+    doFolds(17, 'frames', 'static-full-net-', 350, 95)
 
 
     
