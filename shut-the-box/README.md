@@ -23,4 +23,4 @@ Here's an animation of the box assembling!
 
 Just the shut box.
 
-![shutbox](./pictures/folds/animations/shutbox.mp4)
+![shutbox](./pictures/folds/animations/shutbox.gif)
