@@ -21,11 +21,11 @@ Some gifs of the nets folding into boxes.
 
 ### Full net
 
+<img src="./pictures/folds/animations/full-every30-crop.gif" alt="A gif of the full net folding into the (2, 6, 7) rectangular prism from a rotating 360 degree perspective, a fold happening every 30 degrees">
+
 <img src="./pictures/folds/animations/static-full-crop.gif" alt="A gif of the full net folding in to the (2, 6, 7) rectangular prism from a fixed perspective">
 
 <img src="./pictures/folds/animations/full-shutbox-360-crop.gif">
-
-<img src="./pictures/folds/animations/full-every30-crop.gif" alt="A gif of the full net folding into the (2, 6, 7) rectangular prism from a rotating 360 degree perspective, a fold happening every 30 degrees">
 
 ### Example net
 <img src="./pictures/folds/animations/static-example-crop.gif">
