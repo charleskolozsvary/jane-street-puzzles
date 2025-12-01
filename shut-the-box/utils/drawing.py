@@ -2,6 +2,7 @@ import numpy as np
 import utils.misc as misc
 
 def cellsPictureCommand(cells):
+    '''old version of what is now tikzCommand in net.py'''
     picture = ''
     orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {#1}{25}'
     picture += '\\newcommand{\\parampicture}[1]{\\begin{tikzpicture}'
@@ -48,21 +49,15 @@ def cellsPictureTeX(cells, fname, animate = False):
     
     tex_file = ''.join(preamble)
     tex_file += cellsPictureCommand(cells)
+    tex_file += '\\begin{document}\n'
     
     if animate:
-        tex_file += '''
-        \\begin{document}
-        \\begin{animateinline}{1}
-        \\multiframe{360}{i=0+1}{
-        \\parampicture{\\i}
-        }
+        tex_file += '''\\begin{animateinline}{1}
+        \\multiframe{90}{i=0+1}{\\parampicture{\\i}}
         \\end{animateinline}
         '''
     else:
-        tex_file += '''
-        \\begin{document}
-        \\resizebox{30pc}{!}{\\parampicture{20}}
-        '''
+        tex_file += '\\parampicture{20}'
     tex_file += '\\end{document}\n'
-    with open('{}.tex'.format(fname), 'w') as f:
+    with open('pictures/{}.tex'.format(fname), 'w') as f:
         f.write(tex_file)

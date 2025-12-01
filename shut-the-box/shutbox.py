@@ -68,7 +68,7 @@ def faceSquares(face):
                 squares.append(square)
     return squares
 
-def shutTheBox(net, prism, _animate):
+def shutTheBox(net, prism, _animate, fold_file_prefix):
     '''
     Given a net of a rectangular prism and a rectangular prism statically positioned somewhere on the net,
     try to fold the net into the prism.
@@ -108,7 +108,9 @@ def shutTheBox(net, prism, _animate):
     
     net = deepcopy(net)
 
-    shutRec(prism_squares_to_net_cells, starting_face, prism, net, None, deepcopy(net.cells), 0, _animate)
+    logging.debug(f'len(prism_squares_to_net_cells): {len(prism_squares_to_net_cells)}')
+
+    shutRec(prism_squares_to_net_cells, starting_face, prism, net, None, deepcopy(net.cells), 0, _animate, fold_file_prefix)
 
     empty_count = 0
     for v in prism_squares_to_net_cells.values():
@@ -124,82 +126,100 @@ def shutTheBox(net, prism, _animate):
 
 FOLD_COUNT = 1
 
-def shutRec(mapping, face_key, prism, net, no_fold_edge, pool_cells, depth, _animate):
+def shutRec(mapping, face_key, prism, net, no_fold_edge, pool_cells, depth, _animate, fold_file_prefix):
     global FOLD_COUNT
     if None not in mapping.values():
         logging.debug("Net successfully folded into prism.")
         return
     
     for idx, edge in enumerate(prism.face_to_edges[face_key]):
-        logging.debug("                    idx: {} at face '{}' and depth '{}'".format(idx, face_key[1], depth))
+        logging.debug("                    idx: {} at face '{}' depth '{}'".format(idx, face_key[1], depth))
+        destination_face_key = prism.destinationFaceKey(face_key, edge)        
         if edge == no_fold_edge:
-            logging.debug("                    skipping no fold edge '{}' at face '{}' and depth '{}'".format(edge, face_key[1], depth))
+            logging.debug("                    skipping no fold edge '{}' at face '{}' depth '{}' dest face '{}'".format(edge, face_key[1],
+                                                                                                                         depth,
+                                                                                                                         destination_face_key[1]))
             continue
-        destination_face_key = prism.destinationFaceKey(face_key, edge)
+        # destination_face_key = prism.destinationFaceKey(face_key, edge)
 
-        logging.debug("               attempting to fold edge             '{}' at face '{}' and depth '{}'".format(edge, face_key[1], depth))
+        logging.debug("               attempting to fold edge             '{}' at face '{}' depth '{}' to dest face '{}'".format(edge, face_key[1],
+                                                                                                                                     depth,
+                                                                                                                                     destination_face_key[1]))
         return_val = net.fold(face_key, (edge, idx), destination_face_key[0], deepcopy(pool_cells))
         if type(return_val) == tuple:
             if return_val[0] == -1:
                 # return unsuccessfully---net can't fold into prism
-                logging.debug("Net cannot fold into prism")
+                logging.debug("Net cannot fold into prism.")
                 return
             elif return_val[0] == 0:
                 # no cells to fold along edge for this face
-                logging.debug("                    no cells to fold along on edge '{}' at face '{}' and depth '{}'".format(edge, face_key[1], depth))
+                logging.debug("                    no cells to fold along on edge '{}' at face '{}' depth '{}'".format(edge, face_key[1], depth))
                 continue
             else:
                 assert False, "Return code {} unrecognized".format(str(return_val[0]))
                 
         assert type(return_val) == dict, "If net.fold is successful, it should return a dictionary of the new cells"
         new_cells = deepcopy(return_val)
-        
+
+        added_this_fold = 0
         for cell_key, cell in new_cells.items():
             if cell_key in mapping:
                 if mapping[cell_key] == None:
                     mapping[cell_key] = cell
+                    added_this_fold += 1
                 else:
-                    # return unsuccesffully, square on prism already covered                    
-                    logging.debug(f'cell_key {cell_key} already defined in mapping as {mapping[cell_key]}. Returning unsuccessfully.')
+                    # return unsuccesffully, square on prism already covered
+                    logging.debug('Returning  unsuccessfully...')
+                    logging.debug(f'cell_key {cell_key} already defined in mapping as {mapping[cell_key]}.')
                     logging.debug('See pictures/latest-bug.tex')
-                    cellsPictureTeX(new_cells.values(), 'pictures/latest-bug')
+                    cellsPictureTeX(new_cells.values(), 'latest-bug')
                     return
                 
-        logging.debug("                    folded on edge '{}' on '{}' at depth '{}'".format(edge, face_key[1], depth))
+        logging.debug("                    folded on edge '{}' on '{}' depth '{}' to destination face '{}'".format(edge, face_key[1], depth,
+                                                                                                                    destination_face_key[1]))
+
+        logging.debug(f'faces added to mapping this fold: {added_this_fold}')
+        empty_count = 0
+        for v in mapping.values():
+            if v == None:
+                empty_count += 1
+        logging.debug(f'Faces still without mapping: {empty_count}')
 
         logging.debug('\n')
         logging.debug(f'{FOLD_COUNT}: {face_key}')
 
-        prism_net.drawTikzs([net], 'pictures/folds/TeX/fold{}'.format(FOLD_COUNT), no_points = True, certain_cells = None, animate = _animate) 
+        prism_net.makeTeX(net, 'folds/TeX/{}fold{}'.format(fold_file_prefix,FOLD_COUNT), animate = _animate) 
         FOLD_COUNT += 1
         
-        shutRec(mapping, destination_face_key, prism, net, edge, deepcopy(new_cells), depth+1, _animate)
-    
+        shutRec(mapping, destination_face_key, prism, net, edge, deepcopy(new_cells), depth+1, _animate, fold_file_prefix)
+
+def foldNetAroundPrism(net, prism_dimensions, prism_translate, fold_file_prefix, args):
+    prism = rect_prism.Prism(prism_dimensions)
+    prism.translate(prism_translate)
+    prism_net.makeTeX(net, f'folds/TeX/{fold_file_prefix}fold0', animate = args.animate)
+    global FOLD_COUNT
+    FOLD_COUNT = 1
+    net_out, folded_succ = shutTheBox(net, prism, args.animate, fold_file_prefix)
+    if folded_succ:
+        # prism_net.makeTeX(net_out, f'{fold_file_prefix}shut-box', animate = args.animate, _3dview_shift = True)
+        print(f'The net successfully folded into the prism with dimensions {prism_dimensions}. See pictures/{fold_file_prefix}shut-box.tex')
+    else:
+        print(f'The net did NOT fold into the prism with dimensions {prism_dimensions}.')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action="store_true", help='debugging output')
-    parser.add_argument("-a", "--animate", action="store_true", help='draw 360 frames of each tikzpicture of the net, folded or otherwise')
+    parser.add_argument("-a", "--animate", action="store_true", help='draw 360 frames of each picture of the net, folded or otherwise')
+    parser.add_argument("-t", "--topdown", action="store_true", help='draw the nets from a top-down perspective')    
     args = parser.parse_args()
     
     if args.debug:
         logging.basicConfig(format='%(message)s',level=logging.DEBUG)
-        
-    complete_net = prism_net.Net(grids.FULL_GRID)
 
-    prism = rect_prism.Prism((7,6,2))
-    prism.translate((6,13,-2))
-
-    prism_net.drawTikzs([complete_net], 'pictures/folds/TeX/fold0', no_points = True, certain_cells = None, animate = args.animate)    
+    full_net = prism_net.Net(grids.FULL_GRID)
+    example_net = prism_net.Net(grids.EXAMPLE_GRID)
     
-    net, folded_successfully = shutTheBox(complete_net, prism, _animate = args.animate)
-
-    # I should really stop with this [net] business
-    # this should be the 3d view = {#1}{30} way
-    prism_net.drawTikzs([net], 'pictures/complete-box', no_points = True, certain_cells = None, animate = args.animate, _3dview_shift = True)
-
-    if folded_successfully:
-        print("The net successfully folded into the prism. See pictures/complete-box.tex")
-    else:
-        print("The net did NOT fold into the prism.")
+    foldNetAroundPrism(example_net, (2, 1, 4), (2, 1, -4), 'example-net-', args)
+    foldNetAroundPrism(full_net, (7, 2, 6), (6, 11, -6), 'full-net-', args)    
+    
     

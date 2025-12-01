@@ -29,17 +29,14 @@ def PDFs2pngs(pdf_file_names, pngs_dir_name, _dpi, _jpg_quality):
         print(f'{pdfno:02d}/{len(pdf_file_names)-1:02d}')        
         file_prepend = Path(pdf_file_name).stem
         pdf2pngs(pdf_file_name, file_prepend, pngs_dir_name, _dpi, _jpg_quality)
-        
-def doFolds():
-    num_pdfs = 17
-    pngs_dir_name = 'frames'
-    pdf_file_names = [f'TeX/fold{i}.pdf' for i in range(num_pdfs+1)]
-    dpi = 200 #dots per inch
-    jpg_quality = 70 # 98 is near lossless
-    PDFs2pngs(pdf_file_names, pngs_dir_name, dpi, jpg_quality)    
+
+def doFolds(num_pdfs, pngs_dir_name, prefix_file_name, dpi, jpg_quality):
+    pdf_file_names = [f'TeX/{prefix_file_name}fold{i}.pdf' for i in range(num_pdfs+1)]
+    PDFs2pngs(pdf_file_names, pngs_dir_name, dpi, jpg_quality)
 
 if __name__ == '__main__':
-    pdf2pngs('TeX/complete-box.pdf', 'box-complete', 'frames', 200, 85)
+    doFolds(12, 'frames', 'example-net-', 275, 60)
+    doFolds(17, 'frames', 'full-net-', 275, 55)    
 
 
     

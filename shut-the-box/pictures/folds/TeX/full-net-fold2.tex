@@ -1,0 +1,345 @@
+\documentclass{standalone}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage[export]{animate}
+\usepackage{graphicx}
+\usepackage{stix2}
+\usetikzlibrary{perspective}
+
+%% from https://tex.stackexchange.com/questions/67573/tikz-shift-and-rotate-in-3d
+\newcommand{\savedx}{0}
+\newcommand{\savedy}{0}
+\newcommand{\savedz}{0}
+
+\newcommand{\rotateRPY}[4][0/0/0]% point to be saved to \savedxyz, roll, pitch, yaw
+{   \pgfmathsetmacro{\rollangle}{#2}
+    \pgfmathsetmacro{\pitchangle}{#3}
+    \pgfmathsetmacro{\yawangle}{#4}
+
+    % to what vector is the x unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newxx}{cos(\yawangle)*cos(\pitchangle)}% a
+    \pgfmathsetmacro{\newxy}{sin(\yawangle)*cos(\pitchangle)}% d
+    \pgfmathsetmacro{\newxz}{-sin(\pitchangle)}% g
+    \path (\newxx,\newxy,\newxz);
+    \pgfgetlastxy{\nxx}{\nxy}
+
+    % to what vector is the y unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newyx}{cos(\yawangle)*sin(\pitchangle)*sin(\rollangle)-sin(\yawangle)*cos(\rollangle)}% b
+    \pgfmathsetmacro{\newyy}{sin(\yawangle)*sin(\pitchangle)*sin(\rollangle)+ cos(\yawangle)*cos(\rollangle)}% e
+    \pgfmathsetmacro{\newyz}{cos(\pitchangle)*sin(\rollangle)}% h
+    \path (\newyx,\newyy,\newyz);
+    \pgfgetlastxy{\nyx}{\nyy}
+
+    % to what vector is the z unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newzx}{cos(\yawangle)*sin(\pitchangle)*cos(\rollangle)+ sin(\yawangle)*sin(\rollangle)}
+    \pgfmathsetmacro{\newzy}{sin(\yawangle)*sin(\pitchangle)*cos(\rollangle)-cos(\yawangle)*sin(\rollangle)}
+    \pgfmathsetmacro{\newzz}{cos(\pitchangle)*cos(\rollangle)}
+    \path (\newzx,\newzy,\newzz);
+    \pgfgetlastxy{\nzx}{\nzy}
+
+    % transform the point given by #1
+    \foreach \x/\y/\z in {#1}
+    {   \pgfmathsetmacro{\transformedx}{\x*\newxx+\y*\newyx+\z*\newzx}
+        \pgfmathsetmacro{\transformedy}{\x*\newxy+\y*\newyy+\z*\newzy}
+        \pgfmathsetmacro{\transformedz}{\x*\newxz+\y*\newyz+\z*\newzz}
+        \xdef\savedx{\transformedx}
+        \xdef\savedy{\transformedy}
+        \xdef\savedz{\transformedz}     
+    }
+}
+
+\tikzset{RPY/.style={x={(\nxx,\nxy)},y={(\nyx,\nyy)},z={(\nzx,\nzy)}}}
+\newcommand{\parampicture}[1]{{\begin{tikzpicture}[canvas is xy plane at z = 0, transform shape, 3d view = {0}{30}, scale = 0.85, every node/.style = {scale = 0.85}]
+\useasboundingbox (-12,-12,-12) -- (12,12,12);\rotateRPY{0}{0}{#1}
+        \begin{scope}[RPY, shift = {(-10.0,-10.0,0)}]\fill[gray, opacity = 0.4] (9, 0, 0)--(10, 0, 0)--(10, 1, 0)--(9, 1, 0)--cycle;
+\draw[line width = .8pt] (9, 0, 0)--(10, 0, 0)--(10, 1, 0)--(9, 1, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (8.2, 1.2, 0.0)--(8.8, 1.2, 0.0)--(8.8, 1.8, 0.0)--(8.2, 1.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (8.5, 1.5, 0.0) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (8, 1, 0)--(9, 1, 0)--(9, 2, 0)--(8, 2, 0)--cycle;
+\fill[gray, opacity = 0.4] (9, 1, 0)--(10, 1, 0)--(10, 2, 0)--(9, 2, 0)--cycle;
+\draw[line width = .8pt] (9, 1, 0)--(10, 1, 0)--(10, 2, 0)--(9, 2, 0)--cycle;
+\fill[gray, opacity = 0.4] (10, 1, 0)--(11, 1, 0)--(11, 2, 0)--(10, 2, 0)--cycle;
+\draw[line width = .8pt] (10, 1, 0)--(11, 1, 0)--(11, 2, 0)--(10, 2, 0)--cycle;
+\fill[gray, opacity = 0.4] (13, 1, 0)--(14, 1, 0)--(14, 2, 0)--(13, 2, 0)--cycle;
+\draw[line width = .8pt] (13, 1, 0)--(14, 1, 0)--(14, 2, 0)--(13, 2, 0)--cycle;
+\fill[gray, opacity = 0.4] (9, 2, 0)--(10, 2, 0)--(10, 3, 0)--(9, 3, 0)--cycle;
+\draw[line width = .8pt] (9, 2, 0)--(10, 2, 0)--(10, 3, 0)--(9, 3, 0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is xy plane at z = 0, transform shape] at (12.5, 2.5, 0.0) {\LARGE $\hphantom{\mathsf{5}}$};
+\node[canvas is xy plane at z = 0, transform shape] at (12.5, 2.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (12, 2, 0)--(13, 2, 0)--(13, 3, 0)--(12, 3, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (13.5, 2.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (13, 2, 0)--(14, 2, 0)--(14, 3, 0)--(13, 3, 0)--cycle;
+\fill[gray, opacity = 0.4] (14, 2, 0)--(15, 2, 0)--(15, 3, 0)--(14, 3, 0)--cycle;
+\draw[line width = .8pt] (14, 2, 0)--(15, 2, 0)--(15, 3, 0)--(14, 3, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 3, 0)--(9, 3, 0)--(9, 4, 0)--(8, 4, 0)--cycle;
+\draw[line width = .8pt] (8, 3, 0)--(9, 3, 0)--(9, 4, 0)--(8, 4, 0)--cycle;
+\fill[gray, opacity = 0.4] (9, 3, 0)--(10, 3, 0)--(10, 4, 0)--(9, 4, 0)--cycle;
+\draw[line width = .8pt] (9, 3, 0)--(10, 3, 0)--(10, 4, 0)--(9, 4, 0)--cycle;
+\fill[gray, opacity = 0.4] (10, 3, 0)--(11, 3, 0)--(11, 4, 0)--(10, 4, 0)--cycle;
+\draw[line width = .8pt] (10, 3, 0)--(11, 3, 0)--(11, 4, 0)--(10, 4, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 3, 0)--(12, 3, 0)--(12, 4, 0)--(11, 4, 0)--cycle;
+\draw[line width = .8pt] (11, 3, 0)--(12, 3, 0)--(12, 4, 0)--(11, 4, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 3, 0)--(13, 3, 0)--(13, 4, 0)--(12, 4, 0)--cycle;
+\draw[line width = .8pt] (12, 3, 0)--(13, 3, 0)--(13, 4, 0)--(12, 4, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (6.5, 4.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (6, 4, 0)--(7, 4, 0)--(7, 5, 0)--(6, 5, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 4, 0)--(8, 4, 0)--(8, 5, 0)--(7, 5, 0)--cycle;
+\draw[line width = .8pt] (7, 4, 0)--(8, 4, 0)--(8, 5, 0)--(7, 5, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 4, 0)--(9, 4, 0)--(9, 5, 0)--(8, 5, 0)--cycle;
+\draw[line width = .8pt] (8, 4, 0)--(9, 4, 0)--(9, 5, 0)--(8, 5, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 4, 0)--(12, 4, 0)--(12, 5, 0)--(11, 5, 0)--cycle;
+\draw[line width = .8pt] (11, 4, 0)--(12, 4, 0)--(12, 5, 0)--(11, 5, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 4, 0)--(13, 4, 0)--(13, 5, 0)--(12, 5, 0)--cycle;
+\draw[line width = .8pt] (12, 4, 0)--(13, 4, 0)--(13, 5, 0)--(12, 5, 0)--cycle;
+\fill[gray, opacity = 0.4] (3, 5, 0)--(4, 5, 0)--(4, 6, 0)--(3, 6, 0)--cycle;
+\draw[line width = .8pt] (3, 5, 0)--(4, 5, 0)--(4, 6, 0)--(3, 6, 0)--cycle;
+\fill[gray, opacity = 0.4] (4, 5, 0)--(5, 5, 0)--(5, 6, 0)--(4, 6, 0)--cycle;
+\draw[line width = .8pt] (4, 5, 0)--(5, 5, 0)--(5, 6, 0)--(4, 6, 0)--cycle;
+\fill[gray, opacity = 0.4] (5, 5, 0)--(6, 5, 0)--(6, 6, 0)--(5, 6, 0)--cycle;
+\draw[line width = .8pt] (5, 5, 0)--(6, 5, 0)--(6, 6, 0)--(5, 6, 0)--cycle;
+\fill[gray, opacity = 0.4] (6, 5, 0)--(7, 5, 0)--(7, 6, 0)--(6, 6, 0)--cycle;
+\draw[line width = .8pt] (6, 5, 0)--(7, 5, 0)--(7, 6, 0)--(6, 6, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 5, 0)--(8, 5, 0)--(8, 6, 0)--(7, 6, 0)--cycle;
+\draw[line width = .8pt] (7, 5, 0)--(8, 5, 0)--(8, 6, 0)--(7, 6, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (3.2, 6.2, 0.0)--(3.8, 6.2, 0.0)--(3.8, 6.8, 0.0)--(3.2, 6.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (3.5, 6.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (3, 6, 0)--(4, 6, 0)--(4, 7, 0)--(3, 7, 0)--cycle;
+\fill[gray, opacity = 0.4] (4, 6, 0)--(5, 6, 0)--(5, 7, 0)--(4, 7, 0)--cycle;
+\draw[line width = .8pt] (4, 6, 0)--(5, 6, 0)--(5, 7, 0)--(4, 7, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (6.5, 6.5, 0.0) {\Large {$\mathsf{6}$}};
+\draw[line width = .8pt] (6, 6, 0)--(7, 6, 0)--(7, 7, 0)--(6, 7, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 6, 0)--(8, 6, 0)--(8, 7, 0)--(7, 7, 0)--cycle;
+\draw[line width = .8pt] (7, 6, 0)--(8, 6, 0)--(8, 7, 0)--(7, 7, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 6, 0)--(9, 6, 0)--(9, 7, 0)--(8, 7, 0)--cycle;
+\draw[line width = .8pt] (8, 6, 0)--(9, 6, 0)--(9, 7, 0)--(8, 7, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (9.5, 6.5, 0.0) {\Large {$\mathsf{2}$}};
+\draw[line width = .8pt] (9, 6, 0)--(10, 6, 0)--(10, 7, 0)--(9, 7, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 6, 0)--(12, 6, 0)--(12, 7, 0)--(11, 7, 0)--cycle;
+\draw[line width = .8pt] (11, 6, 0)--(12, 6, 0)--(12, 7, 0)--(11, 7, 0)--cycle;
+\fill[gray, opacity = 0.4] (3, 7, 0)--(4, 7, 0)--(4, 8, 0)--(3, 8, 0)--cycle;
+\draw[line width = .8pt] (3, 7, 0)--(4, 7, 0)--(4, 8, 0)--(3, 8, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 7, 0)--(8, 7, 0)--(8, 8, 0)--(7, 8, 0)--cycle;
+\draw[line width = .8pt] (7, 7, 0)--(8, 7, 0)--(8, 8, 0)--(7, 8, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 7, 0)--(12, 7, 0)--(12, 8, 0)--(11, 8, 0)--cycle;
+\draw[line width = .8pt] (11, 7, 0)--(12, 7, 0)--(12, 8, 0)--(11, 8, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 7, 0)--(13, 7, 0)--(13, 8, 0)--(12, 8, 0)--cycle;
+\draw[line width = .8pt] (12, 7, 0)--(13, 7, 0)--(13, 8, 0)--(12, 8, 0)--cycle;
+\fill[gray, opacity = 0.4] (2, 8, 0)--(3, 8, 0)--(3, 9, 0)--(2, 9, 0)--cycle;
+\draw[line width = .8pt] (2, 8, 0)--(3, 8, 0)--(3, 9, 0)--(2, 9, 0)--cycle;
+\fill[gray, opacity = 0.4] (3, 8, 0)--(4, 8, 0)--(4, 9, 0)--(3, 9, 0)--cycle;
+\draw[line width = .8pt] (3, 8, 0)--(4, 8, 0)--(4, 9, 0)--(3, 9, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 8, 0)--(8, 8, 0)--(8, 9, 0)--(7, 9, 0)--cycle;
+\draw[line width = .8pt] (7, 8, 0)--(8, 8, 0)--(8, 9, 0)--(7, 9, 0)--cycle;
+\fill[gray, opacity = 0.4] (9, 8, 0)--(10, 8, 0)--(10, 9, 0)--(9, 9, 0)--cycle;
+\draw[line width = .8pt] (9, 8, 0)--(10, 8, 0)--(10, 9, 0)--(9, 9, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 8, 0)--(12, 8, 0)--(12, 9, 0)--(11, 9, 0)--cycle;
+\draw[line width = .8pt] (11, 8, 0)--(12, 8, 0)--(12, 9, 0)--(11, 9, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 8, 0)--(13, 8, 0)--(13, 9, 0)--(12, 9, 0)--cycle;
+\draw[line width = .8pt] (12, 8, 0)--(13, 8, 0)--(13, 9, 0)--(12, 9, 0)--cycle;
+\fill[gray, opacity = 0.4] (16, 8, 0)--(17, 8, 0)--(17, 9, 0)--(16, 9, 0)--cycle;
+\draw[line width = .8pt] (16, 8, 0)--(17, 8, 0)--(17, 9, 0)--(16, 9, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (5.5, 9.5, 0.0) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (5, 9, 0)--(6, 9, 0)--(6, 10, 0)--(5, 10, 0)--cycle;
+\fill[gray, opacity = 0.4] (6, 9, 0)--(7, 9, 0)--(7, 10, 0)--(6, 10, 0)--cycle;
+\draw[line width = .8pt] (6, 9, 0)--(7, 9, 0)--(7, 10, 0)--(6, 10, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (7.5, 9.5, 0.0) {\Large {$\mathsf{7}$}};
+\draw[line width = .8pt] (7, 9, 0)--(8, 9, 0)--(8, 10, 0)--(7, 10, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 9, 0)--(9, 9, 0)--(9, 10, 0)--(8, 10, 0)--cycle;
+\draw[line width = .8pt] (8, 9, 0)--(9, 9, 0)--(9, 10, 0)--(8, 10, 0)--cycle;
+\fill[gray, opacity = 0.4] (9, 9, 0)--(10, 9, 0)--(10, 10, 0)--(9, 10, 0)--cycle;
+\draw[line width = .8pt] (9, 9, 0)--(10, 9, 0)--(10, 10, 0)--(9, 10, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 9, 0)--(12, 9, 0)--(12, 10, 0)--(11, 10, 0)--cycle;
+\draw[line width = .8pt] (11, 9, 0)--(12, 9, 0)--(12, 10, 0)--(11, 10, 0)--cycle;
+\fill[gray, opacity = 0.4] (16, 9, 0)--(17, 9, 0)--(17, 10, 0)--(16, 10, 0)--cycle;
+\draw[line width = .8pt] (16, 9, 0)--(17, 9, 0)--(17, 10, 0)--(16, 10, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 9, 0)--(18, 9, 0)--(18, 10, 0)--(17, 10, 0)--cycle;
+\draw[line width = .8pt] (17, 9, 0)--(18, 9, 0)--(18, 10, 0)--(17, 10, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (18.2, 9.2, 0.0)--(18.8, 9.2, 0.0)--(18.8, 9.8, 0.0)--(18.2, 9.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (18.5, 9.5, 0.0) {\Large {$\mathsf{3}$}};
+\draw[line width = .8pt] (18, 9, 0)--(19, 9, 0)--(19, 10, 0)--(18, 10, 0)--cycle;
+\fill[gray, opacity = 0.4] (5, 10, 0)--(6, 10, 0)--(6, 11, 0)--(5, 11, 0)--cycle;
+\draw[line width = .8pt] (5, 10, 0)--(6, 10, 0)--(6, 11, 0)--(5, 11, 0)--cycle;
+\fill[gray, opacity = 0.4] (6, 10, 0)--(7, 10, 0)--(7, 11, 0)--(6, 11, 0)--cycle;
+\draw[line width = .8pt] (6, 10, 0)--(7, 10, 0)--(7, 11, 0)--(6, 11, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 10, 0)--(8, 10, 0)--(8, 11, 0)--(7, 11, 0)--cycle;
+\draw[line width = .8pt] (7, 10, 0)--(8, 10, 0)--(8, 11, 0)--(7, 11, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 10, 0)--(9, 10, 0)--(9, 11, 0)--(8, 11, 0)--cycle;
+\draw[line width = .8pt] (8, 10, 0)--(9, 10, 0)--(9, 11, 0)--(8, 11, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 10, 0)--(12, 10, 0)--(12, 11, 0)--(11, 11, 0)--cycle;
+\draw[line width = .8pt] (11, 10, 0)--(12, 10, 0)--(12, 11, 0)--(11, 11, 0)--cycle;
+\fill[gray, opacity = 0.4] (13, 10, 0)--(14, 10, 0)--(14, 11, 0)--(13, 11, 0)--cycle;
+\draw[line width = .8pt] (13, 10, 0)--(14, 10, 0)--(14, 11, 0)--(13, 11, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (14.5, 10.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (14, 10, 0)--(15, 10, 0)--(15, 11, 0)--(14, 11, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 10, 0)--(18, 10, 0)--(18, 11, 0)--(17, 11, 0)--cycle;
+\draw[line width = .8pt] (17, 10, 0)--(18, 10, 0)--(18, 11, 0)--(17, 11, 0)--cycle;
+\fill[gray, opacity = 0.4] (6, 11, 0)--(7, 11, 0)--(7, 12, 0)--(6, 12, 0)--cycle;
+\draw[line width = .8pt] (6, 11, 0)--(7, 11, 0)--(7, 12, 0)--(6, 12, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 11, 0)--(8, 11, 0)--(8, 12, 0)--(7, 12, 0)--cycle;
+\draw[line width = .8pt] (7, 11, 0)--(8, 11, 0)--(8, 12, 0)--(7, 12, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (11.2, 11.2, 0.0)--(11.8, 11.2, 0.0)--(11.8, 11.8, 0.0)--(11.2, 11.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (11.5, 11.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (11, 11, 0)--(12, 11, 0)--(12, 12, 0)--(11, 12, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 11, 0)--(13, 11, 0)--(13, 12, 0)--(12, 12, 0)--cycle;
+\draw[line width = .8pt] (12, 11, 0)--(13, 11, 0)--(13, 12, 0)--(12, 12, 0)--cycle;
+\fill[gray, opacity = 0.4] (13, 11, 0)--(14, 11, 0)--(14, 12, 0)--(13, 12, 0)--cycle;
+\draw[line width = .8pt] (13, 11, 0)--(14, 11, 0)--(14, 12, 0)--(13, 12, 0)--cycle;
+\fill[gray, opacity = 0.4] (14, 11, 0)--(15, 11, 0)--(15, 12, 0)--(14, 12, 0)--cycle;
+\draw[line width = .8pt] (14, 11, 0)--(15, 11, 0)--(15, 12, 0)--(14, 12, 0)--cycle;
+\fill[gray, opacity = 0.4] (15, 11, 0)--(16, 11, 0)--(16, 12, 0)--(15, 12, 0)--cycle;
+\draw[line width = .8pt] (15, 11, 0)--(16, 11, 0)--(16, 12, 0)--(15, 12, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 11, 0)--(18, 11, 0)--(18, 12, 0)--(17, 12, 0)--cycle;
+\draw[line width = .8pt] (17, 11, 0)--(18, 11, 0)--(18, 12, 0)--(17, 12, 0)--cycle;
+\fill[gray, opacity = 0.4] (18, 11, 0)--(19, 11, 0)--(19, 12, 0)--(18, 12, 0)--cycle;
+\draw[line width = .8pt] (18, 11, 0)--(19, 11, 0)--(19, 12, 0)--(18, 12, 0)--cycle;
+\fill[gray, opacity = 0.4] (6, 12, 0)--(7, 12, 0)--(7, 13, 0)--(6, 13, 0)--cycle;
+\draw[line width = .8pt] (6, 12, 0)--(7, 12, 0)--(7, 13, 0)--(6, 13, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 12, 0)--(8, 12, 0)--(8, 13, 0)--(7, 13, 0)--cycle;
+\draw[line width = .8pt] (7, 12, 0)--(8, 12, 0)--(8, 13, 0)--(7, 13, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 12, 0)--(9, 12, 0)--(9, 13, 0)--(8, 13, 0)--cycle;
+\draw[line width = .8pt] (8, 12, 0)--(9, 12, 0)--(9, 13, 0)--(8, 13, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 12, 0)--(12, 12, 0)--(12, 13, 0)--(11, 13, 0)--cycle;
+\draw[line width = .8pt] (11, 12, 0)--(12, 12, 0)--(12, 13, 0)--(11, 13, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 12, 0)--(13, 12, 0)--(13, 13, 0)--(12, 13, 0)--cycle;
+\draw[line width = .8pt] (12, 12, 0)--(13, 12, 0)--(13, 13, 0)--(12, 13, 0)--cycle;
+\fill[gray, opacity = 0.4] (13, 12, 0)--(14, 12, 0)--(14, 13, 0)--(13, 13, 0)--cycle;
+\draw[line width = .8pt] (13, 12, 0)--(14, 12, 0)--(14, 13, 0)--(13, 13, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (17.2, 12.2, 0.0)--(17.8, 12.2, 0.0)--(17.8, 12.8, 0.0)--(17.2, 12.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (17.5, 12.5, 0.0) {\Large {$\mathsf{6}$}};
+\draw[line width = .8pt] (17, 12, 0)--(18, 12, 0)--(18, 13, 0)--(17, 13, 0)--cycle;
+\fill[gray, opacity = 0.4] (18, 12, 0)--(19, 12, 0)--(19, 13, 0)--(18, 13, 0)--cycle;
+\draw[line width = .8pt] (18, 12, 0)--(19, 12, 0)--(19, 13, 0)--(18, 13, 0)--cycle;
+\fill[gray, opacity = 0.4] (19, 12, 0)--(20, 12, 0)--(20, 13, 0)--(19, 13, 0)--cycle;
+\draw[line width = .8pt] (19, 12, 0)--(20, 12, 0)--(20, 13, 0)--(19, 13, 0)--cycle;
+\fill[gray, opacity = 0.4] (6, 13, 0)--(7, 13, 0)--(7, 14, 0)--(6, 14, 0)--cycle;
+\draw[line width = .8pt] (6, 13, 0)--(7, 13, 0)--(7, 14, 0)--(6, 14, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (7.5, 13.5, 0.0) {\Large {$\mathsf{9}$}};
+\draw[line width = .8pt] (7, 13, 0)--(8, 13, 0)--(8, 14, 0)--(7, 14, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 13, 0)--(9, 13, 0)--(9, 14, 0)--(8, 14, 0)--cycle;
+\draw[line width = .8pt] (8, 13, 0)--(9, 13, 0)--(9, 14, 0)--(8, 14, 0)--cycle;
+\fill[gray, opacity = 0.4] (9, 13, 0)--(10, 13, 0)--(10, 14, 0)--(9, 14, 0)--cycle;
+\draw[line width = .8pt] (9, 13, 0)--(10, 13, 0)--(10, 14, 0)--(9, 14, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 13, 0)--(12, 13, 0)--(12, 14, 0)--(11, 14, 0)--cycle;
+\draw[line width = .8pt] (11, 13, 0)--(12, 13, 0)--(12, 14, 0)--(11, 14, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 13, 0)--(13, 13, 0)--(13, 14, 0)--(12, 14, 0)--cycle;
+\draw[line width = .8pt] (12, 13, 0)--(13, 13, 0)--(13, 14, 0)--(12, 14, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 13, 0)--(18, 13, 0)--(18, 14, 0)--(17, 14, 0)--cycle;
+\draw[line width = .8pt] (17, 13, 0)--(18, 13, 0)--(18, 14, 0)--(17, 14, 0)--cycle;
+\fill[gray, opacity = 0.4] (18, 13, 0)--(19, 13, 0)--(19, 14, 0)--(18, 14, 0)--cycle;
+\draw[line width = .8pt] (18, 13, 0)--(19, 13, 0)--(19, 14, 0)--(18, 14, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (6.5, 14.5, 0.0) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (6, 14, 0)--(7, 14, 0)--(7, 15, 0)--(6, 15, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 14, 0)--(8, 14, 0)--(8, 15, 0)--(7, 15, 0)--cycle;
+\draw[line width = .8pt] (7, 14, 0)--(8, 14, 0)--(8, 15, 0)--(7, 15, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (8.2, 14.2, 0.0)--(8.8, 14.2, 0.0)--(8.8, 14.8, 0.0)--(8.2, 14.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (8.5, 14.5, 0.0) {\Large {$\mathsf{7}$}};
+\draw[line width = .8pt] (8, 14, 0)--(9, 14, 0)--(9, 15, 0)--(8, 15, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 14, 0)--(13, 14, 0)--(13, 15, 0)--(12, 15, 0)--cycle;
+\draw[line width = .8pt] (12, 14, 0)--(13, 14, 0)--(13, 15, 0)--(12, 15, 0)--cycle;
+\fill[gray, opacity = 0.4] (13, 14, 0)--(14, 14, 0)--(14, 15, 0)--(13, 15, 0)--cycle;
+\draw[line width = .8pt] (13, 14, 0)--(14, 14, 0)--(14, 15, 0)--(13, 15, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 14, 0)--(18, 14, 0)--(18, 15, 0)--(17, 15, 0)--cycle;
+\draw[line width = .8pt] (17, 14, 0)--(18, 14, 0)--(18, 15, 0)--(17, 15, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 15, 0)--(9, 15, 0)--(9, 16, 0)--(8, 16, 0)--cycle;
+\draw[line width = .8pt] (8, 15, 0)--(9, 15, 0)--(9, 16, 0)--(8, 16, 0)--cycle;
+\fill[gray, opacity = 0.4] (9, 15, 0)--(10, 15, 0)--(10, 16, 0)--(9, 16, 0)--cycle;
+\draw[line width = .8pt] (9, 15, 0)--(10, 15, 0)--(10, 16, 0)--(9, 16, 0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is xy plane at z = 0, transform shape] at (10.5, 15.5, 0.0) {\LARGE $\hphantom{\mathsf{4}}$};
+\node[canvas is xy plane at z = 0, transform shape] at (10.5, 15.5, 0.0) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (10, 15, 0)--(11, 15, 0)--(11, 16, 0)--(10, 16, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 15, 0)--(13, 15, 0)--(13, 16, 0)--(12, 16, 0)--cycle;
+\draw[line width = .8pt] (12, 15, 0)--(13, 15, 0)--(13, 16, 0)--(12, 16, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (13.5, 15.5, 0.0) {\Large {$\mathsf{7}$}};
+\draw[line width = .8pt] (13, 15, 0)--(14, 15, 0)--(14, 16, 0)--(13, 16, 0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is xy plane at z = 0, transform shape] at (17.5, 15.5, 0.0) {\LARGE $\hphantom{\mathsf{4}}$};
+\node[canvas is xy plane at z = 0, transform shape] at (17.5, 15.5, 0.0) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (17, 15, 0)--(18, 15, 0)--(18, 16, 0)--(17, 16, 0)--cycle;
+\fill[gray, opacity = 0.4] (19, 15, 0)--(20, 15, 0)--(20, 16, 0)--(19, 16, 0)--cycle;
+\draw[line width = .8pt] (19, 15, 0)--(20, 15, 0)--(20, 16, 0)--(19, 16, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 16, 0)--(8, 16, 0)--(8, 17, 0)--(7, 17, 0)--cycle;
+\draw[line width = .8pt] (7, 16, 0)--(8, 16, 0)--(8, 17, 0)--(7, 17, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 16, 0)--(9, 16, 0)--(9, 17, 0)--(8, 17, 0)--cycle;
+\draw[line width = .8pt] (8, 16, 0)--(9, 16, 0)--(9, 17, 0)--(8, 17, 0)--cycle;
+\fill[gray, opacity = 0.4] (10, 16, 0)--(11, 16, 0)--(11, 17, 0)--(10, 17, 0)--cycle;
+\draw[line width = .8pt] (10, 16, 0)--(11, 16, 0)--(11, 17, 0)--(10, 17, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 16, 0)--(12, 16, 0)--(12, 17, 0)--(11, 17, 0)--cycle;
+\draw[line width = .8pt] (11, 16, 0)--(12, 16, 0)--(12, 17, 0)--(11, 17, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (12.5, 16.5, 0.0) {\Large {$\mathsf{7}$}};
+\draw[line width = .8pt] (12, 16, 0)--(13, 16, 0)--(13, 17, 0)--(12, 17, 0)--cycle;
+\fill[gray, opacity = 0.4] (13, 16, 0)--(14, 16, 0)--(14, 17, 0)--(13, 17, 0)--cycle;
+\draw[line width = .8pt] (13, 16, 0)--(14, 16, 0)--(14, 17, 0)--(13, 17, 0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is xy plane at z = 0, transform shape] at (14.5, 16.5, 0.0) {\LARGE $\hphantom{\mathsf{5}}$};
+\node[canvas is xy plane at z = 0, transform shape] at (14.5, 16.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (14, 16, 0)--(15, 16, 0)--(15, 17, 0)--(14, 17, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 16, 0)--(18, 16, 0)--(18, 17, 0)--(17, 17, 0)--cycle;
+\draw[line width = .8pt] (17, 16, 0)--(18, 16, 0)--(18, 17, 0)--(17, 17, 0)--cycle;
+\fill[gray, opacity = 0.4] (18, 16, 0)--(19, 16, 0)--(19, 17, 0)--(18, 17, 0)--cycle;
+\draw[line width = .8pt] (18, 16, 0)--(19, 16, 0)--(19, 17, 0)--(18, 17, 0)--cycle;
+\fill[gray, opacity = 0.4] (19, 16, 0)--(20, 16, 0)--(20, 17, 0)--(19, 17, 0)--cycle;
+\draw[line width = .8pt] (19, 16, 0)--(20, 16, 0)--(20, 17, 0)--(19, 17, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (7.2, 17.2, 0.0)--(7.8, 17.2, 0.0)--(7.8, 17.8, 0.0)--(7.2, 17.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (7.5, 17.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (7, 17, 0)--(8, 17, 0)--(8, 18, 0)--(7, 18, 0)--cycle;
+\fill[gray, opacity = 0.4] (11, 17, 0)--(12, 17, 0)--(12, 18, 0)--(11, 18, 0)--cycle;
+\draw[line width = .8pt] (11, 17, 0)--(12, 17, 0)--(12, 18, 0)--(11, 18, 0)--cycle;
+\fill[gray, opacity = 0.4] (12, 17, 0)--(13, 17, 0)--(13, 18, 0)--(12, 18, 0)--cycle;
+\draw[line width = .8pt] (12, 17, 0)--(13, 17, 0)--(13, 18, 0)--(12, 18, 0)--cycle;
+\fill[gray, opacity = 0.4] (14, 17, 0)--(15, 17, 0)--(15, 18, 0)--(14, 18, 0)--cycle;
+\draw[line width = .8pt] (14, 17, 0)--(15, 17, 0)--(15, 18, 0)--(14, 18, 0)--cycle;
+\fill[gray, opacity = 0.4] (15, 17, 0)--(16, 17, 0)--(16, 18, 0)--(15, 18, 0)--cycle;
+\draw[line width = .8pt] (15, 17, 0)--(16, 17, 0)--(16, 18, 0)--(15, 18, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 17, 0)--(18, 17, 0)--(18, 18, 0)--(17, 18, 0)--cycle;
+\draw[line width = .8pt] (17, 17, 0)--(18, 17, 0)--(18, 18, 0)--(17, 18, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 18, 0)--(8, 18, 0)--(8, 19, 0)--(7, 19, 0)--cycle;
+\draw[line width = .8pt] (7, 18, 0)--(8, 18, 0)--(8, 19, 0)--(7, 19, 0)--cycle;
+\fill[gray, opacity = 0.4] (8, 18, 0)--(9, 18, 0)--(9, 19, 0)--(8, 19, 0)--cycle;
+\draw[line width = .8pt] (8, 18, 0)--(9, 18, 0)--(9, 19, 0)--(8, 19, 0)--cycle;
+\fill[gray, opacity = 0.4] (10, 18, 0)--(11, 18, 0)--(11, 19, 0)--(10, 19, 0)--cycle;
+\draw[line width = .8pt] (10, 18, 0)--(11, 18, 0)--(11, 19, 0)--(10, 19, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (11.5, 18.5, 0.0) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (11, 18, 0)--(12, 18, 0)--(12, 19, 0)--(11, 19, 0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is xy plane at z = 0, transform shape] at (15.5, 18.5, 0.0) {\LARGE $\hphantom{\mathsf{4}}$};
+\node[canvas is xy plane at z = 0, transform shape] at (15.5, 18.5, 0.0) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (15, 18, 0)--(16, 18, 0)--(16, 19, 0)--(15, 19, 0)--cycle;
+\fill[gray, opacity = 0.4] (16, 18, 0)--(17, 18, 0)--(17, 19, 0)--(16, 19, 0)--cycle;
+\draw[line width = .8pt] (16, 18, 0)--(17, 18, 0)--(17, 19, 0)--(16, 19, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 18, 0)--(18, 18, 0)--(18, 19, 0)--(17, 19, 0)--cycle;
+\draw[line width = .8pt] (17, 18, 0)--(18, 18, 0)--(18, 19, 0)--(17, 19, 0)--cycle;
+\fill[gray, opacity = 0.4] (18, 18, 0)--(19, 18, 0)--(19, 19, 0)--(18, 19, 0)--cycle;
+\draw[line width = .8pt] (18, 18, 0)--(19, 18, 0)--(19, 19, 0)--(18, 19, 0)--cycle;
+\fill[gray, opacity = 0.4] (19, 18, 0)--(20, 18, 0)--(20, 19, 0)--(19, 19, 0)--cycle;
+\draw[line width = .8pt] (19, 18, 0)--(20, 18, 0)--(20, 19, 0)--(19, 19, 0)--cycle;
+\fill[gray, opacity = 0.4] (6, 19, 0)--(7, 19, 0)--(7, 20, 0)--(6, 20, 0)--cycle;
+\draw[line width = .8pt] (6, 19, 0)--(7, 19, 0)--(7, 20, 0)--(6, 20, 0)--cycle;
+\fill[gray, opacity = 0.4] (7, 19, 0)--(8, 19, 0)--(8, 20, 0)--(7, 20, 0)--cycle;
+\draw[line width = .8pt] (7, 19, 0)--(8, 19, 0)--(8, 20, 0)--(7, 20, 0)--cycle;
+\fill[gray, opacity = 0.4] (17, 19, 0)--(18, 19, 0)--(18, 20, 0)--(17, 20, 0)--cycle;
+\draw[line width = .8pt] (17, 19, 0)--(18, 19, 0)--(18, 20, 0)--(17, 20, 0)--cycle;
+\fill[gray, opacity = 0.4] (18, 19, 0)--(19, 19, 0)--(19, 20, 0)--(18, 20, 0)--cycle;
+\draw[line width = .8pt] (18, 19, 0)--(19, 19, 0)--(19, 20, 0)--(18, 20, 0)--cycle;
+\fill[gray, opacity = 0.4] (6.0, 12.0, -3.0)--(6.0, 12.0, -2.0)--(6.0, 13.0, -2.0)--(6.0, 13.0, -3.0)--cycle;
+\draw[line width = .8pt] (6.0, 12.0, -3.0)--(6.0, 12.0, -2.0)--(6.0, 13.0, -2.0)--(6.0, 13.0, -3.0)--cycle;
+\fill[gray, opacity = 0.4] (6.0, 11.0, -3.0)--(6.0, 11.0, -2.0)--(6.0, 12.0, -2.0)--(6.0, 12.0, -3.0)--cycle;
+\draw[line width = .8pt] (6.0, 11.0, -3.0)--(6.0, 11.0, -2.0)--(6.0, 12.0, -2.0)--(6.0, 12.0, -3.0)--cycle;
+\fill[gray, opacity = 0.4] (6.0, 12.0, -2.0)--(6.0, 12.0, -1.0)--(6.0, 13.0, -1.0)--(6.0, 13.0, -2.0)--cycle;
+\draw[line width = .8pt] (6.0, 12.0, -2.0)--(6.0, 12.0, -1.0)--(6.0, 13.0, -1.0)--(6.0, 13.0, -2.0)--cycle;
+\fill[gray, opacity = 0.4] (6.0, 12.0, -4.0)--(6.0, 12.0, -3.0)--(6.0, 13.0, -3.0)--(6.0, 13.0, -4.0)--cycle;
+\draw[line width = .8pt] (6.0, 12.0, -4.0)--(6.0, 12.0, -3.0)--(6.0, 13.0, -3.0)--(6.0, 13.0, -4.0)--cycle;
+\fill[gray, opacity = 0.4] (6.0, 12.0, -1.0)--(6.0, 12.0, 0.0)--(6.0, 13.0, 0.0)--(6.0, 13.0, -1.0)--cycle;
+\draw[line width = .8pt] (6.0, 12.0, -1.0)--(6.0, 12.0, 0.0)--(6.0, 13.0, 0.0)--(6.0, 13.0, -1.0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is yz plane at x = 0] at (6.0, 11.5, -3.5) {\LARGE $\hphantom{\mathsf{7}}$};
+\node[canvas is yz plane at x = 0] at (6.0, 11.5, -3.5) {\Large {$\mathsf{7}$}};
+\draw[line width = .8pt] (6.0, 11.0, -4.0)--(6.0, 11.0, -3.0)--(6.0, 12.0, -3.0)--(6.0, 12.0, -4.0)--cycle;
+\fill[gray, opacity = 0.4] (6.0, 11.0, -5.0)--(6.0, 11.0, -4.0)--(6.0, 12.0, -4.0)--(6.0, 12.0, -5.0)--cycle;
+\draw[line width = .8pt] (6.0, 11.0, -5.0)--(6.0, 11.0, -4.0)--(6.0, 12.0, -4.0)--(6.0, 12.0, -5.0)--cycle;
+\fill[gray, opacity = 0.4] (7.0, 11.0, -3.0)--(7.0, 11.0, -2.0)--(6.0, 11.0, -2.0)--(6.0, 11.0, -3.0)--cycle;
+\draw[line width = .8pt] (7.0, 11.0, -3.0)--(7.0, 11.0, -2.0)--(6.0, 11.0, -2.0)--(6.0, 11.0, -3.0)--cycle;
+\fill[gray, opacity = 0.4] (7.0, 11.0, -4.0)--(7.0, 11.0, -3.0)--(6.0, 11.0, -3.0)--(6.0, 11.0, -4.0)--cycle;
+\draw[line width = .8pt] (7.0, 11.0, -4.0)--(7.0, 11.0, -3.0)--(6.0, 11.0, -3.0)--(6.0, 11.0, -4.0)--cycle;
+\end{scope}
+\end{tikzpicture}}}
+\begin{document}\begin{animateinline}{1}
+        \multiframe{360}{i=0+1}{\parampicture{\i}}
+        \end{animateinline}
+        \end{document}

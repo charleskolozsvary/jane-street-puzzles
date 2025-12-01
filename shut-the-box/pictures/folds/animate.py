@@ -1,64 +1,43 @@
 import os
 import imageio.v2 as imageio
-from copy import deepcopy
-
-NUM_FRAMES = 360
 
 FRAME_DIR = 'frames'
 
-def makeAnimation(file_name_no_extension, frames_per_update, step_range = [0, 17]):
-    frames = []
-    for step in range(step_range[0], step_range[1]+1): # 0--17
-        print(f'{step:02d}/{step_range[1]:02d}')
-        chunk = step % (NUM_FRAMES // frames_per_update)
-        start_page = chunk * frames_per_update
-        end_page = start_page + frames_per_update
-        for page in range(start_page, end_page):
-            filename = os.path.join(FRAME_DIR, f"fold{step}_{page:03d}.png")
-            if os.path.exists(filename):
-                frames.append(imageio.imread(filename))
-            else:
-                print("Missing:", filename)
+TOTAL_VIEWS_PER_FOLD = 360
 
-    # don't think this is necessary
-    frames1 = deepcopy(frames)
-    frames2 = deepcopy(frames)
-    # save mp4
-    imageio.mimsave(f'{file_name_no_extension}.mp4', frames1, fps=30)
-    print(f"MP4 saved to {file_name_no_extension}.mp4")
-    # save gif
-    if frames_per_update < 180:
-        imageio.mimsave(f'{file_name_no_extension}.gif', frames2, fps=30)
-        print(f"GIF saved to {file_name_no_extension}.gif")
+def foldFrameFileNames(fold_name_prefix, extension, frames_per_fold, fold_step_range):
+    frame_file_names = []
+    for fold_step in range(fold_step_range[0], fold_step_range[1]+1):
+        chunk = fold_step % (TOTAL_VIEWS_PER_FOLD // frames_per_fold)
+        start_frame_idx = chunk * frames_per_fold
+        end_frame_idx = start_frame_idx + frames_per_fold
+        
+        for idx in range(start_frame_idx, end_frame_idx):
+            frame_file_name = os.path.join(FRAME_DIR, f'{fold_name_prefix}fold{fold_step}_{idx:03d}.{extension}')
+            frame_file_names.append(frame_file_name)
+    return frame_file_names
 
-def animateShutBox(file_name_no_extension, file_stem):
-    frames = []
-    for page in range(0, 360):
-        filename = os.path.join(FRAME_DIR, f"{file_stem}_{page:03d}.png")
-        if os.path.exists(filename):
-            frames.append(imageio.imread(filename))
-        else:
-            print("Missing:", filename)
-    # save mp4
-    imageio.mimsave(f'{file_name_no_extension}.mp4', frames, fps=30)
-    print(f"MP4 saved to {file_name_no_extension}.mp4")
-    # save gif
-    imageio.mimsave(f'{file_name_no_extension}.gif', frames, fps=30)
-    print(f"GIF saved to {file_name_no_extension}.gif")
+def animatePNGs(file_name_stem, frame_file_names, _fps):
+    mp4_file_name = os.path.join('animations', f'{file_name_stem}.mp4')
 
-def do17Folds():
-    # # every 360
-    # makeAnimation('animations/every180', 180)
+    def saveAnimation(file_name): # not sure why .gif isn't working correctly
+        with imageio.get_writer(file_name, mode='I', fps = _fps) as writer:
+            for frame_file_name in frame_file_names:
+                image = imageio.imread(frame_file_name)
+                writer.append_data(image)    
     
-    # every 90
-    makeAnimation('animations/every90', 90)
+    saveAnimation(mp4_file_name)
+    print(f"\nMP4 saved to {mp4_file_name}\n")
 
-    # every 45
-    makeAnimation('animations/every45', 45)
-
-    # every 30
-    makeAnimation('animations/every30', 30)    
+def animateFolds(file_name_stem, fold_name_prefix, extension, frames_per_fold, fold_step_range, fps):
+    frame_file_names = foldFrameFileNames(fold_name_prefix, extension, frames_per_fold, fold_step_range)
+    animatePNGs(f'{file_name_stem}-every{frames_per_fold}', frame_file_names, fps)
 
 if __name__ == '__main__':
-    do17Folds()
-    # animateShutBox('animations/shutbox', 'box-complete')
+    example_prefix = 'example-net-'
+    full_prefix = 'full-net-'
+    
+    animateFolds('example', example_prefix, 'png', 90, [0, 12], 60)
+    animateFolds('example', example_prefix, 'png', 60, [0, 12], 60)
+    animateFolds('example', example_prefix, 'png', 45, [0, 12], 60)
+    animateFolds('example', example_prefix, 'png', 30, [0, 12], 60)

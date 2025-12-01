@@ -1,0 +1,96 @@
+\documentclass{standalone}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage[export]{animate}
+\usepackage{graphicx}
+\usepackage{stix2}
+\usetikzlibrary{perspective}
+
+%% from https://tex.stackexchange.com/questions/67573/tikz-shift-and-rotate-in-3d
+\newcommand{\savedx}{0}
+\newcommand{\savedy}{0}
+\newcommand{\savedz}{0}
+
+\newcommand{\rotateRPY}[4][0/0/0]% point to be saved to \savedxyz, roll, pitch, yaw
+{   \pgfmathsetmacro{\rollangle}{#2}
+    \pgfmathsetmacro{\pitchangle}{#3}
+    \pgfmathsetmacro{\yawangle}{#4}
+
+    % to what vector is the x unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newxx}{cos(\yawangle)*cos(\pitchangle)}% a
+    \pgfmathsetmacro{\newxy}{sin(\yawangle)*cos(\pitchangle)}% d
+    \pgfmathsetmacro{\newxz}{-sin(\pitchangle)}% g
+    \path (\newxx,\newxy,\newxz);
+    \pgfgetlastxy{\nxx}{\nxy}
+
+    % to what vector is the y unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newyx}{cos(\yawangle)*sin(\pitchangle)*sin(\rollangle)-sin(\yawangle)*cos(\rollangle)}% b
+    \pgfmathsetmacro{\newyy}{sin(\yawangle)*sin(\pitchangle)*sin(\rollangle)+ cos(\yawangle)*cos(\rollangle)}% e
+    \pgfmathsetmacro{\newyz}{cos(\pitchangle)*sin(\rollangle)}% h
+    \path (\newyx,\newyy,\newyz);
+    \pgfgetlastxy{\nyx}{\nyy}
+
+    % to what vector is the z unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newzx}{cos(\yawangle)*sin(\pitchangle)*cos(\rollangle)+ sin(\yawangle)*sin(\rollangle)}
+    \pgfmathsetmacro{\newzy}{sin(\yawangle)*sin(\pitchangle)*cos(\rollangle)-cos(\yawangle)*sin(\rollangle)}
+    \pgfmathsetmacro{\newzz}{cos(\pitchangle)*cos(\rollangle)}
+    \path (\newzx,\newzy,\newzz);
+    \pgfgetlastxy{\nzx}{\nzy}
+
+    % transform the point given by #1
+    \foreach \x/\y/\z in {#1}
+    {   \pgfmathsetmacro{\transformedx}{\x*\newxx+\y*\newyx+\z*\newzx}
+        \pgfmathsetmacro{\transformedy}{\x*\newxy+\y*\newyy+\z*\newzy}
+        \pgfmathsetmacro{\transformedz}{\x*\newxz+\y*\newyz+\z*\newzz}
+        \xdef\savedx{\transformedx}
+        \xdef\savedy{\transformedy}
+        \xdef\savedz{\transformedz}     
+    }
+}
+
+\tikzset{RPY/.style={x={(\nxx,\nxy)},y={(\nyx,\nyy)},z={(\nzx,\nzy)}}}
+\newcommand{\parampicture}[1]{\begin{tikzpicture}[canvas is xy plane at z = 0, transform shape, 3d view = {#1}{25}]\node[canvas is xz plane at y = 0] at (5.5, 2.0, 3.5) {\Large $\mathsf{4}$};
+\draw[line width = 1pt] (5.0, 2.0, 3.0)--(6.0, 2.0, 3.0)--(6.0, 2.0, 4.0)--(5.0, 2.0, 4.0)--cycle;
+\fill[gray, opacity = 0.5] (2.0, 2.0, 4.0)--(3.0, 2.0, 4.0)--(3.0, 2.0, 5.0)--(2.0, 2.0, 5.0)--cycle;
+\draw[line width = 1pt] (2.0, 2.0, 4.0)--(3.0, 2.0, 4.0)--(3.0, 2.0, 5.0)--(2.0, 2.0, 5.0)--cycle;
+\fill[gray, opacity = 0.5] (4.0, 2.0, 3.0)--(5.0, 2.0, 3.0)--(5.0, 2.0, 4.0)--(4.0, 2.0, 4.0)--cycle;
+\draw[line width = 1pt] (4.0, 2.0, 3.0)--(5.0, 2.0, 3.0)--(5.0, 2.0, 4.0)--(4.0, 2.0, 4.0)--cycle;
+\fill[gray, opacity = 0.5] (3.0, 1.0, 0.0)--(2.0, 1.0, 0.0)--(2.0, 2.0, 0.0)--(3.0, 2.0, 0.0)--cycle;
+\draw[line width = 1pt] (3.0, 1.0, 0.0)--(2.0, 1.0, 0.0)--(2.0, 2.0, 0.0)--(3.0, 2.0, 0.0)--cycle;
+\fill[gray, opacity = 0.5] (3.0, 2.0, 3.0)--(4.0, 2.0, 3.0)--(4.0, 2.0, 4.0)--(3.0, 2.0, 4.0)--cycle;
+\draw[line width = 1pt] (3.0, 2.0, 3.0)--(4.0, 2.0, 3.0)--(4.0, 2.0, 4.0)--(3.0, 2.0, 4.0)--cycle;
+\fill[gray, opacity = 0.5] (2.0, 2.0, 1.0)--(3.0, 2.0, 1.0)--(3.0, 2.0, 2.0)--(2.0, 2.0, 2.0)--cycle;
+\draw[line width = 1pt] (2.0, 2.0, 1.0)--(3.0, 2.0, 1.0)--(3.0, 2.0, 2.0)--(2.0, 2.0, 2.0)--cycle;
+\fill[gray, opacity = 0.5] (3.0, 2.0, 0.0)--(4.0, 2.0, 0.0)--(4.0, 2.0, 1.0)--(3.0, 2.0, 1.0)--cycle;
+\draw[line width = 1pt] (3.0, 2.0, 0.0)--(4.0, 2.0, 0.0)--(4.0, 2.0, 1.0)--(3.0, 2.0, 1.0)--cycle;
+\fill[gray, opacity = 0.5] (5.0, 2.0, 2.0)--(6.0, 2.0, 2.0)--(6.0, 2.0, 3.0)--(5.0, 2.0, 3.0)--cycle;
+\draw[line width = 1pt] (5.0, 2.0, 2.0)--(6.0, 2.0, 2.0)--(6.0, 2.0, 3.0)--(5.0, 2.0, 3.0)--cycle;
+\node[circle,fill=gray,opacity=0.5,canvas is xz plane at y = 0] at (3.5, 2.0, 1.5) {\LARGE $\hphantom{\mathsf{5}}$};
+\node[canvas is xz plane at y = 0] at (3.5, 2.0, 1.5) {\Large $\mathsf{5}$};
+\draw[line width = 1pt] (3.0, 2.0, 1.0)--(4.0, 2.0, 1.0)--(4.0, 2.0, 2.0)--(3.0, 2.0, 2.0)--cycle;
+\fill[gray, opacity = 0.5] (2.0, 2.0, 2.0)--(3.0, 2.0, 2.0)--(3.0, 2.0, 3.0)--(2.0, 2.0, 3.0)--cycle;
+\draw[line width = 1pt] (2.0, 2.0, 2.0)--(3.0, 2.0, 2.0)--(3.0, 2.0, 3.0)--(2.0, 2.0, 3.0)--cycle;
+\fill[gray, opacity = 0.5] (3.0, 2.0, 2.0)--(4.0, 2.0, 2.0)--(4.0, 2.0, 3.0)--(3.0, 2.0, 3.0)--cycle;
+\draw[line width = 1pt] (3.0, 2.0, 2.0)--(4.0, 2.0, 2.0)--(4.0, 2.0, 3.0)--(3.0, 2.0, 3.0)--cycle;
+\fill[gray, opacity = 0.5] (1.0, 2.0, 1.0)--(2.0, 2.0, 1.0)--(2.0, 2.0, 2.0)--(1.0, 2.0, 2.0)--cycle;
+\draw[line width = 1pt] (1.0, 2.0, 1.0)--(2.0, 2.0, 1.0)--(2.0, 2.0, 2.0)--(1.0, 2.0, 2.0)--cycle;
+\node[canvas is xz plane at y = 0] at (0.5, 2.0, 3.5) {\Large $\mathsf{2}$};
+\draw[line width = 1pt] (0.0, 2.0, 3.0)--(1.0, 2.0, 3.0)--(1.0, 2.0, 4.0)--(0.0, 2.0, 4.0)--cycle;
+\node[canvas is xz plane at y = 0] at (3.5, 2.0, 4.5) {\Large $\mathsf{5}$};
+\draw[line width = 1pt] (3.0, 2.0, 4.0)--(4.0, 2.0, 4.0)--(4.0, 2.0, 5.0)--(3.0, 2.0, 5.0)--cycle;
+\fill[gray, opacity = 0.5] (6.0, 2.0, 2.0)--(7.0, 2.0, 2.0)--(7.0, 2.0, 3.0)--(6.0, 2.0, 3.0)--cycle;
+\draw[line width = 1pt] (6.0, 2.0, 2.0)--(7.0, 2.0, 2.0)--(7.0, 2.0, 3.0)--(6.0, 2.0, 3.0)--cycle;
+\node[canvas is xz plane at y = 0] at (7.5, 2.0, 2.5) {\Large $\mathsf{2}$};
+\draw[line width = 1pt] (7.0, 2.0, 2.0)--(8.0, 2.0, 2.0)--(8.0, 2.0, 3.0)--(7.0, 2.0, 3.0)--cycle;
+\fill[color = gray, opacity = 0.5] (7.2, 2.0, 2.2)--(7.8, 2.0, 2.2)--(7.8, 2.0, 2.8)--(7.2, 2.0, 2.8)--cycle;
+\node[canvas is xz plane at y = 0] at (0.5, 2.0, 1.5) {\Large $\mathsf{2}$};
+\draw[line width = 1pt] (0.0, 2.0, 1.0)--(1.0, 2.0, 1.0)--(1.0, 2.0, 2.0)--(0.0, 2.0, 2.0)--cycle;
+\fill[gray, opacity = 0.5] (2.0, 2.0, 3.0)--(3.0, 2.0, 3.0)--(3.0, 2.0, 4.0)--(2.0, 2.0, 4.0)--cycle;
+\draw[line width = 1pt] (2.0, 2.0, 3.0)--(3.0, 2.0, 3.0)--(3.0, 2.0, 4.0)--(2.0, 2.0, 4.0)--cycle;
+\node[canvas is xz plane at y = 0] at (1.5, 2.0, 3.5) {\Large $\mathsf{5}$};
+\draw[line width = 1pt] (1.0, 2.0, 3.0)--(2.0, 2.0, 3.0)--(2.0, 2.0, 4.0)--(1.0, 2.0, 4.0)--cycle;
+\fill[color = gray, opacity = 0.5] (1.2, 2.0, 3.2)--(1.8, 2.0, 3.2)--(1.8, 2.0, 3.8)--(1.2, 2.0, 3.8)--cycle;
+\end{tikzpicture}}
+\begin{document}
+\parampicture{20}\end{document}

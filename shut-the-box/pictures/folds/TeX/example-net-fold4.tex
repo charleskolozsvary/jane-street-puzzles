@@ -1,0 +1,122 @@
+\documentclass{standalone}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage[export]{animate}
+\usepackage{graphicx}
+\usepackage{stix2}
+\usetikzlibrary{perspective}
+
+%% from https://tex.stackexchange.com/questions/67573/tikz-shift-and-rotate-in-3d
+\newcommand{\savedx}{0}
+\newcommand{\savedy}{0}
+\newcommand{\savedz}{0}
+
+\newcommand{\rotateRPY}[4][0/0/0]% point to be saved to \savedxyz, roll, pitch, yaw
+{   \pgfmathsetmacro{\rollangle}{#2}
+    \pgfmathsetmacro{\pitchangle}{#3}
+    \pgfmathsetmacro{\yawangle}{#4}
+
+    % to what vector is the x unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newxx}{cos(\yawangle)*cos(\pitchangle)}% a
+    \pgfmathsetmacro{\newxy}{sin(\yawangle)*cos(\pitchangle)}% d
+    \pgfmathsetmacro{\newxz}{-sin(\pitchangle)}% g
+    \path (\newxx,\newxy,\newxz);
+    \pgfgetlastxy{\nxx}{\nxy}
+
+    % to what vector is the y unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newyx}{cos(\yawangle)*sin(\pitchangle)*sin(\rollangle)-sin(\yawangle)*cos(\rollangle)}% b
+    \pgfmathsetmacro{\newyy}{sin(\yawangle)*sin(\pitchangle)*sin(\rollangle)+ cos(\yawangle)*cos(\rollangle)}% e
+    \pgfmathsetmacro{\newyz}{cos(\pitchangle)*sin(\rollangle)}% h
+    \path (\newyx,\newyy,\newyz);
+    \pgfgetlastxy{\nyx}{\nyy}
+
+    % to what vector is the z unit vector transformed, and which 2D vector is this?
+    \pgfmathsetmacro{\newzx}{cos(\yawangle)*sin(\pitchangle)*cos(\rollangle)+ sin(\yawangle)*sin(\rollangle)}
+    \pgfmathsetmacro{\newzy}{sin(\yawangle)*sin(\pitchangle)*cos(\rollangle)-cos(\yawangle)*sin(\rollangle)}
+    \pgfmathsetmacro{\newzz}{cos(\pitchangle)*cos(\rollangle)}
+    \path (\newzx,\newzy,\newzz);
+    \pgfgetlastxy{\nzx}{\nzy}
+
+    % transform the point given by #1
+    \foreach \x/\y/\z in {#1}
+    {   \pgfmathsetmacro{\transformedx}{\x*\newxx+\y*\newyx+\z*\newzx}
+        \pgfmathsetmacro{\transformedy}{\x*\newxy+\y*\newyy+\z*\newzy}
+        \pgfmathsetmacro{\transformedz}{\x*\newxz+\y*\newyz+\z*\newzz}
+        \xdef\savedx{\transformedx}
+        \xdef\savedy{\transformedy}
+        \xdef\savedz{\transformedz}     
+    }
+}
+
+\tikzset{RPY/.style={x={(\nxx,\nxy)},y={(\nyx,\nyy)},z={(\nzx,\nzy)}}}
+\newcommand{\parampicture}[1]{{\begin{tikzpicture}[canvas is xy plane at z = 0, transform shape, 3d view = {0}{30}, scale = 0.85, every node/.style = {scale = 0.85}]
+\useasboundingbox (-6,-6,-6) -- (6,6,6);\rotateRPY{0}{0}{#1}
+        \begin{scope}[RPY, shift = {(-4.0,-4.0,0)}]\fill[gray, opacity = 0.4] (2, 1, 0)--(3, 1, 0)--(3, 2, 0)--(2, 2, 0)--cycle;
+\draw[line width = .8pt] (2, 1, 0)--(3, 1, 0)--(3, 2, 0)--(2, 2, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (3.5, 1.5, 0.0) {\Large {$\mathsf{6}$}};
+\draw[line width = .8pt] (3, 1, 0)--(4, 1, 0)--(4, 2, 0)--(3, 2, 0)--cycle;
+\fill[gray, opacity = 0.4] (3, 2, 0)--(4, 2, 0)--(4, 3, 0)--(3, 3, 0)--cycle;
+\draw[line width = .8pt] (3, 2, 0)--(4, 2, 0)--(4, 3, 0)--(3, 3, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (0.5, 3.5, 0.0) {\Large {$\mathsf{2}$}};
+\draw[line width = .8pt] (0, 3, 0)--(1, 3, 0)--(1, 4, 0)--(0, 4, 0)--cycle;
+\fill[gray, opacity = 0.4] (1, 3, 0)--(2, 3, 0)--(2, 4, 0)--(1, 4, 0)--cycle;
+\draw[line width = .8pt] (1, 3, 0)--(2, 3, 0)--(2, 4, 0)--(1, 4, 0)--cycle;
+\fill[gray, opacity = 0.4] (2, 3, 0)--(3, 3, 0)--(3, 4, 0)--(2, 4, 0)--cycle;
+\draw[line width = .8pt] (2, 3, 0)--(3, 3, 0)--(3, 4, 0)--(2, 4, 0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is xy plane at z = 0, transform shape] at (3.5, 3.5, 0.0) {\LARGE $\hphantom{\mathsf{5}}$};
+\node[canvas is xy plane at z = 0, transform shape] at (3.5, 3.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (3, 3, 0)--(4, 3, 0)--(4, 4, 0)--(3, 4, 0)--cycle;
+\fill[gray, opacity = 0.4] (2, 4, 0)--(3, 4, 0)--(3, 5, 0)--(2, 5, 0)--cycle;
+\draw[line width = .8pt] (2, 4, 0)--(3, 4, 0)--(3, 5, 0)--(2, 5, 0)--cycle;
+\fill[gray, opacity = 0.4] (3, 4, 0)--(4, 4, 0)--(4, 5, 0)--(3, 5, 0)--cycle;
+\draw[line width = .8pt] (3, 4, 0)--(4, 4, 0)--(4, 5, 0)--(3, 5, 0)--cycle;
+\fill[gray, opacity = 0.4] (5, 4, 0)--(6, 4, 0)--(6, 5, 0)--(5, 5, 0)--cycle;
+\draw[line width = .8pt] (5, 4, 0)--(6, 4, 0)--(6, 5, 0)--(5, 5, 0)--cycle;
+\fill[gray, opacity = 0.4] (6, 4, 0)--(7, 4, 0)--(7, 5, 0)--(6, 5, 0)--cycle;
+\draw[line width = .8pt] (6, 4, 0)--(7, 4, 0)--(7, 5, 0)--(6, 5, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (7.2, 4.2, 0.0)--(7.8, 4.2, 0.0)--(7.8, 4.8, 0.0)--(7.2, 4.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (7.5, 4.5, 0.0) {\Large {$\mathsf{2}$}};
+\draw[line width = .8pt] (7, 4, 0)--(8, 4, 0)--(8, 5, 0)--(7, 5, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (0.5, 5.5, 0.0) {\Large {$\mathsf{2}$}};
+\draw[line width = .8pt] (0, 5, 0)--(1, 5, 0)--(1, 6, 0)--(0, 6, 0)--cycle;
+\fill[color = Goldenrod, opacity = 0.5] (1.2, 5.2, 0.0)--(1.8, 5.2, 0.0)--(1.8, 5.8, 0.0)--(1.2, 5.8, 0.0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (1.5, 5.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (1, 5, 0)--(2, 5, 0)--(2, 6, 0)--(1, 6, 0)--cycle;
+\fill[gray, opacity = 0.4] (2, 5, 0)--(3, 5, 0)--(3, 6, 0)--(2, 6, 0)--cycle;
+\draw[line width = .8pt] (2, 5, 0)--(3, 5, 0)--(3, 6, 0)--(2, 6, 0)--cycle;
+\fill[gray, opacity = 0.4] (3, 5, 0)--(4, 5, 0)--(4, 6, 0)--(3, 6, 0)--cycle;
+\draw[line width = .8pt] (3, 5, 0)--(4, 5, 0)--(4, 6, 0)--(3, 6, 0)--cycle;
+\fill[gray, opacity = 0.4] (4, 5, 0)--(5, 5, 0)--(5, 6, 0)--(4, 6, 0)--cycle;
+\draw[line width = .8pt] (4, 5, 0)--(5, 5, 0)--(5, 6, 0)--(4, 6, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (5.5, 5.5, 0.0) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (5, 5, 0)--(6, 5, 0)--(6, 6, 0)--(5, 6, 0)--cycle;
+\fill[gray, opacity = 0.4] (2, 6, 0)--(3, 6, 0)--(3, 7, 0)--(2, 7, 0)--cycle;
+\draw[line width = .8pt] (2, 6, 0)--(3, 6, 0)--(3, 7, 0)--(2, 7, 0)--cycle;
+\node[canvas is xy plane at z = 0, transform shape] at (3.5, 6.5, 0.0) {\Large {$\mathsf{5}$}};
+\draw[line width = .8pt] (3, 6, 0)--(4, 6, 0)--(4, 7, 0)--(3, 7, 0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is yz plane at x = 0] at (4.0, 1.5, -0.5) {\LARGE $\hphantom{\mathsf{6}}$};
+\node[canvas is yz plane at x = 0] at (4.0, 1.5, -0.5) {\Large {$\mathsf{6}$}};
+\draw[line width = .8pt] (4.0, 1.0, 0.0)--(4.0, 1.0, -1.0)--(4.0, 2.0, -1.0)--(4.0, 2.0, 0.0)--cycle;
+\fill[gray, opacity = 0.4] (4.0, 1.0, -1.0)--(4.0, 1.0, -2.0)--(4.0, 2.0, -2.0)--(4.0, 2.0, -1.0)--cycle;
+\draw[line width = .8pt] (4.0, 1.0, -1.0)--(4.0, 1.0, -2.0)--(4.0, 2.0, -2.0)--(4.0, 2.0, -1.0)--cycle;
+\fill[gray, opacity = 0.4] (4.0, 1.0, -2.0)--(4.0, 1.0, -3.0)--(4.0, 2.0, -3.0)--(4.0, 2.0, -2.0)--cycle;
+\draw[line width = .8pt] (4.0, 1.0, -2.0)--(4.0, 1.0, -3.0)--(4.0, 2.0, -3.0)--(4.0, 2.0, -2.0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is xz plane at y = 0] at (3.5, 1.0, -1.5) {\LARGE $\hphantom{\mathsf{4}}$};
+\node[canvas is xz plane at y = 0] at (3.5, 1.0, -1.5) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (3.0, 1.0, -1.0)--(3.0, 1.0, -2.0)--(4.0, 1.0, -2.0)--(4.0, 1.0, -1.0)--cycle;
+\fill[gray, opacity = 0.4] (3.0, 1.0, -1.0)--(4.0, 1.0, -1.0)--(4.0, 1.0, 0.0)--(3.0, 1.0, 0.0)--cycle;
+\draw[line width = .8pt] (3.0, 1.0, -1.0)--(4.0, 1.0, -1.0)--(4.0, 1.0, 0.0)--(3.0, 1.0, 0.0)--cycle;
+\fill[gray, opacity = 0.4] (2.0, 1.0, -1.0)--(3.0, 1.0, -1.0)--(3.0, 1.0, 0.0)--(2.0, 1.0, 0.0)--cycle;
+\draw[line width = .8pt] (2.0, 1.0, -1.0)--(3.0, 1.0, -1.0)--(3.0, 1.0, 0.0)--(2.0, 1.0, 0.0)--cycle;
+\fill[gray, opacity = 0.4] (2.0, 3.0, -1.0)--(2.0, 2.0, -1.0)--(2.0, 2.0, 0.0)--(2.0, 3.0, 0.0)--cycle;
+\draw[line width = .8pt] (2.0, 3.0, -1.0)--(2.0, 2.0, -1.0)--(2.0, 2.0, 0.0)--(2.0, 3.0, 0.0)--cycle;
+\node[circle, fill=RoyalPurple, opacity=0.4, canvas is yz plane at x = 0] at (2.0, 1.5, -0.5) {\LARGE $\hphantom{\mathsf{4}}$};
+\node[canvas is yz plane at x = 0] at (2.0, 1.5, -0.5) {\Large {$\mathsf{4}$}};
+\draw[line width = .8pt] (2.0, 2.0, -1.0)--(2.0, 1.0, -1.0)--(2.0, 1.0, 0.0)--(2.0, 2.0, 0.0)--cycle;
+\end{scope}
+\end{tikzpicture}}}
+\begin{document}\begin{animateinline}{1}
+        \multiframe{360}{i=0+1}{\parampicture{\i}}
+        \end{animateinline}
+        \end{document}
