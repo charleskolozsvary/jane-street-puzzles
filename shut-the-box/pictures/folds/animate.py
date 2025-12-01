@@ -32,6 +32,10 @@ def animateShortPNGs(file_name_stem, frame_file_names, _duration):
         img.close()
 
 def animatePNGs(file_name_stem, frame_file_names, _fps):
+    # if file_name_stem == 'ex-every30' or file_name_stem == 'full-every30':
+    #     animateShortPNGs(file_name_stem, frame_file_names, 1000/_fps)
+    # return
+        
     mp4_file_name = os.path.join('animations', f'{file_name_stem}.mp4')
 
     def saveAnimation(file_name): # not sure why .gif isn't working correctly
