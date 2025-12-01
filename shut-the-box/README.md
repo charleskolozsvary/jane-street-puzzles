@@ -20,3 +20,7 @@ Fill in the grid by hand and assembled the cut out the printed grid.
 Here's an animation of the box assembling!
 
 ![animation](./30s45deg-crop.gif)
+
+Just the shut box.
+
+![shutbox](./pictures/folds/animations/shutbox.mp4)
