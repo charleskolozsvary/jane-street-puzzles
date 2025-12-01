@@ -6,6 +6,9 @@ import itertools
 from copy import deepcopy
 from prism import Prism
 
+import argparse
+import logging
+
 # filled cells
 class Cell:
     ''' Don't know how much I standardized this, but a square should be a collection of four 3d points which are the corners of a cell.'''
@@ -256,10 +259,11 @@ class Net:
         self.points_set = set(p for cell in self.cells.values() for p in cell.corners)
         self.points_np = np.array([p for p in self.points_set])
 
-    def tikzpicture(self, no_points = False, certain_cells = None, multiframe_arg_to_3dview = False):
+    def tikzCommand(self, multiframe_arg_to_3dview = False, top_down = False):
         scale = .85
 
-        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {{{}}}{{30}}'.format('#1' if multiframe_arg_to_3dview else 0)
+        orientation = 'canvas is xy plane at z = 0, transform shape, 3d view = {{{a}}}{{{b}}}'.format(a='#1' if multiframe_arg_to_3dview else 0,
+                                                                                                      b='90' if top_down else '30')
         picture = '\\newcommand{\\parampicture}[1]{{\\begin{tikzpicture}'
         picture += '[{ori}, scale = {sc}, every node/.style = {{scale = {sc}}}]\n'.format(ori=orientation, sc=scale)
         
@@ -270,10 +274,9 @@ class Net:
             picture += '''\\rotateRPY{{0}}{{0}}{{{arg}}}
         \\begin{{scope}}[RPY, shift = {{(-{w2},-{w2},0)}}]'''.format(arg=0 if multiframe_arg_to_3dview else '#1',
                                                                      w2=(self.grid_w+1)/2)
+        line_width = '.8pt'
         
-        thickness = '.9pt'
-        
-        cells = certain_cells if certain_cells != None else self.cells.values()
+        cells = self.cells.values()
         
         for cell in cells:
             x, y, z = cell.corners[0]
@@ -290,13 +293,11 @@ class Net:
             inside_d = misc.np2Tuple(b + 4*(d-b)/5)
             inside_path = [inside_a, inside_b, inside_c, inside_d]
 
-            opacity = 0.3
-
-            text_color = '\\textcolor{black}'
+            opacity = 0.4
 
             circled_color = 'RoyalPurple'
             squared_color = 'Goldenrod'
-            squared_opacity = .4
+            squared_opacity = .5
             
             if cell.symbol:
                 if cell.squared:
@@ -310,25 +311,17 @@ class Net:
                                                                                                 center_p,
                                                                                                 '\\LARGE $\\hphantom{\\mathsf{'+cell.symbol+'}}$')
                     
-                picture += '\\node[{}] at {} {{{}}};\n'.format(cell.canvas_spec, center_p, '\\Large '+ text_color + '{{$\\mathsf{{{}}}$}}'.format(cell.symbol))
-                picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))
+                picture += '\\node[{}] at {} {{{}}};\n'.format(cell.canvas_spec, center_p, '\\Large {{$\\mathsf{{{}}}$}}'.format(cell.symbol))
+                picture += '\\draw[line width = {}] {}--cycle;\n'.format(line_width, '--'.join([str(c) for c in cell.corners]))
             else:
                 picture += '\\fill[gray, opacity = {}] {}--cycle;\n'.format(opacity, '--'.join([str(c) for c in cell.corners]))
-                picture += '\\draw[line width = {}] {}--cycle;\n'.format(thickness, '--'.join([str(c) for c in cell.corners]))    
+                picture += '\\draw[line width = {}] {}--cycle;\n'.format(line_width, '--'.join([str(c) for c in cell.corners]))    
 
         if not multiframe_arg_to_3dview:
             picture += '\\end{scope}\n'
+        
         picture += '\\end{tikzpicture}}}\n'
 
-        if no_points:
-            return picture
-
-        # likely no longer compatible
-        
-        picture += '\n\\vspace{5ex}\n\n\\[\\resizebox{20pc}{!}{\\begin{tikzpicture}'
-        for p in self.points_set:
-            picture += '\\filldraw {} circle ({});\n'.format(p, 0.05)
-        picture += '\\end{tikzpicture}}\\]\n'
         return picture
 
     def __repr__(self):
@@ -381,39 +374,52 @@ def possibleNets(net):
         
     return possible_nets
 
-def drawTikzs(nets, fname, no_points = True, certain_cells = None, animate = True, _3dview_shift = False):
+def makeTeX(net, file_name_no_extension, animate = False, _3dview_shift = False, _top_down = False):
+
     with open('pictures/preamble.tex', 'r') as f:
         preamble = f.readlines()
     
     tex_file = ''.join(preamble)
-    for i, net in enumerate(nets):
-        if certain_cells != None:
-            tex_file += net.tikzpicture(no_points, certain_cells[i], _3dview_shift)
-        else:
-            tex_file += net.tikzpicture(no_points, certain_cells = None, multiframe_arg_to_3dview = _3dview_shift)
+    tex_file += net.tikzCommand(multiframe_arg_to_3dview = _3dview_shift, top_down = _top_down)
+    tex_file += '\\begin{document}'
+
+    print(animate, file_name_no_extension)    
             
     if animate:
-        tex_file += '''
-        \\begin{document}
-        \\begin{animateinline}{1}
+        tex_file += '''\\begin{animateinline}{1}
         \\multiframe{360}{i=0+1}{\\parampicture{\\i}}
         \\end{animateinline}
         '''
     else:
-        tex_file += '''
-        \\begin{document}
-        \\parampicture{60}
-        '''
+        tex_file += '\\parampicture{{{}}}'.format('0' if _top_down else '45')
+        
     tex_file += '\\end{document}\n'
     
-    with open('{}.tex'.format(fname), 'w') as f:
+    with open('pictures/{}.tex'.format(file_name_no_extension), 'w') as f:
         f.write(tex_file)
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--debug", action="store_true", help='debugging output')
+    parser.add_argument("-a", "--animate", action="store_true", help='draw 360 frames of each picture of the net, folded or otherwise')
+    parser.add_argument("-t", "--topdown", action="store_true", help='draw the nets from a top-down perspective')    
+    args = parser.parse_args()
+
     full_net = Net(grids.FULL_GRID)
-    test_net = Net(grids.TEST_FOLD)
     example_net = Net(grids.EXAMPLE_GRID)
+    test_net = Net(grids.TEST_FOLD)
+
+    nets = [full_net, example_net, test_net]
+    net_names = ['full-net', 'example-net', 'test-no-fold-net']
+
+    append = '{}{}'.format('-animated' if args.animate else '',
+                           '-topdown' if args.topdown else '')
+
+    for i, net in enumerate(nets):
+        makeTeX(net, net_names[i]+append, args.animate, False, args.topdown)
+
+    
     
             
             

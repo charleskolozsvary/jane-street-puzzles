@@ -19,8 +19,8 @@ Fill in the grid by hand and assembled the cut out the printed grid.
 ## Answer
 Here's an animation of the box assembling!
 
-![animation](./30s45deg-crop.gif)
+<img src="./30s45deg-crop.gif" alt="A gif of the box assembling. The net repeatedly turns 360 degrees, and every 45 degrees a fold happens until the box is shut.">
 
 Just the shut box.
 
-![shutbox](./pictures/folds/animations/shutbox.gif)
+<img src="./pictures/folds/animations/shutbox.gif" alt="360 degree view of the shut box">
