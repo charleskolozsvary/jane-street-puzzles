@@ -57,14 +57,18 @@ if __name__ == '__main__':
         for i, angle in enumerate(per_angles):
             animateFolds(stem, prefix, 'png', angle, fold_range, fpses[i]) # 60 fps
 
-    ugh('ex', 'example-net-', [0, 12], [90, 60, 45, 30], [30, 30, 30, 23])
-    ugh('full', 'full-net-', [0, 17], [90, 60, 45, 30, 15], [30, 30, 30, 23, 20])
+    # ugh('ex', 'example-net-', [0, 12], [90, 60, 45, 30], [30, 30, 30, 23])
+    # ugh('full', 'full-net-', [0, 17], [90, 60, 45, 30, 15], [30, 30, 30, 23, 20])
 
-    animateShortPNGs('static-example', [f'frames/static-example-net-fold{i}_000.png' for i in range(13)], 500)
-    animateShortPNGs('static-full', [f'frames/static-full-net-fold{i}_000.png' for i in range(18)], 500)
+    # animateShortPNGs('static-example', [f'frames/static-example-net-fold{i}_000.png' for i in range(13)], 500)
+    # animateShortPNGs('static-full', [f'frames/static-full-net-fold{i}_000.png' for i in range(18)], 500)
 
-    animateShortPNGs('static-example-fast', [f'frames/static-example-net-fold{i}_000.png' for i in range(13)], 200)
-    animateShortPNGs('static-full-fast', [f'frames/static-full-net-fold{i}_000.png' for i in range(18)], 200)
+    # animateShortPNGs('static-example-fast', [f'frames/static-example-net-fold{i}_000.png' for i in range(13)], 200)
+    # animateShortPNGs('static-full-fast', [f'frames/static-full-net-fold{i}_000.png' for i in range(18)], 200)
 
-    animateShortPNGs('static-example-veryfast', [f'frames/static-example-net-fold{i}_000.png' for i in range(13)], 100)
-    animateShortPNGs('static-full-veryfast', [f'frames/static-full-net-fold{i}_000.png' for i in range(18)], 100)            
+    # animateShortPNGs('static-example-veryfast', [f'frames/static-example-net-fold{i}_000.png' for i in range(13)], 100)
+    # animateShortPNGs('static-full-veryfast', [f'frames/static-full-net-fold{i}_000.png' for i in range(18)], 100)
+
+    animateShortPNGs('full-shutbox-360', [f'frames/full-net-fold17_{i:03d}.png' for i in range(360)], 33.333333)
+
+    # in terminal: ulimit -n 1024
