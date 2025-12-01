@@ -16,11 +16,21 @@ The answer to the puzzle is the product of the six sums of numbers on each face 
 ## Approach
 Fill in the grid by hand and assembled the cut out the printed grid.
 
-## Answer
-Here's an animation of the box assembling!
+## Animations
+Here are some animations of the nets folding into boxes.
 
-<img src="./30s45deg-crop.gif" alt="A gif of the box assembling. The net repeatedly turns 360 degrees, and every 45 degrees a fold happens until the box is shut.">
+### Full net
+<img src="pictures/folds/animations/static-full.gif" alt="A gif of the full net folding in to the (2, 6, 7) rectangular prism from a fixed perspective">
 
-Just the shut box.
+<video src="pictures/folds/animations/full-every30.mp4" alt="A video of the full net folding into the (2, 6, 7) rectangular prism from a rotating 360 degree perspective, a fold happening every 30 degrees">
 
-<img src="./pictures/folds/animations/shutbox.gif" alt="360 degree view of the shut box">
+<img src="pictures/folds/animations/static-full-veryfast.gif">
+
+### Example net
+<img src="pictures/folds/animations/static-example.gif">
+
+<video src="pictures/folds/animations/ex-every30.mp4>
+
+<img src="pictures/folds/animations/static-example-fast.gif">
+
+
