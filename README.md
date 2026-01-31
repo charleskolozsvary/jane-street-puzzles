@@ -14,3 +14,4 @@ I've also been trying to write in-depth solutions to a number of brain teasers I
 - [Knight Moves 6](./knight-moves6)
 - [Hooks 11](./hooks11)
 - [Robot Baseball](./robot-baseball)
+- [Shut the Box](./shut-the-box)
