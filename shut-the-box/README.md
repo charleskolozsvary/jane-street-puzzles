@@ -1,4 +1,4 @@
-# [Shut the Box](https://www.janestreet.com/puzzles/current-puzzle/) (November 2025)
+# [Shut the Box](https://www.janestreet.com/puzzles/shut-the-box-index/) (November 2025)
 
 ## Description
 Remove one or more orthogonally connected groups of cells from the grid. Each of these groups must have at least one cell which is part of the grid boundary, and the remaining cells in the grid must form an orthogonally connected component without any holes which can be folded to form a rectangular prism (the "box").
