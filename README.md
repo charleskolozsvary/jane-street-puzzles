@@ -3,7 +3,7 @@
 
 If you haven't already, I suggest you try to solve the [current puzzle](https://www.janestreet.com/puzzles/current-puzzle/) (or, if it doesn't suit your fancy, any of the others in the [archive](https://www.janestreet.com/puzzles/archive/)---I find, clearly, that they're a lot of fun).
 
-I've also been trying to write in-depth solutions to a number of brain teasers I've found interesting (including Jane Street Puzzles), but progress has been slow. Writing is hard. That collection of solutions lives at https://github.com/charleskolozsvary/brain-teaser-explanations. 
+I've also been trying to write in-depth solutions to a number of brain teasers I've found interesting (including Jane Street Puzzles), but progress has been slow. Writing is hard. That collection of solutions lives at https://github.com/charleskolozsvary/puzzle-explanations. 
 
 # Solved Puzzles
 (From oldest to newest.)
